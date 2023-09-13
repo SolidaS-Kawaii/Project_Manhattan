@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Project_Manhattan.Content;
+using Project_Manhattan.CoreCode;
+using Project_Manhattan.Screen_Management;
 
 /////////////////////////////////// เป็น Class เอาไว้ใส่สกิลตัวละครแต่ละตัว ///////////////////////////////////
 
@@ -14,21 +17,23 @@ namespace Project_Manhattan
         {
             
         }
-        public override void skill1()
+        public override void skill1(int enePos)
         {
-            MainGame.Energy -= Skill1_Cost ;
+            Gameplay_Screen.Energy -= Skill1_Cost ;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str;
         }
-        public override void skill2()
+        public override void skill2(int enePos)
         {
-            MainGame.Energy -= Skill2_Cost ;
+            Gameplay_Screen.Energy -= Skill2_Cost ;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str*3;
         }
         public override void skill1_Info()
         {
-            MainGame.SkillName = "MickeyE";
+            Gameplay_Screen.SkillName = "MickeyE (0E)";
         }
         public override void skill2_Info()
         {
-            MainGame.SkillName = "MickeyQ";
+            Gameplay_Screen.SkillName = "MickeyQ (2E)";
         }
     }
 
@@ -39,21 +44,23 @@ namespace Project_Manhattan
         {
 
         }
-        public override void skill1()
+        public override void skill1(int enePos)
         {
-            MainGame.Energy -= Skill1_Cost ;
+            Gameplay_Screen.Energy -= Skill1_Cost ;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str;
         }
-        public override void skill2()
+        public override void skill2(int enePos)
         {
-            MainGame.Energy -= Skill2_Cost ;
+            Gameplay_Screen.Energy -= Skill2_Cost ;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str*2;
         }
         public override void skill1_Info()
         {
-            MainGame.SkillName = "HengE";
+            Gameplay_Screen.SkillName = "HengE (1E)";
         }
         public override void skill2_Info()
         {
-            MainGame.SkillName = "HengQ";
+            Gameplay_Screen.SkillName = "HengQ (3E)";
         }
     }
 
@@ -64,21 +71,23 @@ namespace Project_Manhattan
         {
 
         }
-        public override void skill1()
+        public override void skill1(int enePos)
         {
-            MainGame.Energy -= Skill1_Cost ;
+            Gameplay_Screen.Energy -= Skill1_Cost ;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str;
         }
-        public override void skill2()
+        public override void skill2(int enePos)
         {
-            MainGame.Energy -= Skill2_Cost ;
+            Gameplay_Screen.Energy -= Skill2_Cost ;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str/2;
         }
         public override void skill1_Info()
         {
-            MainGame.SkillName = "OhmE";
+            Gameplay_Screen.SkillName = "OhmE (3E)";
         }
         public override void skill2_Info()
         {
-            MainGame.SkillName = "OhmQ";
+            Gameplay_Screen.SkillName = "OhmQ (2E)";
         }
     }
 }
