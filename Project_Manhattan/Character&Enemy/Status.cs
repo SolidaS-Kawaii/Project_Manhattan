@@ -15,23 +15,23 @@ namespace Project_Manhattan.Content
         public int MaxHp;
         public int Str;
         public int MaxStr;
-        public int Mood;
+        public int Def;
+        public int MaxDef;
 
         public int Skill1_Cost;
         public int Skill2_Cost;
 
+        public string Target_1;   //Self, Friend, Enemy
+        public string Target_2;   //Self, Friend, Enemy
+
         public bool IsCharEnd = false;
-        public Player_skill(int hp, int str, int skill1_Cost, int skill2_Cost)
+        public bool IsAlive = true;
+        public Player_skill()
         {
-            Hp = hp;
-            MaxHp = hp;
-            Str = str;
-            MaxStr = str;
-            Skill1_Cost = skill1_Cost;
-            Skill2_Cost = skill2_Cost;
+
         }
-        public abstract void skill1(int enePos);
-        public abstract void skill2(int enePos);
+        public abstract void skill1(int enePos, int CastPos);
+        public abstract void skill2(int enePos, int CastPos);
         public abstract void skill1_Info();
         public abstract void skill2_Info();
     }
@@ -50,8 +50,8 @@ namespace Project_Manhattan.Content
             Str = str;
             MaxStr = str;
         }
-        public abstract void skill1();
-        public abstract void skill2();
+        public abstract void skill1(int RandPos);
+        public abstract void skill2(int RandPos);
         public abstract void skill1_Info();
         public abstract void skill2_Info();
     }

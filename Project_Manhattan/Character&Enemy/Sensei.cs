@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Project_Manhattan.Content;
+using Project_Manhattan.CoreCode;
 
 namespace Project_Manhattan
 {
@@ -13,11 +14,13 @@ namespace Project_Manhattan
         {
 
         }
-        public override void skill1()
+        public override void skill1(int RandPos)
         {
-
+            LFC.PAS[0].Hp -= this.Str;
+            LFC.PAS[1].Hp -= this.Str;
+            LFC.PAS[2].Hp -= this.Str;
         }
-        public override void skill2()
+        public override void skill2(int RandPos)
         {
 
         }
@@ -36,11 +39,11 @@ namespace Project_Manhattan
         {
 
         }
-        public override void skill1()
+        public override void skill1(int RandPos)
         {
-
+            LFC.PAS[RandPos].Hp -= this.Str;
         }
-        public override void skill2()
+        public override void skill2(int RandPos)
         {
 
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Project_Manhattan.CoreCode;
 using Project_Manhattan.Screen_Management;
 using SharpDX.Direct3D9;
 using System;
@@ -24,6 +25,7 @@ namespace Project_Manhattan
         public Team_Manager_Screen mTeam_Manage;
         public Screen mCurrentScreen;
 
+        public LFC The_List;
         public MainGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -46,6 +48,8 @@ namespace Project_Manhattan
             mTitile_Screen = new Titile_Screen(this, new EventHandler(GameplayScreenEvent));
             mstory_Hostipal = new Story_Hostipal_Screen(this, new EventHandler(GameplayScreenEvent));
             mTeam_Manage = new Team_Manager_Screen(this, new EventHandler(GameplayScreenEvent));
+            The_List = new LFC(this);
+
             mCurrentScreen = mTitile_Screen;
         }
 
@@ -54,6 +58,7 @@ namespace Project_Manhattan
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mCurrentScreen.Update(gameTime);
+            The_List.UpdateList(gameTime);
             base.Update(gameTime);
         }
 
