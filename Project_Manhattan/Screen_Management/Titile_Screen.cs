@@ -15,7 +15,7 @@ namespace Project_Manhattan.Screen_Management
         MainGame game;
         public Titile_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            menuTexture = game.Content.Load<Texture2D>("Homeless");
+            menuTexture = game.Content.Load<Texture2D>("2D/BG/Title");
             this.game = game;
         }
         public override void Update(GameTime gameTime)

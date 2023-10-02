@@ -18,8 +18,8 @@ namespace Project_Manhattan.CoreCode
         public static AnimatedTexture[] PAA = new AnimatedTexture[3];   //Player Array Animate
         public static List<AnimatedTexture> PLA = new List<AnimatedTexture>();  //play List Animate
 
-        public static Player_skill[] PAS = new Player_skill[3];         //Player Array Skill
-        public static List<Player_skill> PLS = new List<Player_skill>();//Player List Skill
+        public static Friend[] PAS = new Friend[3];         //Player Array Skill
+        public static List<Friend> PLS = new List<Friend>();//Player List Skill
 
         public static int[] select = new int[3];
 

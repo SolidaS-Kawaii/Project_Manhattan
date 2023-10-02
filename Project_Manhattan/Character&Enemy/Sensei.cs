@@ -16,9 +16,13 @@ namespace Project_Manhattan
         }
         public override void skill1(int RandPos)
         {
-            LFC.PAS[0].Hp -= this.Str;
-            LFC.PAS[1].Hp -= this.Str;
-            LFC.PAS[2].Hp -= this.Str;
+            LFC.PAS[0].Hp -= (this.Str - (LFC.PAS[0].Def/2));
+            LFC.PAS[1].Hp -= (this.Str - (LFC.PAS[1].Def / 2));
+            LFC.PAS[2].Hp -= (this.Str - (LFC.PAS[2].Def / 2));
+
+            LFC.PAS[0].IsHurt = true;
+            LFC.PAS[1].IsHurt = true;
+            LFC.PAS[2].IsHurt = true;
         }
         public override void skill2(int RandPos)
         {
@@ -41,7 +45,9 @@ namespace Project_Manhattan
         }
         public override void skill1(int RandPos)
         {
-            LFC.PAS[RandPos].Hp -= this.Str;
+            LFC.PAS[RandPos].Hp -= (this.Str - (LFC.PAS[RandPos].Def / 2));
+
+            LFC.PAS[RandPos].IsHurt = true;
         }
         public override void skill2(int RandPos)
         {

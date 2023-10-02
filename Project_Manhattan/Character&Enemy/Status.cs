@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Project_Manhattan.Content
 {
-    public abstract class Player_skill
+    public abstract class Friend
     {
         public int Hp;
         public int MaxHp;
@@ -17,6 +17,8 @@ namespace Project_Manhattan.Content
         public int MaxStr;
         public int Def;
         public int MaxDef;
+
+        public string Name;
 
         public int Skill1_Cost;
         public int Skill2_Cost;
@@ -26,7 +28,8 @@ namespace Project_Manhattan.Content
 
         public bool IsCharEnd = false;
         public bool IsAlive = true;
-        public Player_skill()
+        public bool IsHurt = false;
+        public Friend()
         {
 
         }
@@ -42,7 +45,8 @@ namespace Project_Manhattan.Content
         public int MaxHp;
         public int Str;
         public int MaxStr;
-        public bool Visible { get; set; }
+        public bool IsAlive = true;
+        public bool IsHurt = false;
         public Enemy_skill(int hp, int str)
         {
             Hp = hp;

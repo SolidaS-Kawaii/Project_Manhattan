@@ -11,13 +11,14 @@ using Project_Manhattan.Screen_Management;
 
 namespace Project_Manhattan
 {
-    public class Mickey : Player_skill
+    public class Mickey : Friend
     {   
-
         public Mickey() : base() 
         {
+            Name = "Miki";
+
             Hp = 500;
-            Str = 150;
+            Str = 300;
             Def = 50;
 
             MaxHp = Hp;
@@ -37,27 +38,32 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill1_Cost ;
             Gameplay_Screen.enemyList[enePos].Hp -= Str;
+            Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost ;
             Gameplay_Screen.enemyList[enePos].Hp -= Str*2;
+            Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "MickeyE (2E)";
+            Gameplay_Screen.SkillInfo = "Kick a ball into our sensei \nDeals 100% of Str";
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "MickeyQ (3E)";
+            Gameplay_Screen.SkillInfo = "Kick a ball into our sensei harshly \nDeals 200% of Str";
         }
     }
 
-    public class Heng : Player_skill
+    public class Heng : Friend
     {
-
         public Heng() : base()
         {
+            Name = "Hengoku";
+
             Hp = 450;
             Str = 75;
             Def = 50;
@@ -95,18 +101,21 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "HengE (2E)";
+            Gameplay_Screen.SkillInfo = "Pick up a medicine form my lover bag \nHeals 150 Hp";
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "HengQ (2E)";
+            Gameplay_Screen.SkillInfo = "Shouttttttttttttt! \nBuffs all of our friends with 25 Str";
         }
     }
 
-    public class Ohm : Player_skill
+    public class Ohm : Friend
     {
-
         public Ohm() : base()
         {
+            Name = "Ohmo";
+
             Hp = 800;
             Str = 75;
             Def = 125;
@@ -137,19 +146,21 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "OhmE (1E)";
+            Gameplay_Screen.SkillInfo = "I can lift a dumbbell all day \nDef up 50";
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "OhmQ (3E)";
+            Gameplay_Screen.SkillInfo = "Taunt all of our sensei! \nTaunt and Def up 100";
         }
     }
-    public class Dome : Player_skill
+    public class Dome : Friend
     {
-
         public Dome() : base()
         {
+            Name = "Domino";
             Hp = 450;
-            Str = 175;
+            Str = 275;
             Def = 25;
 
             MaxHp = Hp;
@@ -169,20 +180,24 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
             Gameplay_Screen.enemyList[enePos].Hp -= Str*75/100;
+            Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
             Gameplay_Screen.enemyList[enePos].Hp -= Str*2;
             Hp -= 25;
+            Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "DomeE (1E)";
+            Gameplay_Screen.SkillInfo = "Reflect DMG into our sensei \nDeals 75% of Str";
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "DomeQ (3E)";
+            Gameplay_Screen.SkillInfo = "Reverse curse technique \nDeals 200% of Str and Reserve DMG 25";
         }
     }
 }
