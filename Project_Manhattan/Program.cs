@@ -1,3 +1,3 @@
 ﻿
-using var game = new Project_Manhattan.Game1();
+using var game = new Project_Manhattan.MainGame();
 game.Run();
