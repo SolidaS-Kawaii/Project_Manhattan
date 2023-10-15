@@ -20,7 +20,7 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Right) == true)
+            if(Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
             }

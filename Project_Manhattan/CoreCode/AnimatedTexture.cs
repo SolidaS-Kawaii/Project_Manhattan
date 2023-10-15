@@ -21,10 +21,10 @@ namespace Project_Manhattan.CoreCode
         private int framecount;
         private Texture2D myTexture;
         private float TimePerFrame;
-        private int Frame;
+        public int Frame;
         private int framerow = 1; // frame row
         private int frame_r; // count frame row 
-        private int startframe;
+        public int startframe;
         private int endframe;
         private float TotalElapsed;
         private bool Paused;

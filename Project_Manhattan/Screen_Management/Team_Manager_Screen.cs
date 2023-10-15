@@ -18,6 +18,7 @@ namespace Project_Manhattan.Screen_Management
         private int Pos = 0;
 
         bool isDuplicate = false;
+        bool isReady = false;
 
         Texture2D Hotel;
         Texture2D select;
@@ -49,10 +50,9 @@ namespace Project_Manhattan.Screen_Management
         public override void Update(GameTime gameTime)
         {   
             Console.Clear();
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             NigKey = Keyboard.GetState();
 
-            if (NigKey.IsKeyDown(Keys.L) && OppKey.IsKeyUp(Keys.L))
+            if (NigKey.IsKeyDown(Keys.D) && OppKey.IsKeyUp(Keys.D))
             {
                 if (Pos < LFC.PAA.Length - 1)
                 {
@@ -60,7 +60,7 @@ namespace Project_Manhattan.Screen_Management
                 }
             }
             
-            else if (NigKey.IsKeyDown(Keys.J) && OppKey.IsKeyUp(Keys.J))
+            else if (NigKey.IsKeyDown(Keys.A) && OppKey.IsKeyUp(Keys.A))
             {
                 if (Pos > 0)
                 {
@@ -68,14 +68,14 @@ namespace Project_Manhattan.Screen_Management
                 }
             }
 
-            if (NigKey.IsKeyDown(Keys.A) && OppKey.IsKeyUp(Keys.A))
+            if (NigKey.IsKeyDown(Keys.J) && OppKey.IsKeyUp(Keys.J))
             {
                 if (LFC.select[Pos] > 0)
                 {
                     LFC.select[Pos]--;
                 }
             }
-            else if (NigKey.IsKeyDown(Keys.D) && OppKey.IsKeyUp(Keys.D))
+            else if (NigKey.IsKeyDown(Keys.L) && OppKey.IsKeyUp(Keys.L))
             {
                 if(LFC.select[Pos] < LFC.PLA.Count - 1)
                 {
@@ -100,9 +100,14 @@ namespace Project_Manhattan.Screen_Management
                 isDuplicate = false;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) == true && isDuplicate == false)
+            if (NigKey.IsKeyDown(Keys.Enter) && OppKey.IsKeyUp(Keys.Enter) && !isDuplicate && isReady)
             {
                 ScreenEvent.Invoke(game.mGameplay_Screen, new EventArgs());
+            }
+
+            if (!isReady)
+            {
+                isReady = true;
             }
 
             Name[0] = LFC.PAS[0].Name;

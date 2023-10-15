@@ -15,6 +15,7 @@ namespace Project_Manhattan.Screen_Management
     {
         private KeyboardState keytak;                   //New Key
         private KeyboardState keypiak;                  //Old key
+        private GamePadState gamePadState;
         //private MouseState anutin;                      //Mouse click
         //private MouseState chanveerakul;                //Mouse Position
 
@@ -144,6 +145,7 @@ namespace Project_Manhattan.Screen_Management
 
             keytak = Keyboard.GetState();   //รับคีย์
             var anutin = Mouse.GetState();  //รับเมาส์
+            gamePadState = GamePad.GetState(PlayerIndex.One);
 
             ///////////////////// เลือกตำแหน่งSensei by keyboard ///////////////////////////////////////
 
@@ -211,7 +213,7 @@ namespace Project_Manhattan.Screen_Management
                         }
                         else if (i == SelPos && LFC.PAS[i].IsCharEnd == false && Energy - LFC.PAS[i].Skill1_Cost >= 0 && IsSkillEReady == true)
                         {
-                            LFC.PAS[i].skill1(TargetPos, Caster);
+                            LFC.PAS[i].skill1(TargetPos, Caster, game);
                             LFC.PAS[i].IsCharEnd = true;
                             IsSkillEReady = false;
                             Delay(3);
@@ -240,7 +242,7 @@ namespace Project_Manhattan.Screen_Management
 
                 ///////////////////// จบ Phase ////////////////////
 
-                if (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter) && IsMyPhase)
+                if (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter) && IsMyPhase && !StartPhase)
                 {
                     IsMyPhase = false;
                     turn_e = 0;
@@ -336,6 +338,7 @@ namespace Project_Manhattan.Screen_Management
                     LFC.PAS[i].Hp = 0;
                     LFC.PAS[i].IsAlive = false;
                 }
+                LFC.PAS[1].UpdateAction();
             }
 
             //////////// เวลา //////////////
@@ -350,8 +353,8 @@ namespace Project_Manhattan.Screen_Management
             keypiak = keytak;
             Eniem.UpdateFrame(Elapsed);
             GeeGee.UpdateFrame(Elapsed);
-            Console.WriteLine(Cooldown);
-            Console.WriteLine(turn_e);
+            Console.WriteLine(LFC.PAA[Caster].Frame);
+            Console.WriteLine(LFC.PAS[Caster].IsAction);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch theBatch)
@@ -379,7 +382,6 @@ namespace Project_Manhattan.Screen_Management
 
             for (int i = 0; i < LFC.PAS.Length; i++)
             {
-
                 if (LFC.PAS[i].IsAlive)
                 {
                     if (!LFC.PAS[i].IsHurt)
@@ -458,24 +460,27 @@ namespace Project_Manhattan.Screen_Management
             }
 
             //////////////วาด ลูกศร//////////
-            if (Target_task == "Enemy")
+            if(IsSkillQReady || IsSkillEReady)
             {
-                theBatch.Draw(Select_Enemy, new Vector2(EnemyPos[TargetPos].X + 50, EnemyPos[TargetPos].Y - 50), Color.White);
-            }
-            else if (Target_task == "Friend")
-            {
-                theBatch.Draw(Select_Friend, new Vector2(PlayerPos[TargetPos].X + 50, PlayerPos[TargetPos].Y - 100), Color.White);
-            }
-            else if (Target_task == "AllFriend")
-            {
-                theBatch.Draw(Select_Friend, new Vector2(PlayerPos[0].X + 50, PlayerPos[0].Y - 100), Color.White);
-                theBatch.Draw(Select_Friend, new Vector2(PlayerPos[1].X + 50, PlayerPos[1].Y - 100), Color.White);
-                theBatch.Draw(Select_Friend, new Vector2(PlayerPos[2].X + 50, PlayerPos[2].Y - 100), Color.White);
-            }
-            else if (Target_task == "Self")
-            {
-                theBatch.Draw(Select_Me, new Vector2(PlayerPos[Caster].X + 50, PlayerPos[Caster].Y - 100), Color.Blue);
-            }
+                if (Target_task == "Enemy")
+                {
+                    theBatch.Draw(Select_Enemy, new Vector2(EnemyPos[TargetPos].X + 50, EnemyPos[TargetPos].Y - 50), Color.White);
+                }
+                else if (Target_task == "Friend")
+                {
+                    theBatch.Draw(Select_Friend, new Vector2(PlayerPos[TargetPos].X + 50, PlayerPos[TargetPos].Y - 100), Color.White);
+                }
+                else if (Target_task == "AllFriend")
+                {
+                    theBatch.Draw(Select_Friend, new Vector2(PlayerPos[0].X + 50, PlayerPos[0].Y - 100), Color.White);
+                    theBatch.Draw(Select_Friend, new Vector2(PlayerPos[1].X + 50, PlayerPos[1].Y - 100), Color.White);
+                    theBatch.Draw(Select_Friend, new Vector2(PlayerPos[2].X + 50, PlayerPos[2].Y - 100), Color.White);
+                }
+                else if (Target_task == "Self")
+                {
+                    theBatch.Draw(Select_Me, new Vector2(PlayerPos[Caster].X + 50, PlayerPos[Caster].Y - 100), Color.Blue);
+                }
+            }          
             theBatch.Draw(Select_Pos, new Vector2(PlayerPos[SelPos].X + 50, PlayerPos[SelPos].Y - 50), Color.Yellow);
 
             theBatch.Draw(Arrow1, new Vector2(NameShow.X - 150, NameShow.Y - 25 + (50 * (SelPos))), Color.White);

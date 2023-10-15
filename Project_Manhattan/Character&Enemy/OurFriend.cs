@@ -12,8 +12,8 @@ using Project_Manhattan.Screen_Management;
 namespace Project_Manhattan
 {
     public class Mickey : Friend
-    {   
-        public Mickey() : base() 
+    {
+        public Mickey() : base()
         {
             Name = "Miki";
 
@@ -34,16 +34,17 @@ namespace Project_Manhattan
             // สกิล1 เตะบอลใส่ศัตรูสร้างความเสียหาย100%atk
             // สกิล2 เตะบอลอัดใส่ศัตรูอย่างรุนแรงสร้างความเสียหาย 200 % atk
         }
-        public override void skill1(int enePos, int CastPos)
+        public override void skill1(int enePos, int CastPos, MainGame game1)
         {
-            Gameplay_Screen.Energy -= Skill1_Cost ;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str;
-            Gameplay_Screen.enemyList[enePos].IsHurt = true;
+            Gameplay_Screen.Energy -= Skill1_Cost;
+            LFC.PAS[CastPos].IsAction = true;
+            target = enePos;
+            cast = CastPos;
         }
         public override void skill2(int enePos, int CastPos)
         {
-            Gameplay_Screen.Energy -= Skill2_Cost ;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str*2;
+            Gameplay_Screen.Energy -= Skill2_Cost;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str * 2;
             Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
         public override void skill1_Info()
@@ -55,6 +56,20 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.SkillName = "MickeyQ (3E)";
             Gameplay_Screen.SkillInfo = "Kick a ball into our sensei harshly \nDeals 200% of Str";
+        }
+        public override void UpdateAction()
+        {
+            if (IsAction)
+            {
+                LFC.PAA[cast] = LFC.Mickuy1;
+                if (LFC.PAA[cast].IsEnd)
+                {
+                    LFC.PAA[cast] = LFC.Mickuy;
+                    LFC.PAS[cast].IsAction = false;
+                    Gameplay_Screen.enemyList[target].Hp -= Str;
+                    Gameplay_Screen.enemyList[target].IsHurt = true;
+                }
+            }
         }
     }
 
@@ -81,19 +96,19 @@ namespace Project_Manhattan
             //สกิล1 ใช้ยาจากกระเป่าคู่ใจฮีลเพื่อนร่วมทีม150หน่วย
             //สกิล2 ตะโกนปลุกใจเพื่อนร่วมทีมเพิ่มatk25หน่วย
         }
-        public override void skill1(int enePos, int CastPos)
+        public override void skill1(int enePos, int CastPos, MainGame game1)
         {
-            Gameplay_Screen.Energy -= Skill1_Cost ;
+            Gameplay_Screen.Energy -= Skill1_Cost;
             LFC.PAS[enePos].Hp += 150;
-            if( LFC.PAS[enePos].Hp >= LFC.PAS[enePos].MaxHp)
+            if (LFC.PAS[enePos].Hp >= LFC.PAS[enePos].MaxHp)
             {
                 LFC.PAS[enePos].Hp = LFC.PAS[enePos].MaxHp;
             }
         }
         public override void skill2(int enePos, int CastPos)
         {
-            Gameplay_Screen.Energy -= Skill2_Cost ;
-            for(int i = 0; i < LFC.PAS.Length; i++)
+            Gameplay_Screen.Energy -= Skill2_Cost;
+            for (int i = 0; i < LFC.PAS.Length; i++)
             {
                 LFC.PAS[i].Str += 25;
             }
@@ -107,6 +122,10 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.SkillName = "HengQ (2E)";
             Gameplay_Screen.SkillInfo = "Shouttttttttttttt! \nBuffs all of our friends with 25 Str";
+        }
+        public override void UpdateAction()
+        {
+
         }
     }
 
@@ -133,14 +152,14 @@ namespace Project_Manhattan
             //สกิล1 ยกดัมเบลเพื่อสร้างความแข็งแรงให้กล้ามเนื้อDef+50
             //สกิล2 เบ่งกล้ามอวดศัตรูเพื่อยัวยุศัตรูให้มาตีพร้อมทั้งได้รับค่าdefเพิ่มขึ้น100
         }
-        public override void skill1(int enePos, int CastPos)
+        public override void skill1(int enePos, int CastPos, MainGame game1)
         {
-            Gameplay_Screen.Energy -= Skill1_Cost ;
+            Gameplay_Screen.Energy -= Skill1_Cost;
             LFC.PAS[Gameplay_Screen.Caster].Def += 50;
         }
         public override void skill2(int enePos, int CastPos)
         {
-            Gameplay_Screen.Energy -= Skill2_Cost ;
+            Gameplay_Screen.Energy -= Skill2_Cost;
             LFC.PAS[Gameplay_Screen.Caster].Def += 100;
         }
         public override void skill1_Info()
@@ -152,6 +171,10 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.SkillName = "OhmQ (3E)";
             Gameplay_Screen.SkillInfo = "Taunt all of our sensei! \nTaunt and Def up 100";
+        }
+        public override void UpdateAction()
+        {
+
         }
     }
     public class Dome : Friend
@@ -173,19 +196,19 @@ namespace Project_Manhattan
             Target_1 = "Enemy";
             Target_2 = "Enemy";
 
-            //สกิล1 ใช้เหม่งสะท้อนใส่ศัตรูสร้างความเสียหาย75%atk
+            //สกิล1 ใช้เหม่งสะท้อนใส่ศัตรูสร้างความเสียหาย75% atk
             //สกิล2 ใช้ไสยเวยต้องห้ามโจมตีศัตรู200 % atkพร้อมทั้งได้รับผลกระทบโดยของเข้าตัวลดhp25หน่วย
         }
-        public override void skill1(int enePos, int CastPos)
+        public override void skill1(int enePos, int CastPos, MainGame game1)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str*75/100;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str * 75 / 100;
             Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str*2;
+            Gameplay_Screen.enemyList[enePos].Hp -= Str * 2;
             Hp -= 25;
             Gameplay_Screen.enemyList[enePos].IsHurt = true;
         }
@@ -198,6 +221,10 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.SkillName = "DomeQ (3E)";
             Gameplay_Screen.SkillInfo = "Reverse curse technique \nDeals 200% of Str and Reserve DMG 25";
+        }
+        public override void UpdateAction()
+        {
+
         }
     }
 }

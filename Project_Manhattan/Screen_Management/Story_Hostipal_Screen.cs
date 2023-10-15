@@ -37,6 +37,7 @@ namespace Project_Manhattan.Screen_Management
         AnimatedTexture Sensei;
 
         Vector2 PlayerPos = new Vector2(5400, 810);
+        Vector2 PlayerOldPos = Vector2.Zero;
         Vector2 CameraPos = new Vector2(3840, 0);
         Vector2 CameraLeft = new Vector2(5000, 0);
         Vector2 CameraRight = new Vector2(5450, 0);
@@ -122,6 +123,11 @@ namespace Project_Manhattan.Screen_Management
                 }
             }
 
+            if(PlayerPos.X >= (BG_hospital.Width * 3) - 150)
+            {
+                PlayerPos = PlayerOldPos;
+            }
+
             if (PlayerPos.X <= 1920)
             {
                 isTitle = true;
@@ -135,7 +141,11 @@ namespace Project_Manhattan.Screen_Management
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) || click_count >= m_listTexts.Count)
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+            }
+            if (click_count >= m_listTexts.Count)
             {
                 ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
             }
@@ -166,6 +176,7 @@ namespace Project_Manhattan.Screen_Management
             }
 
             OldKey = NewKey;
+            PlayerOldPos = PlayerPos;
             Console.WriteLine(click_count);
             float Elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Mickaidle.UpdateFrame(Elapsed);

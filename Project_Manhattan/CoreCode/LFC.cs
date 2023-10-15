@@ -10,7 +10,9 @@ namespace Project_Manhattan.CoreCode
 {
     public class LFC        //เป็น World Class ใช้ list และ array ร่วมกับ class อื่น; ย่อจาก List Friend Center
     {
-        AnimatedTexture Mickuy = new AnimatedTexture(Vector2.Zero, 0, 0.55f, 0);
+
+        public static AnimatedTexture Mickuy = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+        public static AnimatedTexture Mickuy1 = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
         AnimatedTexture Dan_Heng = new AnimatedTexture(Vector2.Zero, 0, 0.55f, 0);
         AnimatedTexture YoungOhm = new AnimatedTexture(Vector2.Zero, 0, 0.55f, 0);
         AnimatedTexture Tornadome = new AnimatedTexture(Vector2.Zero, 0, 0.55f, 0);
@@ -23,11 +25,14 @@ namespace Project_Manhattan.CoreCode
 
         public static int[] select = new int[3];
 
-        MainGame game1;
+        MainGame game0;
         public LFC(MainGame game)
         {
             //////// Animated Zone/////////
-            Mickuy.Load(game.Content, "mig-stand-animation 128x32", 4, 1, 4);
+            Mickuy.Load(game.Content, "2D/Friend/Mickey/Mig_idlet", 4, 1, 4);
+            Mickuy1.Load(game.Content, "2D/Friend/Mickey/Mig_skill1tt", 12, 1, 4);
+
+
             Dan_Heng.Load(game.Content, "heng-stand-animation 128x32", 4, 1, 4);
             YoungOhm.Load(game.Content, "om-stand-animation 132x33", 4, 1, 4);
             Tornadome.Load(game.Content, "dome-stand-animation 128x32", 4, 1, 4);
@@ -48,12 +53,11 @@ namespace Project_Manhattan.CoreCode
             PLS.Add(ohm);
             PLS.Add(dome);
 
-            //////////////
             select[0] = 0;
             select[1] = 1;
             select[2] = 2;
 
-            this.game1 = game;
+            this.game0 = game;
         }
 
         public void UpdateList(GameTime gameTime)
@@ -66,6 +70,17 @@ namespace Project_Manhattan.CoreCode
             PAS[0] = PLS[select[0]];
             PAS[1] = PLS[select[1]];
             PAS[2] = PLS[select[2]];
+
+            if (PAS[1].IsAction)
+            {
+                PAA[1].startframe = 0;
+                PAA[1] = Mickuy1;
+                if (PAA[1].IsEnd)
+                {
+                    PAA[1] = Mickuy;
+                    PAS[1].IsAction = false;
+                }
+            }
 
             PAA[0].UpdateFrame(elapsed);
             PAA[1].UpdateFrame(elapsed);

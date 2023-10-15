@@ -64,7 +64,7 @@ namespace Project_Manhattan
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
             mCurrentScreen.Draw(_spriteBatch);
             _spriteBatch.End();

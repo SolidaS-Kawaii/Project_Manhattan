@@ -23,20 +23,27 @@ namespace Project_Manhattan.Content
         public int Skill1_Cost;
         public int Skill2_Cost;
 
+        public int target;
+        public int cast;
         public string Target_1;   //Self, Friend, Enemy
         public string Target_2;   //Self, Friend, Enemy
+
+        public string Anime;    //Idle, S1, S2
 
         public bool IsCharEnd = false;
         public bool IsAlive = true;
         public bool IsHurt = false;
+        public bool IsAction = false;
+
         public Friend()
         {
 
         }
-        public abstract void skill1(int enePos, int CastPos);
+        public abstract void skill1(int enePos, int CastPos, MainGame game1);
         public abstract void skill2(int enePos, int CastPos);
         public abstract void skill1_Info();
         public abstract void skill2_Info();
+        public abstract void UpdateAction();
     }
 
     public abstract class Enemy_skill
