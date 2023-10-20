@@ -34,18 +34,21 @@ namespace Project_Manhattan
             // สกิล1 เตะบอลใส่ศัตรูสร้างความเสียหาย100%atk
             // สกิล2 เตะบอลอัดใส่ศัตรูอย่างรุนแรงสร้างความเสียหาย 200 % atk
         }
-        public override void skill1(int enePos, int CastPos, MainGame game1)
+        public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            LFC.PAS[CastPos].IsAction = true;
+            this.IsAction = true;
+            Anime = "S1";
             target = enePos;
             cast = CastPos;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str * 2;
-            Gameplay_Screen.enemyList[enePos].IsHurt = true;
+            this.IsAction = true;
+            Anime = "S2";
+            target = enePos;
+            cast = CastPos;
         }
         public override void skill1_Info()
         {
@@ -57,17 +60,28 @@ namespace Project_Manhattan
             Gameplay_Screen.SkillName = "MickeyQ (3E)";
             Gameplay_Screen.SkillInfo = "Kick a ball into our sensei harshly \nDeals 200% of Str";
         }
-        public override void UpdateAction()
+        public override void UpdateAction() //for animated
         {
-            if (IsAction)
+            if (IsAction && Anime == "S1")
             {
-                LFC.PAA[cast] = LFC.Mickuy1;
+                LFC.PAA[cast] = LFC.Mickuy[2];
                 if (LFC.PAA[cast].IsEnd)
                 {
-                    LFC.PAA[cast] = LFC.Mickuy;
                     LFC.PAS[cast].IsAction = false;
-                    Gameplay_Screen.enemyList[target].Hp -= Str;
-                    Gameplay_Screen.enemyList[target].IsHurt = true;
+                    LFC.PAA[cast] = LFC.Mickuy[1];
+                    LEC.enemies[target].Hp -= Str;
+                    LEC.enemies[target].IsHurt = true;
+                }
+            }
+            else if(IsAction && Anime == "S2")
+            {
+                LFC.PAA[cast] = LFC.Mickuy[3];
+                if (LFC.PAA[cast].IsEnd)
+                {
+                    LFC.PAS[cast].IsAction = false;
+                    LFC.PAA[cast] = LFC.Mickuy[1];
+                    LEC.enemies[target].Hp -= Str * 2;
+                    LEC.enemies[target].IsHurt = true;
                 }
             }
         }
@@ -96,7 +110,7 @@ namespace Project_Manhattan
             //สกิล1 ใช้ยาจากกระเป่าคู่ใจฮีลเพื่อนร่วมทีม150หน่วย
             //สกิล2 ตะโกนปลุกใจเพื่อนร่วมทีมเพิ่มatk25หน่วย
         }
-        public override void skill1(int enePos, int CastPos, MainGame game1)
+        public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
             LFC.PAS[enePos].Hp += 150;
@@ -152,7 +166,7 @@ namespace Project_Manhattan
             //สกิล1 ยกดัมเบลเพื่อสร้างความแข็งแรงให้กล้ามเนื้อDef+50
             //สกิล2 เบ่งกล้ามอวดศัตรูเพื่อยัวยุศัตรูให้มาตีพร้อมทั้งได้รับค่าdefเพิ่มขึ้น100
         }
-        public override void skill1(int enePos, int CastPos, MainGame game1)
+        public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
             LFC.PAS[Gameplay_Screen.Caster].Def += 50;
@@ -199,18 +213,18 @@ namespace Project_Manhattan
             //สกิล1 ใช้เหม่งสะท้อนใส่ศัตรูสร้างความเสียหาย75% atk
             //สกิล2 ใช้ไสยเวยต้องห้ามโจมตีศัตรู200 % atkพร้อมทั้งได้รับผลกระทบโดยของเข้าตัวลดhp25หน่วย
         }
-        public override void skill1(int enePos, int CastPos, MainGame game1)
+        public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str * 75 / 100;
-            Gameplay_Screen.enemyList[enePos].IsHurt = true;
+            LEC.enemies[enePos].Hp -= Str * 75 / 100;
+            LEC.enemies[enePos].IsHurt = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            Gameplay_Screen.enemyList[enePos].Hp -= Str * 2;
+            LEC.enemies[enePos].Hp -= Str * 2;
             Hp -= 25;
-            Gameplay_Screen.enemyList[enePos].IsHurt = true;
+            LEC.enemies[enePos].IsHurt = true;
         }
         public override void skill1_Info()
         {

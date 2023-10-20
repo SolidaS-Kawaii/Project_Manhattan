@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Project_Manhattan.Content;
 using Project_Manhattan.CoreCode;
 
 namespace Project_Manhattan
 {
-    public class Sensei : Enemy_skill
+    public class Doktah : Enemy
     {
-        public Sensei(int hp, int str) : base(hp, str)
+        public Doktah(MainGame game) : base(game)
         {
+            Hp = 1000;
+            Str = 115;
 
+            MaxHp = Hp;
+            MaxStr = Str;
+
+            This_Ani = new AnimatedTexture(Vector2.Zero, 0, 0.6f, 0);
+            This_Ani.Load(game.Content, "2D/Enemy/bjj idle-400x80", 5, 1, 8);
         }
         public override void skill1(int RandPos)
         {
@@ -28,20 +36,19 @@ namespace Project_Manhattan
         {
 
         }
-        public override void skill1_Info()
-        {
-
-        }
-        public override void skill2_Info()
-        {
-
-        }
     }
-    public class MuscleRat : Enemy_skill
+    public class MuscleRat : Enemy
     {
-        public MuscleRat(int hp, int str) : base(hp, str)
+        public MuscleRat(MainGame game) : base(game)
         {
+            Hp = 500;
+            Str = 50;
 
+            MaxHp = Hp;
+            MaxStr = Str;
+
+            This_Ani = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
+            This_Ani.Load(game.Content, "2D/Enemy/Keke_idle", 2, 1, 4);
         }
         public override void skill1(int RandPos)
         {
@@ -50,14 +57,6 @@ namespace Project_Manhattan
             LFC.PAS[RandPos].IsHurt = true;
         }
         public override void skill2(int RandPos)
-        {
-
-        }
-        public override void skill1_Info()
-        {
-
-        }
-        public override void skill2_Info()
         {
 
         }

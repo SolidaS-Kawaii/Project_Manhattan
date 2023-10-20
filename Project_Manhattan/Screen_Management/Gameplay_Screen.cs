@@ -38,8 +38,6 @@ namespace Project_Manhattan.Screen_Management
         public static int Energy = 0;
         public const int EnergyMax = 6;
 
-        private AnimatedTexture Eniem;
-        private AnimatedTexture GeeGee;
         private AnimatedTexture BG_Hotel_UI;
 
         private const float Rotation = 0.0f;
@@ -57,8 +55,6 @@ namespace Project_Manhattan.Screen_Management
         private Texture2D Arrow1;
         private SpriteFont font;
         private SpriteFont font48;
-
-        public static List<Enemy_skill> enemyList = new List<Enemy_skill>();
 
         private bool IsSkillEReady = false;
         private bool IsSkillQReady = false;
@@ -88,12 +84,8 @@ namespace Project_Manhattan.Screen_Management
 
         public Gameplay_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            Eniem = new AnimatedTexture(Vector2.Zero, Rotation, 0.6f, Depth);
             BG_Hotel_UI = new AnimatedTexture(Vector2.Zero, Rotation, 1.0f, Depth);
-            GeeGee = new AnimatedTexture(Vector2.Zero, Rotation, 0.5f, Depth);
 
-            Eniem.Load(game.Content, "2D/Enemy/bjj idle-400x80", 5, 1, 8);
-            GeeGee.Load(game.Content, "2D/Enemy/Keke_idle", 2, 1, 4);
             BG_Hotel_UI.Load(game.Content, "2D/BG/Hospital", 1, 1, 0);
             UI = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             Select_Enemy = game.Content.Load<Texture2D>("2D/UI/Selecting");
@@ -120,14 +112,6 @@ namespace Project_Manhattan.Screen_Management
             HpShow = new Vector2(UIPos.X + 875, UIPos.Y);
             StrShow = new Vector2(UIPos.X + 1145, UIPos.Y);
             DefShow = new Vector2(UIPos.X + 1410, UIPos.Y);
-
-            Sensei sensei = new Sensei(1000, 115);
-            MuscleRat muscleRat = new MuscleRat(500, 50);
-            MuscleRat muscleRat1 = new MuscleRat(500, 50);
-
-            enemyList.Add(muscleRat);
-            enemyList.Add(sensei);
-            enemyList.Add(muscleRat1);
 
             this.game = game;
         }
@@ -188,7 +172,7 @@ namespace Project_Manhattan.Screen_Management
                     IsSkillEReady = false;
                     IsSkillQReady = false;
                 }
-                for (int i = 0; i < enemyList.Count; i++)
+                for (int i = 0; i < LEC.enemies.Length; i++)
                 {
                     /*
                     Rectangle EnemyScale = new Rectangle((int)EnemyPos[i].X, (int)EnemyPos[i].Y, 160, 160);
@@ -213,7 +197,7 @@ namespace Project_Manhattan.Screen_Management
                         }
                         else if (i == SelPos && LFC.PAS[i].IsCharEnd == false && Energy - LFC.PAS[i].Skill1_Cost >= 0 && IsSkillEReady == true)
                         {
-                            LFC.PAS[i].skill1(TargetPos, Caster, game);
+                            LFC.PAS[i].skill1(TargetPos, Caster);
                             LFC.PAS[i].IsCharEnd = true;
                             IsSkillEReady = false;
                             Delay(3);
@@ -258,11 +242,11 @@ namespace Project_Manhattan.Screen_Management
                     int RandPos = random.Next(0, 3);
                     if (turn_e == 1)
                     {
-                        if (enemyList[turn_e - 1].IsAlive)
+                        if (LEC.enemies[turn_e - 1].IsAlive)
                         {
-                            enemyList[turn_e - 1].skill1(RandPos);
+                            LEC.enemies[turn_e - 1].skill1(RandPos);
                         }
-                        else if (!enemyList[turn_e - 1].IsAlive)
+                        else if (!LEC.enemies[turn_e - 1].IsAlive)
                         {
                             turn_e++;
                         }
@@ -270,11 +254,11 @@ namespace Project_Manhattan.Screen_Management
                     }
                     else if (turn_e == 2)
                     {
-                        if (enemyList[turn_e - 1].IsAlive)
+                        if (LEC.enemies[turn_e - 1].IsAlive)
                         {
-                            enemyList[turn_e - 1].skill1(RandPos);
+                            LEC.enemies[turn_e - 1].skill1(RandPos);
                         }
-                        else if (!enemyList[turn_e - 1].IsAlive)
+                        else if (!LEC.enemies[turn_e - 1].IsAlive)
                         {
                             turn_e++;
                         }
@@ -282,11 +266,11 @@ namespace Project_Manhattan.Screen_Management
                     }
                     else if (turn_e == 3)
                     {
-                        if (enemyList[turn_e - 1].IsAlive)
+                        if (LEC.enemies[turn_e - 1].IsAlive)
                         {
-                            enemyList[turn_e - 1].skill1(RandPos);
+                            LEC.enemies[turn_e - 1].skill1(RandPos);
                         }
-                        else if (!enemyList[turn_e - 1].IsAlive)
+                        else if (!LEC.enemies[turn_e - 1].IsAlive)
                         {
                             turn_e++;
                         }
@@ -294,7 +278,7 @@ namespace Project_Manhattan.Screen_Management
                     }
                     turn_e++;
                 }
-                if (turn_e >= enemyList.Count + 1)
+                if (turn_e >= LEC.enemies.Length + 1)
                 {
                     IsMyPhase = true;
                     StartPhase = true;
@@ -322,12 +306,12 @@ namespace Project_Manhattan.Screen_Management
             }
             ////////////////////
 
-            for (int i = 0; i < enemyList.Count; i++)
+            for (int i = 0; i < LEC.enemies.Length; i++)
             {
-                if (enemyList[i].Hp <= 0)
+                if (LEC.enemies[i].Hp <= 0)
                 {
-                    enemyList[i].Hp = 0;
-                    enemyList[i].IsAlive = false;
+                    LEC.enemies[i].Hp = 0;
+                    LEC.enemies[i].IsAlive = false;
                 }
             }
 
@@ -338,7 +322,6 @@ namespace Project_Manhattan.Screen_Management
                     LFC.PAS[i].Hp = 0;
                     LFC.PAS[i].IsAlive = false;
                 }
-                LFC.PAS[1].UpdateAction();
             }
 
             //////////// เวลา //////////////
@@ -351,8 +334,9 @@ namespace Project_Manhattan.Screen_Management
             ///////////////////////////
 
             keypiak = keytak;
-            Eniem.UpdateFrame(Elapsed);
-            GeeGee.UpdateFrame(Elapsed);
+            LEC.enemies[0].This_Ani.UpdateFrame(Elapsed);
+            LEC.enemies[1].This_Ani.UpdateFrame(Elapsed);
+            LEC.enemies[2].This_Ani.UpdateFrame(Elapsed);
             Console.WriteLine(LFC.PAA[Caster].Frame);
             Console.WriteLine(LFC.PAS[Caster].IsAction);
             base.Update(gameTime);
@@ -414,48 +398,48 @@ namespace Project_Manhattan.Screen_Management
             }
 
             /////////////วาด จารย์////////////////
-            for(int i = 0; i < enemyList.Count; i++)
+            for(int i = 0; i < LEC.enemies.Length; i++)
             {
-                if (enemyList[i].IsAlive)
+                if (LEC.enemies[i].IsAlive)
                 {
                     theBatch.Draw(Healthbar_Bk, EnemyPos[i] + new Vector2(-10, -80), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1f, 0, 0);
-                    theBatch.Draw(Healthbar_En, EnemyPos[i] + new Vector2(-10, -80), new Rectangle(0, 0, (200 * (enemyList[i].Hp * 100 / enemyList[i].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1f, 0, 0);
+                    theBatch.Draw(Healthbar_En, EnemyPos[i] + new Vector2(-10, -80), new Rectangle(0, 0, (200 * (LEC.enemies[i].Hp * 100 / LEC.enemies[i].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1f, 0, 0);
 
-                    theBatch.DrawString(font, Hpcheck + enemyList[i].Hp, new Vector2(EnemyPos[i].X + 25, EnemyPos[i].Y - 70), Color.White);
+                    theBatch.DrawString(font, Hpcheck + LEC.enemies[i].Hp, new Vector2(EnemyPos[i].X + 25, EnemyPos[i].Y - 70), Color.White);
                 }
             }
 
-            if (enemyList[0].Hp > 0)
+            if (LEC.enemies[0].Hp > 0)
             {
-                if (!enemyList[0].IsHurt)
+                if (!LEC.enemies[0].IsHurt)
                 {
-                    GeeGee.DrawFrame(theBatch, EnemyPos[0], false);
+                    LEC.enemies[0].This_Ani.DrawFrame(theBatch, EnemyPos[0], false);
                 }
                 else
                 {
-                    enemyList[0].IsHurt = false;
+                    LEC.enemies[0].IsHurt = false;
                 }
             }
-            if (enemyList[1].Hp > 0)
+            if (LEC.enemies[1].Hp > 0)
             {
-                if (!enemyList[1].IsHurt)
+                if (!LEC.enemies[1].IsHurt)
                 {
-                    Eniem.DrawFrame(theBatch, new Vector2(330, 140), false);
+                    LEC.enemies[1].This_Ani.DrawFrame(theBatch, new Vector2(330, 140), false);
                 }
                 else
                 {
-                    enemyList[1].IsHurt = false;
+                    LEC.enemies[1].IsHurt = false;
                 }
             }
-            if (enemyList[2].Hp > 0)
+            if (LEC.enemies[2].Hp > 0)
             {
-                if (!enemyList[2].IsHurt)
+                if (!LEC.enemies[2].IsHurt)
                 {
-                    GeeGee.DrawFrame(theBatch, EnemyPos[2], false);
+                    LEC.enemies[2].This_Ani.DrawFrame(theBatch, EnemyPos[2], false);
                 }
                 else
                 {
-                    enemyList[2].IsHurt = false;
+                    LEC.enemies[2].IsHurt = false;
                 }
             }
 

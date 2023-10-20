@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project_Manhattan.CoreCode;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Project_Manhattan.Content
         public string Target_1;   //Self, Friend, Enemy
         public string Target_2;   //Self, Friend, Enemy
 
-        public string Anime;    //Idle, S1, S2
+        public string Anime = "Idle";    //Idle, S1, S2
 
         public bool IsCharEnd = false;
         public bool IsAlive = true;
@@ -39,14 +40,14 @@ namespace Project_Manhattan.Content
         {
 
         }
-        public abstract void skill1(int enePos, int CastPos, MainGame game1);
+        public abstract void skill1(int enePos, int CastPos);
         public abstract void skill2(int enePos, int CastPos);
         public abstract void skill1_Info();
         public abstract void skill2_Info();
         public abstract void UpdateAction();
     }
 
-    public abstract class Enemy_skill
+    public abstract class Enemy
     {
         public int Hp;
         public int MaxHp;
@@ -54,16 +55,13 @@ namespace Project_Manhattan.Content
         public int MaxStr;
         public bool IsAlive = true;
         public bool IsHurt = false;
-        public Enemy_skill(int hp, int str)
+
+        public AnimatedTexture This_Ani;
+        public Enemy(MainGame game)
         {
-            Hp = hp;
-            MaxHp = hp;
-            Str = str;
-            MaxStr = str;
+
         }
         public abstract void skill1(int RandPos);
         public abstract void skill2(int RandPos);
-        public abstract void skill1_Info();
-        public abstract void skill2_Info();
     }
 }

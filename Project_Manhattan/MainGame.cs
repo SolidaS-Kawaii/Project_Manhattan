@@ -25,7 +25,8 @@ namespace Project_Manhattan
         public Team_Manager_Screen mTeam_Manage;
         public Screen mCurrentScreen;
 
-        public LFC The_List;
+        public LFC The_List_Fr;
+        public LEC The_List_En;
         public MainGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -48,7 +49,8 @@ namespace Project_Manhattan
             mTitile_Screen = new Titile_Screen(this, new EventHandler(GameplayScreenEvent));
             mstory_Hostipal = new Story_Hostipal_Screen(this, new EventHandler(GameplayScreenEvent));
             mTeam_Manage = new Team_Manager_Screen(this, new EventHandler(GameplayScreenEvent));
-            The_List = new LFC(this);
+            The_List_Fr = new LFC(this);
+            The_List_En = new LEC(this);
 
             mCurrentScreen = mTitile_Screen;
         }
@@ -58,7 +60,7 @@ namespace Project_Manhattan
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mCurrentScreen.Update(gameTime);
-            The_List.UpdateList(gameTime);
+            The_List_Fr.UpdateList(gameTime);
             base.Update(gameTime);
         }
 
