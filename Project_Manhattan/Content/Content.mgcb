@@ -61,6 +61,54 @@
 /processorParam:TextureFormat=Color
 /build:2D/BG/Hotel.png
 
+#begin 2D/BG/Tapae.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/BG/Tapae.png
+
+#begin 2D/BG/TapaePara.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/BG/TapaePara.png
+
+#begin 2D/BG/Temple.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/BG/Temple.png
+
+#begin 2D/BG/TemplePara.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/BG/TemplePara.png
+
 #begin 2D/BG/Title.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -72,6 +120,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/BG/Title.png
+
+#begin 2D/Enemy/BJJ/BJJ_Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Enemy/BJJ/BJJ_Hurt.png
 
 #begin 2D/Enemy/BJJ/BJJ_Idle.png
 /importer:TextureImporter
@@ -109,6 +169,18 @@
 /processorParam:TextureFormat=Color
 /build:2D/Enemy/BJJ/BJJ_Skill2.png
 
+#begin 2D/Enemy/BJJ/BJJ_Spawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Enemy/BJJ/BJJ_Spawn.png
+
 #begin 2D/Enemy/Keke_idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -132,6 +204,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/Enemy/Sensei_idle.png
+
+#begin 2D/Friend/Dome/Dome_Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Dome/Dome_Hurt.png
 
 #begin 2D/Friend/Dome/Dome_Idle.png
 /importer:TextureImporter
@@ -169,6 +253,30 @@
 /processorParam:TextureFormat=Color
 /build:2D/Friend/Dome/Dome_Skill2.png
 
+#begin 2D/Friend/Dome/Dome_Spawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Dome/Dome_Spawn.png
+
+#begin 2D/Friend/Heng/Heng_Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Heng/Heng_Hurt.png
+
 #begin 2D/Friend/Heng/Heng_Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -205,6 +313,30 @@
 /processorParam:TextureFormat=Color
 /build:2D/Friend/Heng/Heng_Skill2.png
 
+#begin 2D/Friend/Heng/Heng_Spawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Heng/Heng_Spawn.png
+
+#begin 2D/Friend/JJB/JJB_Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/JJB/JJB_Hurt.png
+
 #begin 2D/Friend/JJB/JJB_Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -240,6 +372,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/Friend/JJB/JJB_Skill2.png
+
+#begin 2D/Friend/JJB/JJB_Spawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/JJB/JJB_Spawn.png
 
 #begin 2D/Friend/Mickey/Mickey_Stand.png
 /importer:TextureImporter
@@ -325,6 +469,18 @@
 /processorParam:TextureFormat=Color
 /build:2D/Friend/Mickey/run-animation.png
 
+#begin 2D/Friend/Ohm/Ohm_Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Ohm/Ohm_Hurt.png
+
 #begin 2D/Friend/Ohm/Ohm_Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -361,6 +517,30 @@
 /processorParam:TextureFormat=Color
 /build:2D/Friend/Ohm/Ohm_Skill2.png
 
+#begin 2D/Friend/Ohm/Ohm_Spawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Ohm/Ohm_Spawn.png
+
+#begin 2D/Friend/Tata/Tata_Hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Tata/Tata_Hurt.png
+
 #begin 2D/Friend/Tata/Tata_Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -396,6 +576,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/Friend/Tata/Tata_Skill2.png
+
+#begin 2D/Friend/Tata/Tata-Spawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/Friend/Tata/Tata-Spawn.png
 
 #begin 2D/UI/arrow-1.png
 /importer:TextureImporter

@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Project_Manhattan.Screen_Management
 {
-
     public class Team_Manager_Screen : Screen
     {
         private int Pos = 0;
@@ -102,6 +101,11 @@ namespace Project_Manhattan.Screen_Management
 
             if (NigKey.IsKeyDown(Keys.Enter) && OppKey.IsKeyUp(Keys.Enter) && !isDuplicate && isReady)
             {
+                for(int i = 0; i < 3; i++)
+                {
+                    LFC.friend[i].Resetto();
+                }
+                LEC.enemies[1].Resetto();
                 ScreenEvent.Invoke(game.mGameplay_Screen, new EventArgs());
             }
 

@@ -245,7 +245,7 @@ namespace Project_Manhattan.Screen_Management
                         }
                         else if (!LEC.enemies[turn_e - 1].IsAlive)
                         {
-                            turn_e++;
+                            
                         }
                         RandPos = random.Next(0, 3);
                     }
@@ -257,7 +257,7 @@ namespace Project_Manhattan.Screen_Management
                         }
                         else if (!LEC.enemies[turn_e - 1].IsAlive)
                         {
-                            turn_e++;
+                            
                         }
                         RandPos = random.Next(0, 3);
                     }
@@ -269,7 +269,7 @@ namespace Project_Manhattan.Screen_Management
                         }
                         else if (!LEC.enemies[turn_e - 1].IsAlive)
                         {
-                            turn_e++;
+                            
                         }
                         RandPos = random.Next(0, 3);
                     }
@@ -308,10 +308,12 @@ namespace Project_Manhattan.Screen_Management
             if ((LEC.enemies[0].Hp <= 0 && LEC.enemies[1].Hp <= 0 && LEC.enemies[2].Hp <= 0) || (Keyboard.GetState().IsKeyDown(Keys.NumPad1)))
             {
                 IsWin = true;
+                IsLoss = false;
             }
             else if (LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2)))
             {
                 IsLoss = true;
+                IsWin = false;
             }
 
             ///////////หลังจบเกม///////////
@@ -361,14 +363,6 @@ namespace Project_Manhattan.Screen_Management
             ///////////////////////////
 
             keypiak = keytak;
-
-            LEC.enemies[0].This_Ani[0].UpdateFrame(Elapsed);
-            LEC.enemies[1].This_Ani[0].UpdateFrame(Elapsed);
-            LEC.enemies[2].This_Ani[0].UpdateFrame(Elapsed);
-
-            LEC.enemies[0].UpdateAction();
-            LEC.enemies[1].UpdateAction();
-            LEC.enemies[2].UpdateAction();
             Console.WriteLine(LFC.friend[Caster].This_Ani[2].Frame);
             Console.WriteLine(LFC.friend[Caster].Anime);
 
@@ -409,7 +403,7 @@ namespace Project_Manhattan.Screen_Management
                     theBatch.DrawString(font, (int)LFC.friend[i].Str + "", StrShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
                     theBatch.DrawString(font, (int)LFC.friend[i].Def + "", DefShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
                     theBatch.Draw(Healthbar_Bk, PlayerPos[i] + new Vector2(25, -120), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
-                    theBatch.Draw(Healthbar_Fr, PlayerPos[i] + new Vector2(25, -120), new Rectangle(0, 0, (200 * (int)(LFC.friend[0].Hp * 100 / LFC.friend[0].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
+                    theBatch.Draw(Healthbar_Fr, PlayerPos[i] + new Vector2(25, -120), new Rectangle(0, 0, (int)((2 * (LFC.friend[i].Hp * 100 / LFC.friend[i].MaxHp))), 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
                 }
                 else if (!LFC.friend[i].IsAlive)
                 {
@@ -424,25 +418,14 @@ namespace Project_Manhattan.Screen_Management
             /////////////วาด จารย์////////////////
             for(int i = 0; i < LEC.enemies.Length; i++)
             {
+                LEC.enemies[i].UpdateDraw(theBatch, EnemyPos[i]);
                 if (LEC.enemies[i].IsAlive)
                 {
                     theBatch.Draw(Healthbar_Bk, EnemyPos[i] + new Vector2(-10, -80), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1f, 0, 0);
                     theBatch.Draw(Healthbar_En, EnemyPos[i] + new Vector2(-10, -80), new Rectangle(0, 0, (200 * (int)(LEC.enemies[i].Hp * 100 / LEC.enemies[i].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1f, 0, 0);
 
                     theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[i].Hp, new Vector2(EnemyPos[i].X + 25, EnemyPos[i].Y - 70), Color.White);
-                }
-
-                if (LEC.enemies[i].Hp > 0)
-                {
-                    if (!LEC.enemies[i].IsHurt)
-                    {
-                        LEC.enemies[i].This_Ani[0].DrawFrame(theBatch, EnemyPos[i], false);
-                    }
-                    else
-                    {
-                        LEC.enemies[i].IsHurt = false;
-                    }
-                }
+                }          
             }
 
             //////////จบเกม/////////
@@ -486,7 +469,7 @@ namespace Project_Manhattan.Screen_Management
                     {
                         if (LEC.enemies[i].IsAlive)
                         {
-                            theBatch.Draw(Select_Enemy, new Vector2(EnemyPos[0].X + 50, EnemyPos[0].Y - 50), Color.White);
+                            theBatch.Draw(Select_Enemy, new Vector2(EnemyPos[i].X + 50, EnemyPos[i].Y - 50), Color.White);
                         }
                     }
                 }

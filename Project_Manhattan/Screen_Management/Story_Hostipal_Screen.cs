@@ -30,19 +30,29 @@ namespace Project_Manhattan.Screen_Management
         bool IsWalkForward = true;
 
         Texture2D BG_hospital;
+        Texture2D BG_temple;
         Texture2D UI_story;
         Texture2D UI_name;
         AnimatedTexture Mickarey;
         AnimatedTexture Mickaidle;
         AnimatedTexture Sensei;
 
-        Vector2 PlayerPos = new Vector2(5400, 810);
+        Vector2 PlayerPos = new Vector2(5400, 700);
         Vector2 PlayerOldPos = Vector2.Zero;
         Vector2 CameraPos = new Vector2(3840, 0);
         Vector2 CameraLeft = new Vector2(5000, 0);
         Vector2 CameraRight = new Vector2(5450, 0);
         Vector2 BGPos = Vector2.Zero;
         Vector2 UI_Pos = new Vector2(112, 724);
+        Level mlevel;
+
+        enum Level
+        {
+            Hospital,
+            Temple,
+            Hotel,
+            Tapae
+        }
 
         MainGame game;
         public Story_Hostipal_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
@@ -51,12 +61,15 @@ namespace Project_Manhattan.Screen_Management
             Mickaidle = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
             Sensei = new AnimatedTexture(Vector2.Zero, 0, 1.0f, 0);
             BG_hospital = game.Content.Load<Texture2D>("2D/BG/Hospital_empty");
+            BG_temple = game.Content.Load<Texture2D>("2D/BG/TemplePara");
             UI_name = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             UI_story = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
 
             Sensei.Load(game.Content, "2D/Enemy/Sensei_idle", 4, 1, 4);
             Mickarey.Load(game.Content, "2D/Friend/Mickey/run-animation", 4, 1, 6);
             Mickaidle.Load(game.Content, "2D/Friend/Mickey/Mickey_Stand", 4, 1, 4);
+
+            mlevel = Level.Hospital;
 
             string filepath = Path.Combine(@"Content\Dialog_test.txt");
 
@@ -78,6 +91,42 @@ namespace Project_Manhattan.Screen_Management
         {
             Console.Clear();
             NewKey = Keyboard.GetState();
+            switch (mlevel)
+            {
+                case Level.Hospital:
+                    {
+                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            ResetCam();
+                            mlevel = Level.Temple;
+                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                        }
+                        if (click_count >= m_listTexts.Count)
+                        {
+                            ResetCam();
+                            mlevel = Level.Temple;
+                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                        }
+                        if (click_count >= 0 && click_count < 2)
+                        {
+                            Name = "Miki";
+                        }
+                        else if (click_count >= 2 && click_count < 5)
+                        {
+                            Name = "???";
+                        }
+                        else if (click_count >= 5)
+                        {
+                            Name = "Miki";
+                        }
+                        break;
+                    }
+                case Level.Temple:
+                    {
+                        
+                        break;
+                    }
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.A) && isTitle == false)
             {
                 if (PlayerPos.X <= CameraLeft.X)
@@ -132,6 +181,10 @@ namespace Project_Manhattan.Screen_Management
             {
                 isTitle = true;
             }
+            else if(PlayerPos.X > 1920)
+            {
+                isTitle = false;
+            }
 
             if (NewKey.IsKeyDown(Keys.Enter) && OldKey.IsKeyUp(Keys.Enter) && isTitle)
             {
@@ -141,14 +194,12 @@ namespace Project_Manhattan.Screen_Management
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                mlevel = Level.Temple;
             }
-            if (click_count >= m_listTexts.Count)
-            {
-                ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
-            }
+            
 
             if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.W) || Keyboard.GetState().IsKeyDown(Keys.S))
             {
@@ -161,20 +212,7 @@ namespace Project_Manhattan.Screen_Management
             {
                 IsRunning = false;
             }
-
-            if(click_count >= 0 && click_count < 2)
-            {
-                Name = "Miki";
-            }
-            else if(click_count >= 2 && click_count < 5)
-            {
-                Name = "???";
-            }
-            else if(click_count >= 5)
-            {
-                Name = "Miki";
-            }
-
+            
             OldKey = NewKey;
             PlayerOldPos = PlayerPos;
             Console.WriteLine(click_count);
@@ -186,10 +224,26 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Draw(SpriteBatch spriteBatch)
         {           
-            for (int i = 0; i < 3; i++)
+            switch (mlevel)
             {
-                spriteBatch.Draw(BG_hospital, (BGPos-CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width,0)*i, Color.White);
+                case Level.Hospital:
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            spriteBatch.Draw(BG_hospital, (BGPos - CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width, 0) * i, Color.White);
+                        }
+                        break;
+                    }
+                case Level.Temple:
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            spriteBatch.Draw(BG_temple, (BGPos - CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width, 0) * i, Color.White);
+                        }
+                        break;
+                    }
             }
+            
 
             Sensei.DrawFrame(spriteBatch, new Vector2(1200, 300) - CameraPos);
 
@@ -210,6 +264,13 @@ namespace Project_Manhattan.Screen_Management
                 spriteBatch.DrawString(_font, Name, UI_Pos + new Vector2(100, -100), Color.White);
             }
             base.Draw(spriteBatch);
+        }
+        private void ResetCam()
+        {
+            PlayerPos = new Vector2(5400, 700);
+            CameraPos = new Vector2(3840, 0);
+            CameraLeft = new Vector2(5000, 0);
+            CameraRight = new Vector2(5450, 0);
         }
     }
 }

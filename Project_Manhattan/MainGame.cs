@@ -61,6 +61,7 @@ namespace Project_Manhattan
                 Exit();
             mCurrentScreen.Update(gameTime);
             The_List_Fr.UpdateList(gameTime);
+            The_List_En.UpdateList(gameTime);
             base.Update(gameTime);
         }
 

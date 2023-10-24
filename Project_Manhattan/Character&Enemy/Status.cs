@@ -21,7 +21,9 @@ namespace Project_Manhattan.Content
         public float Def;
         public float MaxDef;
 
-        public int frameSp = 4;
+        public int frameSk = 4;
+        public int frameHr = 8;
+        public int frameSp = 8;
 
         public string Name;
 
@@ -40,7 +42,7 @@ namespace Project_Manhattan.Content
         public bool IsHurt = false;
         public bool IsAction = false;
 
-        public AnimatedTexture[] This_Ani = new AnimatedTexture[4];
+        public AnimatedTexture[] This_Ani = new AnimatedTexture[5];
 
         public Friend(MainGame game)
         {
@@ -52,6 +54,14 @@ namespace Project_Manhattan.Content
         public abstract void skill2_Info();
         public abstract void UpdateAction();
         public abstract void UpdateDraw(SpriteBatch batch, Vector2 P);
+        public void Resetto()
+        {
+            Hp = MaxHp;
+            Def = MaxDef;
+            Str = MaxStr;
+
+            Anime = "Spawn";
+        }
         public float DefRuduce(float Def)
         {
             float DefRe;
@@ -71,13 +81,16 @@ namespace Project_Manhattan.Content
         public float MaxDef;
         public float rand;
 
+        public int frameHr = 8;
+        public int frameSp = 8;
+
         public string Anime = "Idle";    //Idle, S1, S2
 
         public bool IsAlive = true;
         public bool IsHurt = false;
         public bool IsAction = false;
 
-        public AnimatedTexture[] This_Ani = new AnimatedTexture[4];
+        public AnimatedTexture[] This_Ani = new AnimatedTexture[5];
         public Enemy(MainGame game)
         {
 
@@ -85,6 +98,16 @@ namespace Project_Manhattan.Content
         public abstract void skill1(int RandPos);
         public abstract void skill2(int RandPos);
         public abstract void UpdateAction();
+        public abstract void UpdateDraw(SpriteBatch batch, Vector2 P);
+        public void Resetto()
+        {
+            Hp = MaxHp;
+            Def = MaxDef;
+            Str = MaxStr;
+
+            Anime = "Spawn";
+        }
+
         public float DefRuduce(float Def)
         {
             float DefRe;

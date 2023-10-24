@@ -39,10 +39,11 @@ namespace Project_Manhattan
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
             }
 
-            This_Ani[0].Load(game.Content, "2D/Friend/Mickey/Mig_idlet", 4, 1, frameSp);
-            This_Ani[1].Load(game.Content, "2D/Friend/Mickey/Mig_idlet", 4, 1, frameSp);
-            This_Ani[2].Load(game.Content, "2D/Friend/Mickey/Mig_skill1tt", 12, 1, frameSp);
-            This_Ani[3].Load(game.Content, "2D/Friend/Mickey/Mig_skill2", 12, 1, frameSp);
+            This_Ani[0].Load(game.Content, "2D/Friend/Mickey/Mig_idlet", 4, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/Mickey/Mig_spawn", 12, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Mickey/Mig_skill1tt", 12, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/Mickey/Mig_skill2", 12, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/Mickey/Mig_hurt", 4, 1, frameHr);
             // สกิล1 เตะบอลใส่ศัตรูสร้างความเสียหาย100%atk
             // สกิล2 เตะบอลอัดใส่ศัตรูอย่างรุนแรงสร้างความเสียหาย 200 % atk
         }
@@ -87,7 +88,7 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
-                    LEC.enemies[target].IsHurt = true;
+                    LEC.enemies[target].Anime = "Hurt";
                 }
             }
             else if(IsAction && Anime == "S2")
@@ -97,7 +98,23 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
-                    LEC.enemies[target].IsHurt = true;
+                    LEC.enemies[target].Anime = "Hurt";
+                }
+            }
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
                 }
             }
 
@@ -117,6 +134,14 @@ namespace Project_Manhattan
                 else if (Anime == "S2")
                 {
                     This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
                 }
                 else
                 {
@@ -150,10 +175,11 @@ namespace Project_Manhattan
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
             }
 
-            This_Ani[0].Load(game.Content, "2D/Friend/Heng/Heng_Idle", 4, 1, frameSp);
-            This_Ani[1].Load(game.Content, "2D/Friend/Heng/Heng_Idle", 4, 1, frameSp);
-            This_Ani[2].Load(game.Content, "2D/Friend/Heng/Heng_Skill1", 12, 1, frameSp);
-            This_Ani[3].Load(game.Content, "2D/Friend/Heng/Heng_Skill2", 12, 1, frameSp);
+            This_Ani[0].Load(game.Content, "2D/Friend/Heng/Heng_Idle", 4, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/Heng/Heng_Spawn", 12, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Heng/Heng_Skill1", 12, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/Heng/Heng_Skill2", 12, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/Heng/Heng_Hurt", 4, 1, frameHr);
 
             //สกิล1 ใช้ยาจากกระเป่าคู่ใจฮีลเพื่อนร่วมทีม150หน่วย
             //สกิล2 ตะโกนปลุกใจเพื่อนร่วมทีมเพิ่มatk25หน่วย
@@ -208,6 +234,22 @@ namespace Project_Manhattan
                     LFC.friend[target].Str += 75;                   
                 }
             }
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
+                }
+            }
 
             if (Hp > MaxHp)
             {
@@ -225,6 +267,14 @@ namespace Project_Manhattan
                 else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
                 }
                 else if (Anime == "S2")
                 {
@@ -251,17 +301,18 @@ namespace Project_Manhattan
             Skill2_Cost = 3;
 
             Target_1 = "Self";
-            Target_2 = "Self";
+            Target_2 = "Enemy";
 
             for (int i = 0; i < This_Ani.Length; i++)
             {
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
             }
 
-            This_Ani[0].Load(game.Content, "2D/Friend/Ohm/Ohm_Idle", 4, 1, frameSp);
-            This_Ani[1].Load(game.Content, "2D/Friend/Ohm/Ohm_Idle", 4, 1, frameSp);
-            This_Ani[2].Load(game.Content, "2D/Friend/Ohm/Ohm_Skill1", 16, 1, frameSp);
-            This_Ani[3].Load(game.Content, "2D/Friend/Ohm/Ohm_Skill2", 10, 1, frameSp);
+            This_Ani[0].Load(game.Content, "2D/Friend/Ohm/Ohm_Idle", 4, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/Ohm/Ohm_Spawn", 12, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Ohm/Ohm_Skill1", 16, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/Ohm/Ohm_Skill2", 10, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/Ohm/Ohm_Hurt", 4, 1, frameHr);
             //สกิล1 ยกดัมเบลเพื่อสร้างความแข็งแรงให้กล้ามเนื้อDef+50
             //สกิล2 เบ่งกล้ามอวดศัตรูเพื่อยัวยุศัตรูให้มาตีพร้อมทั้งได้รับค่าdefเพิ่มขึ้น100
         }
@@ -269,6 +320,7 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
             Anime = "S1";
+            This_Ani[2].Reset();
             target = enePos;
             cast = CastPos;
             this.IsAction = true;
@@ -277,6 +329,7 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
             Anime = "S2";
+            This_Ani[3].Reset();
             target = enePos;
             cast = CastPos;
             this.IsAction = true;
@@ -289,32 +342,42 @@ namespace Project_Manhattan
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "OhmQ (3E)";
-            Gameplay_Screen.SkillInfo = "Let's exercise! \nDef up 100 all of friends";
+            Gameplay_Screen.SkillInfo = "Want some larb, brother? \nDeal Dmg with 125%";
         }
         public override void UpdateAction()
         {
             if (IsAction && Anime == "S1")
             {
-                This_Ani[0] = This_Ani[2];
-                This_Ani[0].startframe = 1;
-                if (This_Ani[0].IsEnd)
+                if (This_Ani[2].IsEnd)
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    This_Ani[0] = This_Ani[1];
                     LFC.friend[cast].Def += 50;
                 }
             }
             else if (IsAction && Anime == "S2")
             {
-                This_Ani[0] = This_Ani[3];
-                This_Ani[0].startframe = 1;
-                if (This_Ani[0].IsEnd)
+                if (This_Ani[3].IsEnd)
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    This_Ani[0] = This_Ani[1];
-                    LFC.friend[cast].Def += 100;
+                    LEC.enemies[target].Hp -= Def * 1.25f * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                }
+            }
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
                 }
             }
 
@@ -334,6 +397,14 @@ namespace Project_Manhattan
                 else if (Anime == "S2")
                 {
                     This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
                 }
                 else
                 {
@@ -366,10 +437,11 @@ namespace Project_Manhattan
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
             }
 
-            This_Ani[0].Load(game.Content, "2D/Friend/Dome/Dome_Idle", 4, 1, frameSp);
-            This_Ani[1].Load(game.Content, "2D/Friend/Dome/Dome_Idle", 4, 1, frameSp);
-            This_Ani[2].Load(game.Content, "2D/Friend/Dome/Dome_Skill1", 10, 1, frameSp);
-            This_Ani[3].Load(game.Content, "2D/Friend/Dome/Dome_Skill2", 12, 1, frameSp);
+            This_Ani[0].Load(game.Content, "2D/Friend/Dome/Dome_Idle", 4, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/Dome/Dome_Spawn", 12, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Dome/Dome_Skill1", 10, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/Dome/Dome_Skill2", 12, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/Dome/Dome_Hurt", 4, 1, frameHr);
             //สกิล1 ใช้เหม่งสะท้อนใส่ศัตรูสร้างความเสียหาย75% atk
             //สกิล2 ใช้ไสยเวยต้องห้ามโจมตีศัตรู200 % atkพร้อมทั้งได้รับผลกระทบโดยของเข้าตัวลดhp25หน่วย
         }
@@ -377,6 +449,7 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
             Anime = "S1";
+            This_Ani[2].Reset();
             target = enePos;
             cast = CastPos;
             this.IsAction = true;
@@ -385,6 +458,7 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
             Anime = "S2";
+            This_Ani[3].Reset();
             target = enePos;
             cast = CastPos;
             this.IsAction = true;
@@ -403,29 +477,39 @@ namespace Project_Manhattan
         {
             if (IsAction && Anime == "S1")
             {
-                this.This_Ani[0] = This_Ani[2];
-                This_Ani[0].startframe = 1;
-                if (This_Ani[0].IsEnd)
+                if (This_Ani[2].IsEnd)
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    This_Ani[0] = This_Ani[1];
                     LEC.enemies[target].Hp -= (Str * 75 / 100) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
-                    LEC.enemies[target].IsHurt = true;
+                    LEC.enemies[target].Anime = "Hurt";
                 }
             }
             else if (IsAction && Anime == "S2")
             {
-                This_Ani[0] = This_Ani[3];
-                This_Ani[0].startframe = 1;
-                if (This_Ani[0].IsEnd)
+                if (This_Ani[3].IsEnd)
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    This_Ani[0] = This_Ani[1];
                     LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     Hp -= 25;
-                    LEC.enemies[target].IsHurt = true;
+                    LEC.enemies[target].Anime = "Hurt";
+                }
+            }
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
                 }
             }
 
@@ -445,6 +529,14 @@ namespace Project_Manhattan
                 else if (Anime == "S2")
                 {
                     This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
                 }
                 else
                 {
@@ -478,10 +570,11 @@ namespace Project_Manhattan
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
             }
 
-            This_Ani[0].Load(game.Content, "2D/Friend/JJB/JJB_Idle", 2, 1, frameSp);
-            This_Ani[1].Load(game.Content, "2D/Friend/JJB/JJB_Idle", 2, 1, frameSp);
-            This_Ani[2].Load(game.Content, "2D/Friend/JJB/JJB_Skill1", 11, 1, frameSp);
-            This_Ani[3].Load(game.Content, "2D/Friend/JJB/JJB_Skill2", 12, 1, frameSp);
+            This_Ani[0].Load(game.Content, "2D/Friend/JJB/JJB_Idle", 2, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/JJB/JJB_Spawn", 12, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/JJB/JJB_Skill1", 11, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/JJB/JJB_Skill2", 12, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/JJB/JJB_Hurt", 4, 1, frameHr);
             //4E ตีปกติก็แรงละ 100ATK def+10ถาวร สูงสุด50
             //4E เรียกยานแม่มาตีอีกฝ่ายทั้งหมด50 % ATK
         }
@@ -526,7 +619,7 @@ namespace Project_Manhattan
                     {
                         Def += 10;
                     }
-                    LEC.enemies[target].IsHurt = true;
+                    LEC.enemies[target].Anime = "Hurt";
                 }
             }
             else if (IsAction && Anime == "S2")
@@ -538,9 +631,25 @@ namespace Project_Manhattan
                     LEC.enemies[0].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     LEC.enemies[1].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     LEC.enemies[2].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
-                    LEC.enemies[0].IsHurt = true;
-                    LEC.enemies[1].IsHurt = true;
-                    LEC.enemies[2].IsHurt = true;
+                    LEC.enemies[0].Anime = "Hurt";
+                    LEC.enemies[1].Anime = "Hurt";
+                    LEC.enemies[2].Anime = "Hurt";
+                }
+            }
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
                 }
             }
 
@@ -560,6 +669,14 @@ namespace Project_Manhattan
                 else if (Anime == "S2")
                 {
                     This_Ani[3].DrawFrame(batch, P, false);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
                 }
                 else
                 {
@@ -593,10 +710,11 @@ namespace Project_Manhattan
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
             }
 
-            This_Ani[0].Load(game.Content, "2D/Friend/Tata/Tata_Idle", 4, 1, frameSp);
-            This_Ani[1].Load(game.Content, "2D/Friend/Tata/Tata_Idle", 4, 1, frameSp);
-            This_Ani[2].Load(game.Content, "2D/Friend/Tata/Tata_Skill1", 8, 1, frameSp);
-            This_Ani[3].Load(game.Content, "2D/Friend/Tata/Tata_Skill2", 9, 1, frameSp);
+            This_Ani[0].Load(game.Content, "2D/Friend/Tata/Tata_Idle", 4, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/Tata/Tata-Spawn", 6, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Tata/Tata_Skill1", 8, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/Tata/Tata_Skill2", 9, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/Tata/Tata_Hurt", 4, 1, frameHr);
             //4E ตีปกติก็แรงละ 100ATK def+10ถาวร สูงสุด50
             //4E เรียกยานแม่มาตีอีกฝ่ายทั้งหมด50 % ATK
         }
@@ -648,7 +766,24 @@ namespace Project_Manhattan
                     LFC.friend[target].Hp += LFC.friend[target].MaxHp / 2;
                 }
             }
-            if(Hp > MaxHp)
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
+                }
+            }
+
+            if (Hp > MaxHp)
             {
                 Hp = MaxHp;
             }
@@ -664,6 +799,14 @@ namespace Project_Manhattan
                 else if (Anime == "S2")
                 {
                     This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
                 }
                 else
                 {

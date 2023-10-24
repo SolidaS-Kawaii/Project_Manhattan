@@ -62,6 +62,14 @@ namespace Project_Manhattan.CoreCode
                 {
                     friend[i].This_Ani[3].UpdateFrame(elapsed);
                 }
+                else if (friend[i].Anime == "Spawn")
+                {
+                    friend[i].This_Ani[1].UpdateFrame(elapsed);
+                }
+                else if (friend[i].Anime == "Hurt")
+                {
+                    friend[i].This_Ani[4].UpdateFrame(elapsed);
+                }
             }
 
             for(int i = 0;i < friendList.Count; i++)

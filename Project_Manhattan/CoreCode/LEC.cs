@@ -1,4 +1,5 @@
-﻿using Project_Manhattan.Content;
+﻿using Microsoft.Xna.Framework;
+using Project_Manhattan.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,32 @@ namespace Project_Manhattan.CoreCode
             enemies[0] =  muscleRat;
             enemies[1] = sensei;
             enemies[2] = muscleRat1;
+        }
+        public void UpdateList(GameTime gameTime)
+        {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].UpdateAction();
+                if (enemies[i].Anime == "S1")
+                {
+                    enemies[i].This_Ani[2].UpdateFrame(elapsed);
+                }
+                else if (enemies[i].Anime == "S2")
+                {
+                    enemies[i].This_Ani[3].UpdateFrame(elapsed);
+                }
+                else if (enemies[i].Anime == "Spawn")
+                {
+                    enemies[i].This_Ani[1].UpdateFrame(elapsed);
+                }
+                else if (enemies[i].Anime == "Hurt")
+                {
+                    enemies[i].This_Ani[4].UpdateFrame(elapsed);
+                }
+                enemies[i].This_Ani[0].UpdateFrame(elapsed);
+            }
         }
     }
 }
