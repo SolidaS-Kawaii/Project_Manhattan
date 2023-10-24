@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Project_Manhattan.Content;
 using Project_Manhattan.CoreCode;
 using Project_Manhattan.Screen_Management;
@@ -13,12 +15,13 @@ namespace Project_Manhattan
 {
     public class Mickey : Friend
     {
-        public Mickey() : base()
+        int a = 0;
+        public Mickey(MainGame game) : base(game)
         {
             Name = "Miki";
 
             Hp = 500;
-            Str = 300;
+            Str = 150;
             Def = 50;
 
             MaxHp = Hp;
@@ -29,26 +32,41 @@ namespace Project_Manhattan
             Skill2_Cost = 3;
 
             Target_1 = "Enemy";
-            Target_2 = "Enemy";
+            Target_2 = "Enemy"; 
 
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/Mickey/Mig_idlet", 4, 1, frameSp);
+            This_Ani[1].Load(game.Content, "2D/Friend/Mickey/Mig_idlet", 4, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Mickey/Mig_skill1tt", 12, 1, frameSp);
+            This_Ani[3].Load(game.Content, "2D/Friend/Mickey/Mig_skill2", 12, 1, frameSp);
             // สกิล1 เตะบอลใส่ศัตรูสร้างความเสียหาย100%atk
             // สกิล2 เตะบอลอัดใส่ศัตรูอย่างรุนแรงสร้างความเสียหาย 200 % atk
         }
         public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            this.IsAction = true;
             Anime = "S1";
+            Console.WriteLine(Anime);
+            Console.WriteLine(This_Ani[2].IsEnd);
+            This_Ani[2].Reset();
             target = enePos;
             cast = CastPos;
+            this.IsAction = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            this.IsAction = true;
             Anime = "S2";
+            Console.WriteLine(Anime);
+            Console.WriteLine(This_Ani[3].IsEnd);
+            This_Ani[3].Reset();
             target = enePos;
             cast = CastPos;
+            this.IsAction = true;
         }
         public override void skill1_Info()
         {
@@ -64,32 +82,52 @@ namespace Project_Manhattan
         {
             if (IsAction && Anime == "S1")
             {
-                LFC.PAA[cast] = LFC.Mickuy[2];
-                if (LFC.PAA[cast].IsEnd)
+                if (This_Ani[2].IsEnd)
                 {
-                    LFC.PAS[cast].IsAction = false;
-                    LFC.PAA[cast] = LFC.Mickuy[1];
-                    LEC.enemies[target].Hp -= Str;
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     LEC.enemies[target].IsHurt = true;
                 }
             }
             else if(IsAction && Anime == "S2")
             {
-                LFC.PAA[cast] = LFC.Mickuy[3];
-                if (LFC.PAA[cast].IsEnd)
+                if (This_Ani[3].IsEnd)
                 {
-                    LFC.PAS[cast].IsAction = false;
-                    LFC.PAA[cast] = LFC.Mickuy[1];
-                    LEC.enemies[target].Hp -= Str * 2;
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     LEC.enemies[target].IsHurt = true;
+                }
+            }
+
+            if (Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else
+                {
+                    This_Ani[0].DrawFrame(batch, P, true);
                 }
             }
         }
     }
-
     public class Heng : Friend
     {
-        public Heng() : base()
+        public Heng(MainGame game) : base(game)
         {
             Name = "Hengoku";
 
@@ -104,8 +142,18 @@ namespace Project_Manhattan
             Skill1_Cost = 2;
             Skill2_Cost = 2;
 
-            Target_1 = "Friend";
-            Target_2 = "AllFriend";
+            Target_1 = "AllFriend";
+            Target_2 = "Friend";
+
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/Heng/Heng_Idle", 4, 1, frameSp);
+            This_Ani[1].Load(game.Content, "2D/Friend/Heng/Heng_Idle", 4, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Heng/Heng_Skill1", 12, 1, frameSp);
+            This_Ani[3].Load(game.Content, "2D/Friend/Heng/Heng_Skill2", 12, 1, frameSp);
 
             //สกิล1 ใช้ยาจากกระเป่าคู่ใจฮีลเพื่อนร่วมทีม150หน่วย
             //สกิล2 ตะโกนปลุกใจเพื่อนร่วมทีมเพิ่มatk25หน่วย
@@ -113,39 +161,81 @@ namespace Project_Manhattan
         public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            LFC.PAS[enePos].Hp += 150;
-            if (LFC.PAS[enePos].Hp >= LFC.PAS[enePos].MaxHp)
-            {
-                LFC.PAS[enePos].Hp = LFC.PAS[enePos].MaxHp;
-            }
+            Anime = "S1";
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+            This_Ani[2].Reset();
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            for (int i = 0; i < LFC.PAS.Length; i++)
-            {
-                LFC.PAS[i].Str += 25;
-            }
+            Anime = "S2";
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+            This_Ani[3].Reset();
         }
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "HengE (2E)";
-            Gameplay_Screen.SkillInfo = "Pick up a medicine form my lover bag \nHeals 150 Hp";
+            Gameplay_Screen.SkillInfo = "Pick up a medicine form my lover bag \nHeals 125 Hp to all friend";
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "HengQ (2E)";
-            Gameplay_Screen.SkillInfo = "Shouttttttttttttt! \nBuffs all of our friends with 25 Str";
+            Gameplay_Screen.SkillInfo = "Shouttttttttttttt! \nBuffs 75 Str to a friend";
         }
         public override void UpdateAction()
         {
+            if (IsAction && Anime == "S1")
+            {
+                if (This_Ani[2].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LFC.friend[0].Hp += 125;
+                    LFC.friend[1].Hp += 125;
+                    LFC.friend[2].Hp += 125;
+                }
+            }
+            else if (IsAction && Anime == "S2")
+            {
+                if (This_Ani[3].IsEnd)
+                {
+                    Anime = "Idle";
+                    IsAction = false;                   
+                    LFC.friend[target].Str += 75;                   
+                }
+            }
 
+            if (Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if(Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
+                }
+            }
         }
     }
-
     public class Ohm : Friend
     {
-        public Ohm() : base()
+        public Ohm(MainGame game) : base(game)
         {
             Name = "Ohmo";
 
@@ -163,18 +253,33 @@ namespace Project_Manhattan
             Target_1 = "Self";
             Target_2 = "Self";
 
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/Ohm/Ohm_Idle", 4, 1, frameSp);
+            This_Ani[1].Load(game.Content, "2D/Friend/Ohm/Ohm_Idle", 4, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Ohm/Ohm_Skill1", 16, 1, frameSp);
+            This_Ani[3].Load(game.Content, "2D/Friend/Ohm/Ohm_Skill2", 10, 1, frameSp);
             //สกิล1 ยกดัมเบลเพื่อสร้างความแข็งแรงให้กล้ามเนื้อDef+50
             //สกิล2 เบ่งกล้ามอวดศัตรูเพื่อยัวยุศัตรูให้มาตีพร้อมทั้งได้รับค่าdefเพิ่มขึ้น100
         }
         public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            LFC.PAS[Gameplay_Screen.Caster].Def += 50;
+            Anime = "S1";
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            LFC.PAS[Gameplay_Screen.Caster].Def += 100;
+            Anime = "S2";
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
         }
         public override void skill1_Info()
         {
@@ -184,20 +289,66 @@ namespace Project_Manhattan
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "OhmQ (3E)";
-            Gameplay_Screen.SkillInfo = "Taunt all of our sensei! \nTaunt and Def up 100";
+            Gameplay_Screen.SkillInfo = "Let's exercise! \nDef up 100 all of friends";
         }
         public override void UpdateAction()
         {
+            if (IsAction && Anime == "S1")
+            {
+                This_Ani[0] = This_Ani[2];
+                This_Ani[0].startframe = 1;
+                if (This_Ani[0].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    This_Ani[0] = This_Ani[1];
+                    LFC.friend[cast].Def += 50;
+                }
+            }
+            else if (IsAction && Anime == "S2")
+            {
+                This_Ani[0] = This_Ani[3];
+                This_Ani[0].startframe = 1;
+                if (This_Ani[0].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    This_Ani[0] = This_Ani[1];
+                    LFC.friend[cast].Def += 100;
+                }
+            }
 
+            if (Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else
+                {
+                    This_Ani[0].DrawFrame(batch, P, true);
+                }
+            }
         }
     }
     public class Dome : Friend
     {
-        public Dome() : base()
+        public Dome(MainGame game) : base(game)
         {
             Name = "Domino";
             Hp = 450;
-            Str = 275;
+            Str = 175;
             Def = 25;
 
             MaxHp = Hp;
@@ -210,21 +361,33 @@ namespace Project_Manhattan
             Target_1 = "Enemy";
             Target_2 = "Enemy";
 
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/Dome/Dome_Idle", 4, 1, frameSp);
+            This_Ani[1].Load(game.Content, "2D/Friend/Dome/Dome_Idle", 4, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Dome/Dome_Skill1", 10, 1, frameSp);
+            This_Ani[3].Load(game.Content, "2D/Friend/Dome/Dome_Skill2", 12, 1, frameSp);
             //สกิล1 ใช้เหม่งสะท้อนใส่ศัตรูสร้างความเสียหาย75% atk
             //สกิล2 ใช้ไสยเวยต้องห้ามโจมตีศัตรู200 % atkพร้อมทั้งได้รับผลกระทบโดยของเข้าตัวลดhp25หน่วย
         }
         public override void skill1(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
-            LEC.enemies[enePos].Hp -= Str * 75 / 100;
-            LEC.enemies[enePos].IsHurt = true;
+            Anime = "S1";
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
         }
         public override void skill2(int enePos, int CastPos)
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
-            LEC.enemies[enePos].Hp -= Str * 2;
-            Hp -= 25;
-            LEC.enemies[enePos].IsHurt = true;
+            Anime = "S2";
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
         }
         public override void skill1_Info()
         {
@@ -238,7 +401,275 @@ namespace Project_Manhattan
         }
         public override void UpdateAction()
         {
+            if (IsAction && Anime == "S1")
+            {
+                this.This_Ani[0] = This_Ani[2];
+                This_Ani[0].startframe = 1;
+                if (This_Ani[0].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    This_Ani[0] = This_Ani[1];
+                    LEC.enemies[target].Hp -= (Str * 75 / 100) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    LEC.enemies[target].IsHurt = true;
+                }
+            }
+            else if (IsAction && Anime == "S2")
+            {
+                This_Ani[0] = This_Ani[3];
+                This_Ani[0].startframe = 1;
+                if (This_Ani[0].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    This_Ani[0] = This_Ani[1];
+                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    Hp -= 25;
+                    LEC.enemies[target].IsHurt = true;
+                }
+            }
 
+            if (Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else
+                {
+                    This_Ani[0].DrawFrame(batch, P, true);
+                }
+            }
+        }
+    }
+    public class JaBing : Friend
+    {
+        public JaBing(MainGame game) : base(game)
+        {
+            Name = "JajaBing";
+
+            Hp = 300;
+            Str = 200;
+            Def = 0;
+
+            MaxHp = Hp;
+            MaxStr = Str;
+            MaxDef = Def;
+
+            Skill1_Cost = 4;
+            Skill2_Cost = 4;
+
+            Target_1 = "Enemy";
+            Target_2 = "AllEnemy";
+
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/JJB/JJB_Idle", 2, 1, frameSp);
+            This_Ani[1].Load(game.Content, "2D/Friend/JJB/JJB_Idle", 2, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/JJB/JJB_Skill1", 11, 1, frameSp);
+            This_Ani[3].Load(game.Content, "2D/Friend/JJB/JJB_Skill2", 12, 1, frameSp);
+            //4E ตีปกติก็แรงละ 100ATK def+10ถาวร สูงสุด50
+            //4E เรียกยานแม่มาตีอีกฝ่ายทั้งหมด50 % ATK
+        }
+        public override void skill1(int enePos, int CastPos)
+        {
+            Gameplay_Screen.Energy -= Skill1_Cost;
+            Anime = "S1";
+            This_Ani[2].Reset();
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+        }
+        public override void skill2(int enePos, int CastPos)
+        {
+            Gameplay_Screen.Energy -= Skill2_Cost;
+            Anime = "S2";
+            This_Ani[3].Reset();
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+        }
+        public override void skill1_Info()
+        {
+            Gameplay_Screen.SkillName = "JaJaBingE (4E)";
+            Gameplay_Screen.SkillInfo = "Sawasdee Manud \nDeals 100% of Str \nDef up 10 but limits 50";
+        }
+        public override void skill2_Info()
+        {
+            Gameplay_Screen.SkillName = "JaJaBingQ (4E)";
+            Gameplay_Screen.SkillInfo = "Attack all of plumbers \nDeals 75% of Str to all of sensei";
+        }
+        public override void UpdateAction() //for animated
+        {
+            if (IsAction && Anime == "S1")
+            {
+                if (This_Ani[2].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    if(Def < 50)
+                    {
+                        Def += 10;
+                    }
+                    LEC.enemies[target].IsHurt = true;
+                }
+            }
+            else if (IsAction && Anime == "S2")
+            {
+                if (This_Ani[3].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LEC.enemies[0].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    LEC.enemies[1].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    LEC.enemies[2].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    LEC.enemies[0].IsHurt = true;
+                    LEC.enemies[1].IsHurt = true;
+                    LEC.enemies[2].IsHurt = true;
+                }
+            }
+
+            if (Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, false);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, false);
+                }
+                else
+                {
+                    This_Ani[0].DrawFrame(batch, P, false);
+                }
+            }
+        }
+    }
+    public class Tata : Friend
+    {
+        public Tata(MainGame game) : base(game)
+        {
+            Name = "Tata";
+
+            Hp = 700;
+            Str = 0;
+            Def = 50;
+
+            MaxHp = Hp;
+            MaxStr = Str;
+            MaxDef = Def;
+
+            Skill1_Cost = 2;
+            Skill2_Cost = 3;
+
+            Target_1 = "Enemy";
+            Target_2 = "Friend";
+
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/Tata/Tata_Idle", 4, 1, frameSp);
+            This_Ani[1].Load(game.Content, "2D/Friend/Tata/Tata_Idle", 4, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/Tata/Tata_Skill1", 8, 1, frameSp);
+            This_Ani[3].Load(game.Content, "2D/Friend/Tata/Tata_Skill2", 9, 1, frameSp);
+            //4E ตีปกติก็แรงละ 100ATK def+10ถาวร สูงสุด50
+            //4E เรียกยานแม่มาตีอีกฝ่ายทั้งหมด50 % ATK
+        }
+        public override void skill1(int enePos, int CastPos)
+        {
+            Gameplay_Screen.Energy -= Skill1_Cost;
+            Anime = "S1";
+            This_Ani[2].Reset();
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+        }
+        public override void skill2(int enePos, int CastPos)
+        {
+            Gameplay_Screen.Energy -= Skill2_Cost;
+            Anime = "S2";
+            This_Ani[3].Reset();
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+        }
+        public override void skill1_Info()
+        {
+            Gameplay_Screen.SkillName = "TataE (2E)";
+            Gameplay_Screen.SkillInfo = "Decrease a sensei's Def \nDef down 30";
+        }
+        public override void skill2_Info()
+        {
+            Gameplay_Screen.SkillName = "TataQ (3E)";
+            Gameplay_Screen.SkillInfo = "Take a rest \nHeals 50% of a friend's MaxHp";
+        }
+        public override void UpdateAction() //for animated
+        {
+            if (IsAction && Anime == "S1")
+            {
+                if (This_Ani[2].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LEC.enemies[target].Def -= 30;
+                }
+            }
+            else if (IsAction && Anime == "S2")
+            {
+                if (This_Ani[3].IsEnd)
+                {
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    LFC.friend[target].Hp += LFC.friend[target].MaxHp / 2;
+                }
+            }
+            if(Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else
+                {
+                    This_Ani[0].DrawFrame(batch, P, true);
+                }
+            }
         }
     }
 }

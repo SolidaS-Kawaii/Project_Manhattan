@@ -38,9 +38,9 @@ namespace Project_Manhattan.Screen_Management
             font = game.Content.Load<SpriteFont>("Arial24");
             select = game.Content.Load<Texture2D>("2D/UI/Selecting4");
 
-            Player_Pos[0] = new Vector2(400, 500);
-            Player_Pos[1] = new Vector2(1000, 500);
-            Player_Pos[2] = new Vector2(1600, 500);
+            Player_Pos[0] = new Vector2(300, 500);
+            Player_Pos[1] = new Vector2(900, 500);
+            Player_Pos[2] = new Vector2(1500, 500);
 
             Name[0] = "";
             Name[1] = "";
@@ -54,7 +54,7 @@ namespace Project_Manhattan.Screen_Management
 
             if (NigKey.IsKeyDown(Keys.D) && OppKey.IsKeyUp(Keys.D))
             {
-                if (Pos < LFC.PAA.Length - 1)
+                if (Pos < LFC.friend.Length - 1)
                 {
                     Pos++;
                 }
@@ -77,7 +77,7 @@ namespace Project_Manhattan.Screen_Management
             }
             else if (NigKey.IsKeyDown(Keys.L) && OppKey.IsKeyUp(Keys.L))
             {
-                if(LFC.select[Pos] < LFC.PLA.Count - 1)
+                if(LFC.select[Pos] < LFC.friendList.Count - 1)
                 {
                     LFC.select[Pos]++;
                 }
@@ -110,9 +110,9 @@ namespace Project_Manhattan.Screen_Management
                 isReady = true;
             }
 
-            Name[0] = LFC.PAS[0].Name;
-            Name[1] = LFC.PAS[1].Name;
-            Name[2] = LFC.PAS[2].Name;
+            Name[0] = LFC.friend[0].Name;
+            Name[1] = LFC.friend[1].Name;
+            Name[2] = LFC.friend[2].Name;
 
             OppKey = NigKey;
             Console.WriteLine(LFC.select[Pos]);
@@ -122,13 +122,13 @@ namespace Project_Manhattan.Screen_Management
         {
             spriteBatch.Draw(Hotel, Vector2.Zero,new Rectangle(0, 0, Hotel.Width, Hotel.Height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-            for (int i = 0; i < LFC.PAA.Length; i++)
+            for (int i = 0; i < LFC.friend.Length; i++)
             {
-                LFC.PAA[i].DrawFrame(spriteBatch, Player_Pos[i], true);
-                spriteBatch.DrawString(font, Name[i], Player_Pos[i] + new Vector2(50, 200), Color.White);
+                LFC.friend[i].UpdateDraw(spriteBatch, Player_Pos[i]);
+                spriteBatch.DrawString(font, Name[i], Player_Pos[i] + new Vector2(50, 300), Color.White);
             }
 
-            spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(50, -75), Color.White);
+            spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(100, 0), Color.White);
         }
     }
 }

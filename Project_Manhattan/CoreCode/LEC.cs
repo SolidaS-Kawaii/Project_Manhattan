@@ -17,7 +17,7 @@ namespace Project_Manhattan.CoreCode
             MuscleRat muscleRat = new MuscleRat(game);
             MuscleRat muscleRat1 = new MuscleRat(game);
 
-            enemies[0] = muscleRat;
+            enemies[0] =  muscleRat;
             enemies[1] = sensei;
             enemies[2] = muscleRat1;
         }

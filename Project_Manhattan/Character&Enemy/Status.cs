@@ -1,4 +1,6 @@
-﻿using Project_Manhattan.CoreCode;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Project_Manhattan.CoreCode;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,12 +14,14 @@ namespace Project_Manhattan.Content
 {
     public abstract class Friend
     {
-        public int Hp;
-        public int MaxHp;
-        public int Str;
-        public int MaxStr;
-        public int Def;
-        public int MaxDef;
+        public float Hp;
+        public float MaxHp;
+        public float Str;
+        public float MaxStr;
+        public float Def;
+        public float MaxDef;
+
+        public int frameSp = 4;
 
         public string Name;
 
@@ -26,8 +30,8 @@ namespace Project_Manhattan.Content
 
         public int target;
         public int cast;
-        public string Target_1;   //Self, Friend, Enemy
-        public string Target_2;   //Self, Friend, Enemy
+        public string Target_1;   //Self, Friend, Enemy, AllEnemy, AllFriend
+        public string Target_2;   //Self, Friend, Enemy, AllEnemy, AllFriend
 
         public string Anime = "Idle";    //Idle, S1, S2
 
@@ -36,7 +40,9 @@ namespace Project_Manhattan.Content
         public bool IsHurt = false;
         public bool IsAction = false;
 
-        public Friend()
+        public AnimatedTexture[] This_Ani = new AnimatedTexture[4];
+
+        public Friend(MainGame game)
         {
 
         }
@@ -45,23 +51,45 @@ namespace Project_Manhattan.Content
         public abstract void skill1_Info();
         public abstract void skill2_Info();
         public abstract void UpdateAction();
+        public abstract void UpdateDraw(SpriteBatch batch, Vector2 P);
+        public float DefRuduce(float Def)
+        {
+            float DefRe;
+            DefRe = 1 - (Def/(Def+100));
+            return DefRe;
+        }
+
     }
 
     public abstract class Enemy
     {
-        public int Hp;
-        public int MaxHp;
-        public int Str;
-        public int MaxStr;
+        public float Hp;
+        public float MaxHp;
+        public float Str;
+        public float MaxStr;
+        public float Def;
+        public float MaxDef;
+        public float rand;
+
+        public string Anime = "Idle";    //Idle, S1, S2
+
         public bool IsAlive = true;
         public bool IsHurt = false;
+        public bool IsAction = false;
 
-        public AnimatedTexture This_Ani;
+        public AnimatedTexture[] This_Ani = new AnimatedTexture[4];
         public Enemy(MainGame game)
         {
 
         }
         public abstract void skill1(int RandPos);
         public abstract void skill2(int RandPos);
+        public abstract void UpdateAction();
+        public float DefRuduce(float Def)
+        {
+            float DefRe;
+            DefRe = 1 - (Def / (Def + 200));
+            return DefRe;
+        }
     }
 }

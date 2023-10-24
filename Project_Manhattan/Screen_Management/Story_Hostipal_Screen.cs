@@ -48,15 +48,15 @@ namespace Project_Manhattan.Screen_Management
         public Story_Hostipal_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
             Mickarey = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
-            Mickaidle = new AnimatedTexture(Vector2.Zero, 0, 1.0f, 0);
+            Mickaidle = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
             Sensei = new AnimatedTexture(Vector2.Zero, 0, 1.0f, 0);
             BG_hospital = game.Content.Load<Texture2D>("2D/BG/Hospital_empty");
             UI_name = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             UI_story = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
 
             Sensei.Load(game.Content, "2D/Enemy/Sensei_idle", 4, 1, 4);
-            Mickarey.Load(game.Content, "run-animation", 4, 1, 6);
-            Mickaidle.Load(game.Content, "Mickey_idle", 9, 1, 9);
+            Mickarey.Load(game.Content, "2D/Friend/Mickey/run-animation", 4, 1, 6);
+            Mickaidle.Load(game.Content, "2D/Friend/Mickey/Mickey_Stand", 4, 1, 4);
 
             string filepath = Path.Combine(@"Content\Dialog_test.txt");
 

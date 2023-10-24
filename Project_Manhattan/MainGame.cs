@@ -45,12 +45,12 @@ namespace Project_Manhattan
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            The_List_Fr = new LFC(this);
+            The_List_En = new LEC(this);
             mGameplay_Screen = new Gameplay_Screen(this, new EventHandler(GameplayScreenEvent));
             mTitile_Screen = new Titile_Screen(this, new EventHandler(GameplayScreenEvent));
             mstory_Hostipal = new Story_Hostipal_Screen(this, new EventHandler(GameplayScreenEvent));
             mTeam_Manage = new Team_Manager_Screen(this, new EventHandler(GameplayScreenEvent));
-            The_List_Fr = new LFC(this);
-            The_List_En = new LEC(this);
 
             mCurrentScreen = mTitile_Screen;
         }
