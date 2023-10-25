@@ -14,13 +14,9 @@ namespace Project_Manhattan.CoreCode
 
         public LEC(MainGame game)
         {
-            Doktah sensei = new Doktah(game);
-            MuscleRat muscleRat = new MuscleRat(game);
-            MuscleRat muscleRat1 = new MuscleRat(game);
-
-            enemies[0] =  muscleRat;
-            enemies[1] = sensei;
-            enemies[2] = muscleRat1;
+            enemies[0] = new MuscleRat(game);
+            enemies[1] = new Doktah(game);
+            enemies[2] = new MuscleRat(game);
         }
         public void UpdateList(GameTime gameTime)
         {
@@ -36,6 +32,10 @@ namespace Project_Manhattan.CoreCode
                 else if (enemies[i].Anime == "S2")
                 {
                     enemies[i].This_Ani[3].UpdateFrame(elapsed);
+                }
+                else if (enemies[i].Anime == "S3")
+                {
+                    enemies[i].This_Ani[5].UpdateFrame(elapsed);
                 }
                 else if (enemies[i].Anime == "Spawn")
                 {

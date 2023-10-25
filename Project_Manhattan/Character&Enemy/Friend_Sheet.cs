@@ -87,7 +87,8 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    IsCharEnd = true;
+                    LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[target].Anime = "Hurt";
                 }
             }
@@ -97,7 +98,8 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    IsCharEnd = true;
+                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[target].Anime = "Hurt";
                 }
             }
@@ -118,9 +120,29 @@ namespace Project_Manhattan
                 }
             }
 
+            if(Def < 0)
+            {
+                Def = 0;
+            }
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
+            }
+            if(Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if(Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if (IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -145,7 +167,7 @@ namespace Project_Manhattan
                 }
                 else
                 {
-                    This_Ani[0].DrawFrame(batch, P, true);
+                    This_Ani[0].DrawFrame(batch, P, true, color);
                 }
             }
         }
@@ -220,9 +242,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LFC.friend[0].Hp += 125;
-                    LFC.friend[1].Hp += 125;
-                    LFC.friend[2].Hp += 125;
+                    IsCharEnd = true;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (LFC.friend[i].IsAlive)
+                        {
+                            LFC.friend[i].Hp += 125;
+                        }
+                    }
                 }
             }
             else if (IsAction && Anime == "S2")
@@ -230,7 +257,8 @@ namespace Project_Manhattan
                 if (This_Ani[3].IsEnd)
                 {
                     Anime = "Idle";
-                    IsAction = false;                   
+                    IsAction = false;
+                    IsCharEnd = true;
                     LFC.friend[target].Str += 75;                   
                 }
             }
@@ -250,21 +278,37 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
+            if (Def < 0)
+            {
+                Def = 0;
+            }
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
+            }
+
+            if (Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if (Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if (IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
             if (IsAlive)
-            {
-                if(Anime == "Idle")
-                {
-                    This_Ani[0].DrawFrame(batch, P, true);
-                }
-                else if (Anime == "S1")
+            {              
+                if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
                 }
@@ -279,6 +323,10 @@ namespace Project_Manhattan
                 else if (Anime == "S2")
                 {
                     This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
                 }
             }
         }
@@ -352,6 +400,7 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
+                    IsCharEnd = true;
                     LFC.friend[cast].Def += 50;
                 }
             }
@@ -361,7 +410,8 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LEC.enemies[target].Hp -= Def * 1.25f * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    IsCharEnd = true;
+                    LEC.enemies[target].Hp -= Def * 1.25f * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                 }
             }
             else if (Anime == "Hurt")
@@ -380,10 +430,30 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
+            if (Def < 0)
+            {
+                Def = 0;
+            }
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
+            }
+
+            if (Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if (Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if (IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -408,7 +478,7 @@ namespace Project_Manhattan
                 }
                 else
                 {
-                    This_Ani[0].DrawFrame(batch, P, true);
+                    This_Ani[0].DrawFrame(batch, P, true, color);
                 }
             }
         }
@@ -481,7 +551,8 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LEC.enemies[target].Hp -= (Str * 75 / 100) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    IsCharEnd = true;
+                    LEC.enemies[target].Hp -= (Str * 75 / 100) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[target].Anime = "Hurt";
                 }
             }
@@ -491,7 +562,8 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    IsCharEnd = true;
+                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     Hp -= 25;
                     LEC.enemies[target].Anime = "Hurt";
                 }
@@ -512,10 +584,30 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
+            if (Def < 0)
+            {
+                Def = 0;
+            }
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
+            }
+
+            if (Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if (Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if (IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -540,7 +632,7 @@ namespace Project_Manhattan
                 }
                 else
                 {
-                    This_Ani[0].DrawFrame(batch, P, true);
+                    This_Ani[0].DrawFrame(batch, P, true, color);
                 }
             }
         }
@@ -564,6 +656,8 @@ namespace Project_Manhattan
 
             Target_1 = "Enemy";
             Target_2 = "AllEnemy";
+
+            AbsPos = new Vector2(40, 50);
 
             for (int i = 0; i < This_Ani.Length; i++)
             {
@@ -614,6 +708,7 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
+                    IsCharEnd = true;
                     LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     if(Def < 50)
                     {
@@ -628,9 +723,10 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
-                    LEC.enemies[0].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
-                    LEC.enemies[1].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
-                    LEC.enemies[2].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
+                    IsCharEnd = true;
+                    LEC.enemies[0].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    LEC.enemies[1].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    LEC.enemies[2].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[0].Anime = "Hurt";
                     LEC.enemies[1].Anime = "Hurt";
                     LEC.enemies[2].Anime = "Hurt";
@@ -652,10 +748,30 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
+            if (Def < 0)
+            {
+                Def = 0;
+            }
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
+            }
+
+            if (Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if (Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if (IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -672,7 +788,7 @@ namespace Project_Manhattan
                 }
                 else if (Anime == "Spawn")
                 {
-                    This_Ani[1].DrawFrame(batch, P, true);
+                    This_Ani[1].DrawFrame(batch, P, false);
                 }
                 else if (Anime == "Hurt")
                 {
@@ -680,7 +796,7 @@ namespace Project_Manhattan
                 }
                 else
                 {
-                    This_Ani[0].DrawFrame(batch, P, false);
+                    This_Ani[0].DrawFrame(batch, P, false, color);
                 }
             }
         }
@@ -754,6 +870,7 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
+                    IsCharEnd = true;
                     LEC.enemies[target].Def -= 30;
                 }
             }
@@ -763,6 +880,7 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
+                    IsCharEnd = true;
                     LFC.friend[target].Hp += LFC.friend[target].MaxHp / 2;
                 }
             }
@@ -782,10 +900,30 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
+            if (Def < 0)
+            {
+                Def = 0;
+            }
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
+            }
+
+            if (Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if (Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if(IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -810,7 +948,7 @@ namespace Project_Manhattan
                 }
                 else
                 {
-                    This_Ani[0].DrawFrame(batch, P, true);
+                    This_Ani[0].DrawFrame(batch, P, true, color);
                 }
             }
         }

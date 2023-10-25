@@ -122,17 +122,22 @@ namespace Project_Manhattan.CoreCode
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos, bool flip)
         {
             this.flip = flip;
-            DrawFrame(batch, Frame, screenPos);
+            DrawFrame(batch, Frame, screenPos, Color.White);
+        }
+        public void DrawFrame(SpriteBatch batch, Vector2 screenPos, bool flip, Color color)
+        {
+            this.flip = flip;
+            DrawFrame(batch, Frame, screenPos, color);
         }
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos)
         {
-            DrawFrame(batch, Frame, screenPos);
+            DrawFrame(batch, Frame, screenPos, Color.White);
         }
         public void DrawFrame(SpriteBatch batch, Vector2 screenPos, int row)
         {
             DrawFrame(batch, Frame, screenPos, row);
         }
-        public void DrawFrame(SpriteBatch batch, int frame, Vector2 screenPos)
+        public void DrawFrame(SpriteBatch batch, int frame, Vector2 screenPos, Color color)
         {
             int FrameWidth = myTexture.Width / framecount;
             int FrameHeight = myTexture.Height / framerow;
@@ -149,12 +154,12 @@ namespace Project_Manhattan.CoreCode
             }
             if (flip == false)
             {
-                batch.Draw(myTexture, screenPos, sourcerect, Color.White,
+                batch.Draw(myTexture, screenPos, sourcerect, color,
                     Rotation, Origin, Scale, SpriteEffects.None, Depth);
             }
             else
             {
-                batch.Draw(myTexture, screenPos, sourcerect, Color.White,
+                batch.Draw(myTexture, screenPos, sourcerect, color,
                     Rotation, Origin, Scale, SpriteEffects.FlipHorizontally, Depth);
             }
         }

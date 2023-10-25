@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Project_Manhattan.CoreCode;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,11 +41,14 @@ namespace Project_Manhattan.Content
         public bool IsHurt = false;
         public bool IsAction = false;
 
+        public Vector2 AbsPos = new Vector2(0,0);
+        public Color color = new Color(); 
+
         public AnimatedTexture[] This_Ani = new AnimatedTexture[5];
 
         public Friend(MainGame game)
         {
-
+            color = Color.Gray;
         }
         public abstract void skill1(int enePos, int CastPos);
         public abstract void skill2(int enePos, int CastPos);
@@ -65,10 +67,9 @@ namespace Project_Manhattan.Content
         public float DefRuduce(float Def)
         {
             float DefRe;
-            DefRe = 1 - (Def/(Def+100));
+            DefRe = 1 - (Def/(Def + 300));
             return DefRe;
         }
-
     }
 
     public abstract class Enemy
@@ -77,26 +78,31 @@ namespace Project_Manhattan.Content
         public float MaxHp;
         public float Str;
         public float MaxStr;
+        public float StrReal;
         public float Def;
         public float MaxDef;
-        public float rand;
+        public float DefReal;
+        public float DefEx;
+        public int rand;
 
         public int frameHr = 8;
         public int frameSp = 8;
+        public int phase;
+        public int phaseBegin;
 
         public string Anime = "Idle";    //Idle, S1, S2
 
         public bool IsAlive = true;
         public bool IsHurt = false;
         public bool IsAction = false;
+        public bool IsEnd = false;
 
-        public AnimatedTexture[] This_Ani = new AnimatedTexture[5];
+        public AnimatedTexture[] This_Ani = new AnimatedTexture[6];
         public Enemy(MainGame game)
         {
 
         }
-        public abstract void skill1(int RandPos);
-        public abstract void skill2(int RandPos);
+        public abstract void skill(int RandPos);
         public abstract void UpdateAction();
         public abstract void UpdateDraw(SpriteBatch batch, Vector2 P);
         public void Resetto()
@@ -104,6 +110,7 @@ namespace Project_Manhattan.Content
             Hp = MaxHp;
             Def = MaxDef;
             Str = MaxStr;
+            phase = phaseBegin;
 
             Anime = "Spawn";
         }
@@ -111,7 +118,7 @@ namespace Project_Manhattan.Content
         public float DefRuduce(float Def)
         {
             float DefRe;
-            DefRe = 1 - (Def / (Def + 200));
+            DefRe = 1 - (Def / (Def + 300));
             return DefRe;
         }
     }

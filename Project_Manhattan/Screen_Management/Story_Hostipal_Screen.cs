@@ -25,12 +25,13 @@ namespace Project_Manhattan.Screen_Management
 
         KeyboardState NewKey, OldKey;
 
-        bool IsStart = true;
         bool IsRunning = false;
         bool IsWalkForward = true;
 
         Texture2D BG_hospital;
         Texture2D BG_temple;
+        Texture2D BG_hotel;
+        Texture2D BG_tapae;
         Texture2D UI_story;
         Texture2D UI_name;
         AnimatedTexture Mickarey;
@@ -44,7 +45,7 @@ namespace Project_Manhattan.Screen_Management
         Vector2 CameraRight = new Vector2(5450, 0);
         Vector2 BGPos = Vector2.Zero;
         Vector2 UI_Pos = new Vector2(112, 724);
-        Level mlevel;
+        Level elevel;
 
         enum Level
         {
@@ -62,6 +63,9 @@ namespace Project_Manhattan.Screen_Management
             Sensei = new AnimatedTexture(Vector2.Zero, 0, 1.0f, 0);
             BG_hospital = game.Content.Load<Texture2D>("2D/BG/Hospital_empty");
             BG_temple = game.Content.Load<Texture2D>("2D/BG/TemplePara");
+            BG_hotel = game.Content.Load<Texture2D>("2D/BG/Hotel (1)");
+            BG_tapae = game.Content.Load<Texture2D>("2D/BG/TapaePara");
+
             UI_name = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             UI_story = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
 
@@ -69,7 +73,7 @@ namespace Project_Manhattan.Screen_Management
             Mickarey.Load(game.Content, "2D/Friend/Mickey/run-animation", 4, 1, 6);
             Mickaidle.Load(game.Content, "2D/Friend/Mickey/Mickey_Stand", 4, 1, 4);
 
-            mlevel = Level.Hospital;
+            elevel = Level.Hospital;
 
             string filepath = Path.Combine(@"Content\Dialog_test.txt");
 
@@ -91,21 +95,16 @@ namespace Project_Manhattan.Screen_Management
         {
             Console.Clear();
             NewKey = Keyboard.GetState();
-            switch (mlevel)
+            switch (elevel)
             {
                 case Level.Hospital:
                     {
-                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
                         {
                             ResetCam();
-                            mlevel = Level.Temple;
-                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
-                        }
-                        if (click_count >= m_listTexts.Count)
-                        {
-                            ResetCam();
-                            mlevel = Level.Temple;
-                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                            elevel = Level.Temple;
+                            HospitalAct();
+                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());                        
                         }
                         if (click_count >= 0 && click_count < 2)
                         {
@@ -123,7 +122,34 @@ namespace Project_Manhattan.Screen_Management
                     }
                 case Level.Temple:
                     {
-                        
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        {
+                            ResetCam();
+                            elevel = Level.Hotel;
+                            TempleAct();
+                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                        }
+                        break;
+                    }
+                case Level.Hotel:
+                    {
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        {
+                            ResetCam();
+                            elevel = Level.Tapae;
+                            ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
+                        }
+                        break;
+                    }
+                case Level.Tapae:
+                    {
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        {
+                            ResetCam();
+                            elevel = Level.Hospital;
+                            TapaeAct();
+                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                        }
                         break;
                     }
             }
@@ -197,7 +223,7 @@ namespace Project_Manhattan.Screen_Management
             
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                mlevel = Level.Temple;
+                elevel = Level.Temple;
             }
             
 
@@ -224,7 +250,7 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Draw(SpriteBatch spriteBatch)
         {           
-            switch (mlevel)
+            switch (elevel)
             {
                 case Level.Hospital:
                     {
@@ -239,6 +265,19 @@ namespace Project_Manhattan.Screen_Management
                         for (int i = 0; i < 3; i++)
                         {
                             spriteBatch.Draw(BG_temple, (BGPos - CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width, 0) * i, Color.White);
+                        }
+                        break;
+                    }
+                case Level.Hotel:
+                    {
+                        spriteBatch.Draw(BG_hotel, Vector2.Zero, Color.White);                     
+                        break;
+                    }
+                case Level.Tapae:
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            spriteBatch.Draw(BG_tapae, (BGPos - CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width, 0) * i, Color.White);
                         }
                         break;
                     }
@@ -271,6 +310,24 @@ namespace Project_Manhattan.Screen_Management
             CameraPos = new Vector2(3840, 0);
             CameraLeft = new Vector2(5000, 0);
             CameraRight = new Vector2(5450, 0);
+        }
+        private void HospitalAct()
+        {
+            LEC.enemies[0] = new MuscleRat(game);
+            LEC.enemies[1] = new Doktah(game);
+            LEC.enemies[2] = new MuscleRat(game);
+        }
+        private void TempleAct()
+        {
+            LEC.enemies[0] = new Worm(game);
+            LEC.enemies[1] = new Shakya(game);
+            LEC.enemies[2] = new Worm(game);
+        }
+        private void TapaeAct()
+        {
+            LEC.enemies[0] = new Bocchi(game);
+            LEC.enemies[1] = new Sensei(game);
+            LEC.enemies[2] = new Nijika(game);
         }
     }
 }

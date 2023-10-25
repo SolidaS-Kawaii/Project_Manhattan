@@ -20,6 +20,7 @@ namespace Project_Manhattan.Screen_Management
         //private MouseState chanveerakul;                //Mouse Position
 
         private Random random = new Random();
+        private int RandPos = 0;
 
         private float Cooldown = 0f;
         private float delay = 0f;
@@ -41,7 +42,9 @@ namespace Project_Manhattan.Screen_Management
         public static int Energy = 0;
         public const int EnergyMax = 7;
 
-        private AnimatedTexture BG_Hotel_UI;
+        Texture2D BG_hospital;
+        Texture2D BG_temple;
+        Texture2D BG_tapae;
 
         private const float Rotation = 0.0f;
 
@@ -59,6 +62,7 @@ namespace Project_Manhattan.Screen_Management
 
         private bool IsSkillEReady = false;
         private bool IsSkillQReady = false;
+        private bool IsCharge = false;
 
         public static Vector2[] PlayerPos = new Vector2[3];   //Player Position
         public Vector2[] EnemyPos = new Vector2[3];      //Enemy Position
@@ -81,13 +85,22 @@ namespace Project_Manhattan.Screen_Management
         public static string SkillInfo;
         public static string SkillName;
 
+        Level elevel;
+        enum Level
+        {
+            Hospital,
+            Temple,
+            Tapae
+        }
+
         MainGame game;
 
         public Gameplay_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            BG_Hotel_UI = new AnimatedTexture(Vector2.Zero, Rotation, 1.0f, 1.0f);
+            BG_hospital = game.Content.Load<Texture2D>("2D/BG/Hospital");
+            BG_temple = game.Content.Load<Texture2D>("2D/BG/Temple");
+            BG_tapae = game.Content.Load<Texture2D>("2D/BG/Tapae");
 
-            BG_Hotel_UI.Load(game.Content, "2D/BG/Hospital", 1, 1, 0);
             UI = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             Select_Enemy = game.Content.Load<Texture2D>("2D/UI/Selecting");
             Select_Friend = game.Content.Load<Texture2D>("2D/UI/Selecting2");
@@ -107,7 +120,7 @@ namespace Project_Manhattan.Screen_Management
 
             EnemyPos[0] = new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width / 4 - 200, MainGame._graphics.GraphicsDevice.Viewport.Height / 2);
             EnemyPos[1] = new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width / 4 - 100, MainGame._graphics.GraphicsDevice.Viewport.Height / 2 - 300);
-            EnemyPos[2] = new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width / 4 + 200, MainGame._graphics.GraphicsDevice.Viewport.Height / 2);
+            EnemyPos[2] = new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width / 4 + 250, MainGame._graphics.GraphicsDevice.Viewport.Height / 2);
 
             NameShow = new Vector2(UIPos.X + 650, UIPos.Y);
             HpShow = new Vector2(UIPos.X + 875, UIPos.Y);
@@ -121,6 +134,39 @@ namespace Project_Manhattan.Screen_Management
             Console.Clear();
             float Elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Uptime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            keytak = Keyboard.GetState();   //รับคีย์
+            var anutin = Mouse.GetState();  //รับเมาส์
+            gamePadState = GamePad.GetState(PlayerIndex.One);
+
+            switch (elevel)
+            {
+                case Level.Hospital:
+                    {
+                        if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                        {
+                            elevel = Level.Temple;
+                            ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
+                        }
+                            break;
+                    }
+                case Level.Temple:
+                    {
+                        if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                        {
+                            elevel = Level.Tapae;
+                            ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
+                        }
+                        break;
+                    }
+                case Level.Tapae:
+                    {
+                        if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                        {
+                            ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+                        }
+                        break;
+                    }
+            }
 
             ///////////////////////////// Energy /////////////////
             if (Energy > EnergyMax)
@@ -128,46 +174,45 @@ namespace Project_Manhattan.Screen_Management
                 Energy = EnergyMax;     //กันไม่ให้ Energy เกิน Max
             }
 
-            keytak = Keyboard.GetState();   //รับคีย์
-            var anutin = Mouse.GetState();  //รับเมาส์
-            gamePadState = GamePad.GetState(PlayerIndex.One);
-
             ///////////////////// เลือกตำแหน่งSensei by keyboard ///////////////////////////////////////
 
             if (IsMyPhase && trigger)
             {
-                if (keytak.IsKeyDown(Keys.A) && keypiak.IsKeyUp(Keys.A))
+                if (keytak.IsKeyDown(Keys.A) && keypiak.IsKeyUp(Keys.A) && !IsCharge)
                 {
                     if (SelPos > 0)
                     {
                         SelPos -= 1;
                     }
-                    IsSkillEReady = false;
-                    IsSkillQReady = false;
                 }
-                else if (keytak.IsKeyDown(Keys.D) && keypiak.IsKeyUp(Keys.D))
+                else if (keytak.IsKeyDown(Keys.D) && keypiak.IsKeyUp(Keys.D) && !IsCharge)
                 {
                     if (SelPos < 2)
                     {
                         SelPos += 1;
                     }
-                    IsSkillEReady = false;
-                    IsSkillQReady = false;
                 }
 
-                if (keytak.IsKeyDown(Keys.J) && keypiak.IsKeyUp(Keys.J))
+                if (keytak.IsKeyDown(Keys.A) && keypiak.IsKeyUp(Keys.A) && IsCharge)
                 {
                     if (TargetPos > 0)
                     {
                         TargetPos -= 1;
                     }
                 }
-                else if (keytak.IsKeyDown(Keys.L) && keypiak.IsKeyUp(Keys.L))
+                else if (keytak.IsKeyDown(Keys.D) && keypiak.IsKeyUp(Keys.D) && IsCharge)
                 {
                     if (TargetPos < 2)
                     {
                         TargetPos += 1;
                     }
+                }
+
+                if (keytak.IsKeyDown(Keys.Back) && keypiak.IsKeyUp(Keys.Back) && IsCharge)
+                {
+                    IsSkillEReady = false;
+                    IsSkillQReady = false;
+                    IsCharge = false;
                 }
                 for (int i = 0; i < LEC.enemies.Length; i++)
                 {
@@ -189,14 +234,15 @@ namespace Project_Manhattan.Screen_Management
                             LFC.friend[i].skill1_Info();
                             IsSkillEReady = true;
                             IsSkillQReady = false;
+                            IsCharge = true;
                             Target_task = LFC.friend[i].Target_1;
                             Caster = i;
                         }
-                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill1_Cost >= 0 && IsSkillEReady == true)
+                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill1_Cost >= 0 && IsSkillEReady == true && LEC.enemies[TargetPos].IsAlive)
                         {
                             LFC.friend[i].skill1(TargetPos, Caster);
-                            LFC.friend[i].IsCharEnd = true;
                             IsSkillEReady = false;
+                            IsCharge = false;
                             Delay(3);
                         }
                     }
@@ -207,14 +253,15 @@ namespace Project_Manhattan.Screen_Management
                             LFC.friend[i].skill2_Info();
                             IsSkillQReady = true;
                             IsSkillEReady = false;
+                            IsCharge = true;
                             Target_task = LFC.friend[i].Target_2;
                             Caster = i;
                         }
-                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill2_Cost >= 0 && IsSkillQReady == true)
+                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill2_Cost >= 0 && IsSkillQReady == true && LEC.enemies[TargetPos].IsAlive)
                         {
                             LFC.friend[i].skill2(TargetPos, Caster);
-                            LFC.friend[i].IsCharEnd = true;
                             IsSkillQReady = false;
+                            IsCharge = false;
                             Delay(3);
                         }
                     }
@@ -223,7 +270,7 @@ namespace Project_Manhattan.Screen_Management
 
                 ///////////////////// จบ Phase ////////////////////
 
-                if (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter) && IsMyPhase && !StartPhase)
+                if (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter) && IsMyPhase && !StartPhase && !IsLoss && !IsWin)
                 {
                     IsMyPhase = false;
                     turn_e = 0;
@@ -235,50 +282,27 @@ namespace Project_Manhattan.Screen_Management
             {
                 if (trigger)
                 {
-                    Delay(2);
-                    int RandPos = random.Next(0, 3);
+                    Delay(3);
+                    do
+                    {
+                        RandPos = random.Next(0, 3);
+                    }
+                    while (!LFC.friend[RandPos].IsAlive);
                     if (turn_e == 1)
                     {
-                        if (LEC.enemies[turn_e - 1].IsAlive)
+                        if (LEC.enemies[1].IsAlive)
                         {
-                            LEC.enemies[turn_e - 1].skill1(RandPos);
+                            LEC.enemies[1].skill(RandPos);
                         }
-                        else if (!LEC.enemies[turn_e - 1].IsAlive)
-                        {
-                            
-                        }
-                        RandPos = random.Next(0, 3);
                     }
-                    else if (turn_e == 2)
-                    {
-                        if (LEC.enemies[turn_e - 1].IsAlive)
-                        {
-                            LEC.enemies[turn_e - 1].skill1(RandPos);
-                        }
-                        else if (!LEC.enemies[turn_e - 1].IsAlive)
-                        {
-                            
-                        }
-                        RandPos = random.Next(0, 3);
-                    }
-                    else if (turn_e == 3)
-                    {
-                        if (LEC.enemies[turn_e - 1].IsAlive)
-                        {
-                            LEC.enemies[turn_e - 1].skill1(RandPos);
-                        }
-                        else if (!LEC.enemies[turn_e - 1].IsAlive)
-                        {
-                            
-                        }
-                        RandPos = random.Next(0, 3);
-                    }
+                    
                     turn_e++;
                 }
-                if (turn_e >= LEC.enemies.Length + 1)
+                if (LEC.enemies[1].IsEnd)
                 {
                     IsMyPhase = true;
                     StartPhase = true;
+                    LEC.enemies[1].IsEnd = false;
                     turn_e = 0;
                 }
             }
@@ -323,7 +347,6 @@ namespace Project_Manhattan.Screen_Management
                 IsLoss = false;
                 StartPhase = true;
                 Energy = 0;
-                ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
             }
             else if (IsLoss && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
             {
@@ -370,7 +393,24 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Draw(SpriteBatch theBatch)
         {
-            BG_Hotel_UI.DrawFrame(theBatch, Vector2.Zero, false);
+            switch (elevel)
+            {
+                case Level.Hospital:
+                    {
+                        theBatch.Draw(BG_hospital, Vector2.Zero, Color.White);
+                        break;
+                    }
+                case Level.Temple:
+                    {
+                        theBatch.Draw(BG_temple, Vector2.Zero, Color.White);
+                        break;
+                    }
+                case Level.Tapae:
+                    {
+                        theBatch.Draw(BG_tapae, Vector2.Zero, Color.White);
+                        break;
+                    }
+            }
             ////////////// วาด UI //////////
             if(IsMyPhase)
             {
@@ -393,8 +433,7 @@ namespace Project_Manhattan.Screen_Management
 
             for (int i = 0; i < LFC.friend.Length; i++)
             {
-                                 
-                LFC.friend[i].UpdateDraw(theBatch, PlayerPos[i]);              
+                LFC.friend[i].UpdateDraw(theBatch, PlayerPos[i] + LFC.friend[i].AbsPos);              
 
                 if (LFC.friend[i].IsAlive)
                 {
@@ -402,8 +441,8 @@ namespace Project_Manhattan.Screen_Management
                     theBatch.DrawString(font, (int)LFC.friend[i].Hp + " / " + (int)LFC.friend[i].MaxHp, HpShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
                     theBatch.DrawString(font, (int)LFC.friend[i].Str + "", StrShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
                     theBatch.DrawString(font, (int)LFC.friend[i].Def + "", DefShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
-                    theBatch.Draw(Healthbar_Bk, PlayerPos[i] + new Vector2(25, -120), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
-                    theBatch.Draw(Healthbar_Fr, PlayerPos[i] + new Vector2(25, -120), new Rectangle(0, 0, (int)((2 * (LFC.friend[i].Hp * 100 / LFC.friend[i].MaxHp))), 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
+                    theBatch.Draw(Healthbar_Bk, PlayerPos[i] + new Vector2(50, -120), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
+                    theBatch.Draw(Healthbar_Fr, PlayerPos[i] + new Vector2(50, -120), new Rectangle(0, 0, (int)((2 * (LFC.friend[i].Hp * 100 / LFC.friend[i].MaxHp))), 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
                 }
                 else if (!LFC.friend[i].IsAlive)
                 {
@@ -411,7 +450,6 @@ namespace Project_Manhattan.Screen_Management
                     theBatch.DrawString(font, (int)LFC.friend[i].Hp + " / " + (int)LFC.friend[i].MaxHp, HpShow + new Vector2(0, 25 + (50 * (i + 1))), Color.Gray);
                     theBatch.DrawString(font, (int)LFC.friend[i].Str + "", StrShow + new Vector2(0, 25 + (50 * (i + 1))), Color.Gray);
                     theBatch.DrawString(font, (int)LFC.friend[i].Def + "", DefShow + new Vector2(0, 25 + (50 * (i + 1))), Color.Gray);
-                    theBatch.Draw(Healthbar_Bk, new Vector2(400, 0), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
                 }
             }
 
