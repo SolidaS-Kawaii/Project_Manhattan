@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Project_Manhattan.CoreCode;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace Project_Manhattan.Screen_Management
         }
 
         MainGame game;
-        public Story_Hostipal_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
+        public Story_Hostipal_Screen(MainGame game, EventHandler theScreenEvent) : base(game, theScreenEvent)
         {
             Mickarey = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
             Mickaidle = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
@@ -102,8 +103,10 @@ namespace Project_Manhattan.Screen_Management
                         if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
                         {
                             ResetCam();
+                            ResetFede();
                             elevel = Level.Temple;
                             HospitalAct();
+                            MediaPlayer.Play(song[2]);
                             ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());                        
                         }
                         if (click_count >= 0 && click_count < 2)
@@ -125,8 +128,10 @@ namespace Project_Manhattan.Screen_Management
                         if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
                         {
                             ResetCam();
+                            ResetFede();
                             elevel = Level.Hotel;
                             TempleAct();
+                            MediaPlayer.Play(song[2]);
                             ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
                         }
                         break;
@@ -136,6 +141,7 @@ namespace Project_Manhattan.Screen_Management
                         if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
                         {
                             ResetCam();
+                            ResetFede();
                             elevel = Level.Tapae;
                             ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
                         }
@@ -146,8 +152,10 @@ namespace Project_Manhattan.Screen_Management
                         if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
                         {
                             ResetCam();
+                            ResetFede();
                             elevel = Level.Hospital;
                             TapaeAct();
+                            MediaPlayer.Play(song[2]);
                             ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
                         }
                         break;
@@ -214,12 +222,11 @@ namespace Project_Manhattan.Screen_Management
 
             if (NewKey.IsKeyDown(Keys.Enter) && OldKey.IsKeyUp(Keys.Enter) && isTitle)
             {
-                if (click_count < m_listTexts.Count)
+                if (click_count < m_listTexts.Count - 1)
                 {
                     click_count++;
                 }
             }
-
             
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
@@ -243,6 +250,7 @@ namespace Project_Manhattan.Screen_Management
             PlayerOldPos = PlayerPos;
             Console.WriteLine(click_count);
             float Elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            ScreenFadeIn(gameTime);
             Mickaidle.UpdateFrame(Elapsed);
             Mickarey.UpdateFrame(Elapsed);
             Sensei.UpdateFrame(Elapsed);
@@ -302,6 +310,9 @@ namespace Project_Manhattan.Screen_Management
                 spriteBatch.DrawString(_font, m_listTexts[click_count], UI_Pos + new Vector2(25, 25), Color.White);
                 spriteBatch.DrawString(_font, Name, UI_Pos + new Vector2(100, -100), Color.White);
             }
+
+            spriteBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
+
             base.Draw(spriteBatch);
         }
         private void ResetCam()

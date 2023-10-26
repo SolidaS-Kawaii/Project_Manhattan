@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Project_Manhattan.Content;
 using Project_Manhattan.CoreCode;
 using System;
@@ -31,7 +32,7 @@ namespace Project_Manhattan.Screen_Management
         KeyboardState NigKey, OppKey;
 
         MainGame game;
-        public Team_Manager_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
+        public Team_Manager_Screen(MainGame game, EventHandler theScreenEvent) : base(game, theScreenEvent)
         {
             Hotel = game.Content.Load<Texture2D>("2D/BG/SelectA");
             font = game.Content.Load<SpriteFont>("Arial24");
@@ -106,6 +107,9 @@ namespace Project_Manhattan.Screen_Management
                     LFC.friend[i].Resetto();
                     LEC.enemies[i].Resetto();
                 }
+                isReady = false;
+                MediaPlayer.Play(song[3]);
+                ResetFede();
                 ScreenEvent.Invoke(game.mGameplay_Screen, new EventArgs());
             }
 
@@ -119,6 +123,7 @@ namespace Project_Manhattan.Screen_Management
             Name[2] = LFC.friend[2].Name;
 
             OppKey = NigKey;
+            ScreenFadeIn(gameTime);
             Console.WriteLine(LFC.select[Pos]);
             base.Update(gameTime);
         }
@@ -131,8 +136,18 @@ namespace Project_Manhattan.Screen_Management
                 LFC.friend[i].UpdateDraw(spriteBatch, Player_Pos[i] + LFC.friend[i].AbsPos);
                 spriteBatch.DrawString(font, Name[i], Player_Pos[i] + new Vector2(60, 350), Color.White);
             }
+            if(!isDuplicate)
+            {
+                spriteBatch.DrawString(font, ">>Press Enter to Battle", new Vector2(1100, 950), Color.White);
+            }
+            else
+            {
+                spriteBatch.DrawString(font, ">>Press Enter to Battle", new Vector2(1100, 950), Color.Gray);
+            }
 
             spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(100, -100), Color.White);
+            spriteBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
+
         }
     }
 }

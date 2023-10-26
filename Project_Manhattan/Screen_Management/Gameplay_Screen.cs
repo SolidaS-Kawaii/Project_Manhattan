@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Project_Manhattan.Content;
 using Project_Manhattan.CoreCode;
 using System;
@@ -95,7 +96,7 @@ namespace Project_Manhattan.Screen_Management
 
         MainGame game;
 
-        public Gameplay_Screen(MainGame game, EventHandler theScreenEvent) : base(theScreenEvent)
+        public Gameplay_Screen(MainGame game, EventHandler theScreenEvent) : base(game,theScreenEvent)
         {
             BG_hospital = game.Content.Load<Texture2D>("2D/BG/Hospital");
             BG_temple = game.Content.Load<Texture2D>("2D/BG/Temple");
@@ -238,12 +239,43 @@ namespace Project_Manhattan.Screen_Management
                             Target_task = LFC.friend[i].Target_1;
                             Caster = i;
                         }
-                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill1_Cost >= 0 && IsSkillEReady == true && LEC.enemies[TargetPos].IsAlive)
+                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill1_Cost >= 0 && IsSkillEReady == true)
                         {
-                            LFC.friend[i].skill1(TargetPos, Caster);
-                            IsSkillEReady = false;
-                            IsCharge = false;
-                            Delay(3);
+                            if(Target_task == "Friend" && LFC.friend[TargetPos].IsAlive)
+                            {
+                                LFC.friend[i].skill1(TargetPos, Caster);
+                                IsSkillEReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if(Target_task == "AllFriend")
+                            {
+                                LFC.friend[i].skill1(TargetPos, Caster);
+                                IsSkillEReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if(Target_task == "Self")
+                            {
+                                LFC.friend[i].skill1(TargetPos, Caster);
+                                IsSkillEReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if(Target_task == "Enemy" && LEC.enemies[TargetPos].IsAlive)
+                            {
+                                LFC.friend[i].skill1(TargetPos, Caster);
+                                IsSkillEReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if(Target_task == "AllEnemy")
+                            {
+                                LFC.friend[i].skill1(TargetPos, Caster);
+                                IsSkillEReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
                         }
                     }
                     if (keytak.IsKeyDown(Keys.Q) && keypiak.IsKeyUp(Keys.Q))        //สกิล 2 Q
@@ -257,15 +289,45 @@ namespace Project_Manhattan.Screen_Management
                             Target_task = LFC.friend[i].Target_2;
                             Caster = i;
                         }
-                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill2_Cost >= 0 && IsSkillQReady == true && LEC.enemies[TargetPos].IsAlive)
+                        else if (i == SelPos && LFC.friend[i].IsCharEnd == false && Energy - LFC.friend[i].Skill2_Cost >= 0 && IsSkillQReady == true)
                         {
-                            LFC.friend[i].skill2(TargetPos, Caster);
-                            IsSkillQReady = false;
-                            IsCharge = false;
-                            Delay(3);
+                            if (Target_task == "Friend" && LFC.friend[TargetPos].IsAlive)
+                            {
+                                LFC.friend[i].skill2(TargetPos, Caster);
+                                IsSkillQReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if (Target_task == "AllFriend")
+                            {
+                                LFC.friend[i].skill2(TargetPos, Caster);
+                                IsSkillQReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if (Target_task == "Self")
+                            {
+                                LFC.friend[i].skill2(TargetPos, Caster);
+                                IsSkillQReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if (Target_task == "Enemy" && LEC.enemies[TargetPos].IsAlive)
+                            {
+                                LFC.friend[i].skill2(TargetPos, Caster);
+                                IsSkillQReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
+                            else if (Target_task == "AllEnemy")
+                            {
+                                LFC.friend[i].skill2(TargetPos, Caster);
+                                IsSkillQReady = false;
+                                IsCharge = false;
+                                Delay(3);
+                            }
                         }
                     }
-
                 }
 
                 ///////////////////// จบ Phase ////////////////////
@@ -346,14 +408,18 @@ namespace Project_Manhattan.Screen_Management
                 IsWin = false;
                 IsLoss = false;
                 StartPhase = true;
+                MediaPlayer.Play(song[1]);
                 Energy = 0;
+                ResetFede();
             }
             else if (IsLoss && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
             {
                 IsLoss = false;
                 IsWin = false;
                 StartPhase = true;
+                MediaPlayer.Play(song[2]);
                 Energy = 0;
+                ResetFede();
                 ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
             }
             ////////////
@@ -388,7 +454,7 @@ namespace Project_Manhattan.Screen_Management
             keypiak = keytak;
             Console.WriteLine(LFC.friend[Caster].This_Ani[2].Frame);
             Console.WriteLine(LFC.friend[Caster].Anime);
-
+            ScreenFadeIn(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch theBatch)
@@ -515,6 +581,7 @@ namespace Project_Manhattan.Screen_Management
             theBatch.Draw(Select_Pos, new Vector2(PlayerPos[SelPos].X + 50, PlayerPos[SelPos].Y - 50), Color.Yellow);
 
             theBatch.Draw(Arrow1, new Vector2(NameShow.X - 150, NameShow.Y - 25 + (50 * (SelPos))), Color.White);
+            theBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
 
         }
         void Delay(float amountoftime)

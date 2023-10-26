@@ -1030,3 +1030,27 @@
 /processorParam:TextureFormat=Compressed
 /build:Oth/Font/Arial48.spritefont
 
+#begin Oth/Song/gameplay.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Oth/Song/gameplay.mp3
+
+#begin Oth/Song/menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Oth/Song/menu.mp3
+
+#begin Oth/Song/pickchar.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Oth/Song/pickchar.mp3
+
+#begin Oth/Song/story.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Oth/Song/story.mp3
+
