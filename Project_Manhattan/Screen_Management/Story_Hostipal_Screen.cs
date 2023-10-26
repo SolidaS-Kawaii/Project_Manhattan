@@ -76,31 +76,31 @@ namespace Project_Manhattan.Screen_Management
 
             elevel = Level.Hospital;
 
-            string filepath = Path.Combine(@"Content\Dialog_test.txt");
+            //string filepath = Path.Combine(@"Content\Dialog_test.txt");
 
-            FileStream fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            StreamReader streamReader = new StreamReader(fileStream);
+            //FileStream fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            //StreamReader streamReader = new StreamReader(fileStream);
 
-            while (!streamReader.EndOfStream)
-            {
-                string tmpStr = streamReader.ReadLine();
-                m_listTexts.Add(tmpStr);
-            }
+            //while (!streamReader.EndOfStream)
+            //{
+            //    string tmpStr = streamReader.ReadLine();
+            //    m_listTexts.Add(tmpStr);
+            //}
 
-            streamReader.Close();
+            //streamReader.Close();
 
             _font = game.Content.Load<SpriteFont>("Arial24");
             this.game = game;
         }
         public override void Update(GameTime gameTime)
         {
-            Console.Clear();
+            //Console.Clear();
             NewKey = Keyboard.GetState();
             switch (elevel)
             {
                 case Level.Hospital:
                     {
-                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) /*|| click_count >= m_listTexts.Count*/)
                         {
                             ResetCam();
                             ResetFede();
@@ -125,7 +125,7 @@ namespace Project_Manhattan.Screen_Management
                     }
                 case Level.Temple:
                     {
-                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)))
                         {
                             ResetCam();
                             ResetFede();
@@ -138,7 +138,7 @@ namespace Project_Manhattan.Screen_Management
                     }
                 case Level.Hotel:
                     {
-                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)))
                         {
                             ResetCam();
                             ResetFede();
@@ -149,7 +149,7 @@ namespace Project_Manhattan.Screen_Management
                     }
                 case Level.Tapae:
                     {
-                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count >= m_listTexts.Count)
+                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)))
                         {
                             ResetCam();
                             ResetFede();
@@ -248,7 +248,7 @@ namespace Project_Manhattan.Screen_Management
             
             OldKey = NewKey;
             PlayerOldPos = PlayerPos;
-            Console.WriteLine(click_count);
+            //Console.WriteLine(click_count);
             float Elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             ScreenFadeIn(gameTime);
             Mickaidle.UpdateFrame(Elapsed);

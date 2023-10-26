@@ -33,7 +33,7 @@ namespace Project_Manhattan.Screen_Management
             this.song[1] = game1.Content.Load<Song>("Oth/Song/story");
             this.song[2] = game1.Content.Load<Song>("Oth/Song/pickchar");
             this.song[3] = game1.Content.Load<Song>("Oth/Song/gameplay");
-            MediaPlayer.Volume = 0.05f;
+            MediaPlayer.Volume = 0.03f;
             MediaPlayer.IsRepeating = true;
         }
         public virtual void Update(GameTime gameTime)

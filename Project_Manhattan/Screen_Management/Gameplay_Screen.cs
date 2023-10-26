@@ -132,7 +132,7 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Update(GameTime gameTime)
         {
-            Console.Clear();
+            //Console.Clear();
             float Elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Uptime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             keytak = Keyboard.GetState();   //รับคีย์
@@ -452,8 +452,8 @@ namespace Project_Manhattan.Screen_Management
             ///////////////////////////
 
             keypiak = keytak;
-            Console.WriteLine(LFC.friend[Caster].This_Ani[2].Frame);
-            Console.WriteLine(LFC.friend[Caster].Anime);
+            //Console.WriteLine(LFC.friend[Caster].This_Ani[2].Frame);
+            //Console.WriteLine(LFC.friend[Caster].Anime);
             ScreenFadeIn(gameTime);
             base.Update(gameTime);
         }

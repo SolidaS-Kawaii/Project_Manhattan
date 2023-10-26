@@ -49,7 +49,7 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Update(GameTime gameTime)
         {   
-            Console.Clear();
+            //Console.Clear();
             NigKey = Keyboard.GetState();
 
             if (NigKey.IsKeyDown(Keys.D) && OppKey.IsKeyUp(Keys.D))
@@ -124,7 +124,7 @@ namespace Project_Manhattan.Screen_Management
 
             OppKey = NigKey;
             ScreenFadeIn(gameTime);
-            Console.WriteLine(LFC.select[Pos]);
+            //Console.WriteLine(LFC.select[Pos]);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
