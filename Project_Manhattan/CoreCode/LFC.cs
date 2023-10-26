@@ -70,6 +70,15 @@ namespace Project_Manhattan.CoreCode
                 {
                     friend[i].This_Ani[4].UpdateFrame(elapsed);
                 }
+
+                if (friend[i].IsBuff)
+                {
+                    friend[i].Buffed.UpdateFrame(elapsed);
+                }
+                else if (friend[i].IsHeal)
+                {
+                    friend[i].Healed.UpdateFrame(elapsed);
+                }
             }
 
             for(int i = 0;i < friendList.Count; i++)

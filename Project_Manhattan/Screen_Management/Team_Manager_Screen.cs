@@ -19,6 +19,7 @@ namespace Project_Manhattan.Screen_Management
 
         bool isDuplicate = false;
         bool isReady = false;
+        bool isEpressed = false;
 
         Texture2D Hotel;
         Texture2D select;
@@ -26,8 +27,10 @@ namespace Project_Manhattan.Screen_Management
         Vector2[] Player_Pos = new Vector2[3];
 
         string[] Name = new string[3];
+        string info = "";
+        string trait = "";
 
-        SpriteFont font;
+        SpriteFont font24, font16;
         
         KeyboardState NigKey, OppKey;
 
@@ -35,7 +38,8 @@ namespace Project_Manhattan.Screen_Management
         public Team_Manager_Screen(MainGame game, EventHandler theScreenEvent) : base(game, theScreenEvent)
         {
             Hotel = game.Content.Load<Texture2D>("2D/BG/SelectA");
-            font = game.Content.Load<SpriteFont>("Arial24");
+            font24 = game.Content.Load<SpriteFont>("Arial24");
+            font16 = game.Content.Load<SpriteFont>("File");
             select = game.Content.Load<Texture2D>("2D/UI/SelectChar");
 
             Player_Pos[0] = new Vector2(300, 375);
@@ -58,6 +62,7 @@ namespace Project_Manhattan.Screen_Management
                 {
                     Pos++;
                 }
+                sfx[0].Play();
             }
             
             else if (NigKey.IsKeyDown(Keys.A) && OppKey.IsKeyUp(Keys.A))
@@ -66,6 +71,7 @@ namespace Project_Manhattan.Screen_Management
                 {
                     Pos--;
                 }
+                sfx[0].Play();
             }
 
             if (NigKey.IsKeyDown(Keys.W) && OppKey.IsKeyUp(Keys.W))
@@ -74,6 +80,7 @@ namespace Project_Manhattan.Screen_Management
                 {
                     LFC.select[Pos]--;
                 }
+                sfx[1].Play();
             }
             else if (NigKey.IsKeyDown(Keys.S) && OppKey.IsKeyUp(Keys.S))
             {
@@ -81,6 +88,16 @@ namespace Project_Manhattan.Screen_Management
                 {
                     LFC.select[Pos]++;
                 }
+                sfx[1].Play();
+            }
+
+            if(isEpressed)
+            {
+                info = LFC.friend[Pos].SkillInfo1;
+            }
+            else if(!isEpressed)
+            {
+                info = LFC.friend[Pos].SkillInfo2;
             }
 
             if (LFC.select[0] == LFC.select[1] || LFC.select[0] == LFC.select[2])
@@ -112,6 +129,10 @@ namespace Project_Manhattan.Screen_Management
                 ResetFede();
                 ScreenEvent.Invoke(game.mGameplay_Screen, new EventArgs());
             }
+            else if(NigKey.IsKeyDown(Keys.Enter) && OppKey.IsKeyUp(Keys.Enter) && isDuplicate && isReady)
+            {
+                sfx[4].Play();
+            }
 
             if (!isReady)
             {
@@ -121,6 +142,9 @@ namespace Project_Manhattan.Screen_Management
             Name[0] = LFC.friend[0].Name;
             Name[1] = LFC.friend[1].Name;
             Name[2] = LFC.friend[2].Name;
+
+            info = LFC.friend[Pos].role;
+            trait = LFC.friend[Pos].ability;
 
             OppKey = NigKey;
             ScreenFadeIn(gameTime);
@@ -134,18 +158,20 @@ namespace Project_Manhattan.Screen_Management
             for (int i = 0; i < LFC.friend.Length; i++)
             {
                 LFC.friend[i].UpdateDraw(spriteBatch, Player_Pos[i] + LFC.friend[i].AbsPos);
-                spriteBatch.DrawString(font, Name[i], Player_Pos[i] + new Vector2(60, 350), Color.White);
+                spriteBatch.DrawString(font24, Name[i], Player_Pos[i] + new Vector2(60, 350), Color.White);
             }
             if(!isDuplicate)
             {
-                spriteBatch.DrawString(font, ">>Press Enter to Battle", new Vector2(1100, 950), Color.White);
+                spriteBatch.DrawString(font24, ">>Press Enter to Battle", new Vector2(1050, 1000), Color.White);
             }
             else
             {
-                spriteBatch.DrawString(font, ">>Press Enter to Battle", new Vector2(1100, 950), Color.Gray);
+                spriteBatch.DrawString(font24, ">>Press Enter to Battle", new Vector2(1050, 1000), Color.Gray);
             }
 
-            spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(100, -100), Color.White);
+            spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(100, -50), Color.White);
+            spriteBatch.DrawString(font16, "Role : " + info, Player_Pos[Pos] + new Vector2(30, 450), Color.White);
+            spriteBatch.DrawString(font16, "Ability : " + trait, Player_Pos[Pos] + new Vector2(30, 500), Color.White);
             spriteBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
 
         }

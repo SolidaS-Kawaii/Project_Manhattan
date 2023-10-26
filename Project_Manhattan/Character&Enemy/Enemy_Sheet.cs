@@ -26,6 +26,8 @@ namespace Project_Manhattan
             phase = 0;
             phaseBegin = phase;
 
+            AbsPos = new Vector2(50, 125);
+
             for (int i = 0; i < This_Ani.Length; i++)
             {
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
@@ -82,6 +84,7 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     this.IsAction = false;
+                    IsEnd = true;
                     Hp += 300;
                     This_Ani[2].Reset();
                 }
@@ -158,6 +161,8 @@ namespace Project_Manhattan
             MaxHp = Hp;
             MaxStr = Str;
             MaxDef = Def;
+
+            AbsPos = new Vector2(-40, 0);
 
             for(int i = 0; i < This_Ani.Length; i++)
             {
@@ -242,7 +247,9 @@ namespace Project_Manhattan
             phase = 0;
             phaseBegin = phase;
 
-            for(int i = 0; i < This_Ani.Length; i++)
+            AbsPos = new Vector2(50, 75);
+
+            for (int i = 0; i < This_Ani.Length; i++)
             {
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
 
@@ -387,6 +394,8 @@ namespace Project_Manhattan
             MaxStr = Str;
             MaxDef = Def;
 
+            AbsPos = new Vector2(25, 75);
+
             phase = 3;
             phaseBegin = phase;
 
@@ -407,20 +416,23 @@ namespace Project_Manhattan
         public override void skill(int RandPos)
         {
             rand = RandPos;
-            if (phase == 3 && Str <= MaxStr + 100)
+            if (phase2 >= 3 && Str <= MaxStr + 100)
             {
                 Anime = "S1";
                 phase++;
+                phase2 = 0;
             }
-            else if(phase >= 8 && !LEC.enemies[0].IsAlive && !LEC.enemies[2].IsAlive)
+            else if(phase >= 8 && (!LEC.enemies[0].IsAlive || !LEC.enemies[2].IsAlive))
             {
                 Anime = "S3";
                 phase = 0;
+                phase2++;
             }
             else
             {
                 Anime = "S2";
                 phase++;
+                phase2++;
             }
             this.IsAction = true;
         }
@@ -558,11 +570,13 @@ namespace Project_Manhattan
         {
             Hp = 725;
             Str = 50;
-            Def = 75;
+            Def = 0;
 
             MaxHp = Hp;
             MaxStr = Str;
             MaxDef = Def;
+
+            AbsPos = new Vector2(-50, 0);
 
             for (int i = 0; i < This_Ani.Length; i++)
             {
@@ -644,6 +658,8 @@ namespace Project_Manhattan
             MaxStr = Str;
             MaxDef = Def;
 
+            AbsPos = new Vector2(-75, 0);
+
             for (int i = 0; i < This_Ani.Length; i++)
             {
                 This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
@@ -723,6 +739,8 @@ namespace Project_Manhattan
             MaxHp = Hp;
             MaxStr = Str;
             MaxDef = Def;
+
+            AbsPos = new Vector2(-75, 0);
 
             for (int i = 0; i < This_Ani.Length; i++)
             {

@@ -19,8 +19,10 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\2D\EFF\" />
     <Folder Include="Content\2D\Enemy\BJJ\" />
     <Folder Include="Content\2D\Friend\JJB\" />
+    <Folder Include="Content\Oth\SFX\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

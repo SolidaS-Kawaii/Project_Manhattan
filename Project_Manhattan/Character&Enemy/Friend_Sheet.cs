@@ -15,13 +15,12 @@ namespace Project_Manhattan
 {
     public class Mickey : Friend
     {
-        int a = 0;
         public Mickey(MainGame game) : base(game)
         {
             Name = "Miki";
 
             Hp = 500;
-            Str = 150;
+            Str = 200;
             Def = 50;
 
             MaxHp = Hp;
@@ -30,6 +29,11 @@ namespace Project_Manhattan
 
             Skill1_Cost = 2;
             Skill2_Cost = 3;
+            SkillInfo1 = "Kick a ball into our sensei \nDeals 100% of Str";
+            SkillInfo2 = "Kick a ball into our sensei harshly \nDeals 200% of Str";
+
+            role = "Dps";
+            ability = "Single target";
 
             Target_1 = "Enemy";
             Target_2 = "Enemy"; 
@@ -72,12 +76,12 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "MickeyE (2E)";
-            Gameplay_Screen.SkillInfo = "Kick a ball into our sensei \nDeals 100% of Str";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "MickeyQ (3E)";
-            Gameplay_Screen.SkillInfo = "Kick a ball into our sensei harshly \nDeals 200% of Str";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
         }
         public override void UpdateAction() //for animated
         {
@@ -88,6 +92,7 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
+                    sound_attack.Play();
                     LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[target].Anime = "Hurt";
                 }
@@ -99,6 +104,7 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
+                    sound_attack.Play();
                     LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[target].Anime = "Hurt";
                 }
@@ -119,8 +125,23 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
-            if(Def < 0)
+            if (IsBuff)
+            {
+                if (Buffed.IsEnd)
+                {
+                    IsBuff = false;
+                    Buffed.Reset();
+                }
+            }
+            else if (IsHeal)
+            {
+                if (Healed.IsEnd)
+                {
+                    IsHeal = false;
+                    Healed.Reset();
+                }
+            }
+            if (Def < 0)
             {
                 Def = 0;
             }
@@ -149,7 +170,11 @@ namespace Project_Manhattan
         {
             if (IsAlive)
             {
-                if (Anime == "S1")
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
+                }
+                else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
                 }
@@ -165,9 +190,14 @@ namespace Project_Manhattan
                 {
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
-                else
+
+                if (IsBuff)
                 {
-                    This_Ani[0].DrawFrame(batch, P, true, color);
+                    Buffed.DrawFrame(batch, P);
+                }
+                else if (IsHeal)
+                {
+                    Healed.DrawFrame(batch, P);
                 }
             }
         }
@@ -188,6 +218,11 @@ namespace Project_Manhattan
 
             Skill1_Cost = 2;
             Skill2_Cost = 2;
+            SkillInfo1 = "Pick up a medicine form my lover bag \nHeals 125 Hp to all friend";
+            SkillInfo2 = "Shouttttttttttttt! \nBuffs 75 Str to a friend";
+
+            role = "Support";
+            ability = "Buff, Heal AoE";
 
             Target_1 = "AllFriend";
             Target_2 = "Friend";
@@ -227,12 +262,12 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "HengE (2E)";
-            Gameplay_Screen.SkillInfo = "Pick up a medicine form my lover bag \nHeals 125 Hp to all friend";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "HengQ (2E)";
-            Gameplay_Screen.SkillInfo = "Shouttttttttttttt! \nBuffs 75 Str to a friend";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
         }
         public override void UpdateAction()
         {
@@ -248,6 +283,8 @@ namespace Project_Manhattan
                         if (LFC.friend[i].IsAlive)
                         {
                             LFC.friend[i].Hp += 125;
+                            LFC.friend[i].IsHeal = true;
+                            sound_up.Play();
                         }
                     }
                 }
@@ -259,7 +296,9 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     IsAction = false;
                     IsCharEnd = true;
-                    LFC.friend[target].Str += 75;                   
+                    LFC.friend[target].Str += 75;
+                    LFC.friend[target].IsBuff = true;
+                    sound_up.Play();
                 }
             }
             else if (Anime == "Hurt")
@@ -276,6 +315,22 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[1].Reset();
+                }
+            }
+            if (IsBuff)
+            {
+                if (Buffed.IsEnd)
+                {
+                    IsBuff = false;
+                    Buffed.Reset();
+                }
+            }
+            else if (IsHeal)
+            {
+                if (Healed.IsEnd)
+                {
+                    IsHeal = false;
+                    Healed.Reset();
                 }
             }
             if (Def < 0)
@@ -307,10 +362,18 @@ namespace Project_Manhattan
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
             if (IsAlive)
-            {              
-                if (Anime == "S1")
+            {
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
+                }
+                else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
                 }
                 else if (Anime == "Spawn")
                 {
@@ -320,13 +383,14 @@ namespace Project_Manhattan
                 {
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
-                else if (Anime == "S2")
+
+                if (IsBuff)
                 {
-                    This_Ani[3].DrawFrame(batch, P, true);
+                    Buffed.DrawFrame(batch, P);
                 }
-                else
+                else if (IsHeal)
                 {
-                    This_Ani[0].DrawFrame(batch, P, true, color);
+                    Healed.DrawFrame(batch, P);
                 }
             }
         }
@@ -347,6 +411,11 @@ namespace Project_Manhattan
 
             Skill1_Cost = 1;
             Skill2_Cost = 3;
+            SkillInfo1 = "I can lift a dumbbell all day \nDef up 50";
+            SkillInfo2 = "Want some larb, brother? \nDeal Dmg with 125%";
+
+            role = "Flex";
+            ability = "DEF, Dmg up on DEF";
 
             Target_1 = "Self";
             Target_2 = "Enemy";
@@ -385,12 +454,12 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "OhmE (1E)";
-            Gameplay_Screen.SkillInfo = "I can lift a dumbbell all day \nDef up 50";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "OhmQ (3E)";
-            Gameplay_Screen.SkillInfo = "Want some larb, brother? \nDeal Dmg with 125%";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
         }
         public override void UpdateAction()
         {
@@ -401,7 +470,9 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
-                    LFC.friend[cast].Def += 50;
+                    Def += 50;
+                    IsBuff = true;
+                    sound_up.Play();
                 }
             }
             else if (IsAction && Anime == "S2")
@@ -411,7 +482,9 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
+                    sound_attack.Play();
                     LEC.enemies[target].Hp -= Def * 1.25f * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    LEC.enemies[target].Anime = "Hurt";
                 }
             }
             else if (Anime == "Hurt")
@@ -428,6 +501,22 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[1].Reset();
+                }
+            }
+            if (IsBuff)
+            {
+                if (Buffed.IsEnd)
+                {
+                    IsBuff = false;
+                    Buffed.Reset();
+                }
+            }
+            else if (IsHeal)
+            {
+                if (Healed.IsEnd)
+                {
+                    IsHeal = false;
+                    Healed.Reset();
                 }
             }
             if (Def < 0)
@@ -460,7 +549,11 @@ namespace Project_Manhattan
         {
             if (IsAlive)
             {
-                if (Anime == "S1")
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
+                }
+                else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
                 }
@@ -476,9 +569,14 @@ namespace Project_Manhattan
                 {
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
-                else
+
+                if (IsBuff)
                 {
-                    This_Ani[0].DrawFrame(batch, P, true, color);
+                    Buffed.DrawFrame(batch, P);
+                }
+                else if (IsHeal)
+                {
+                    Healed.DrawFrame(batch, P);
                 }
             }
         }
@@ -488,19 +586,24 @@ namespace Project_Manhattan
         public Dome(MainGame game) : base(game)
         {
             Name = "Domino";
-            Hp = 450;
-            Str = 175;
+            Hp = 600;
+            Str = 50;
             Def = 25;
 
             MaxHp = Hp;
             MaxStr = Str;
             MaxDef = Def;
 
-            Skill1_Cost = 1;
-            Skill2_Cost = 3;
+            Skill1_Cost = 0;
+            Skill2_Cost = 2;
+            SkillInfo1 = "Follow on Bhuddha's path \nDrain 50% of current Hp \nand Deal DMG with 150% of lost Hp";
+            SkillInfo2 = "Reverse curse technique \nHeal self 50% of Hp's lost";
+
+            role = "Dps";
+            ability = "Single target, Cost Hp to deal DMG";
 
             Target_1 = "Enemy";
-            Target_2 = "Enemy";
+            Target_2 = "Self";
 
             for (int i = 0; i < This_Ani.Length; i++)
             {
@@ -535,13 +638,13 @@ namespace Project_Manhattan
         }
         public override void skill1_Info()
         {
-            Gameplay_Screen.SkillName = "DomeE (1E)";
-            Gameplay_Screen.SkillInfo = "Reflect DMG into our sensei \nDeals 75% of Str";
+            Gameplay_Screen.SkillName = "DomeE (50% Hp)";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
         {
-            Gameplay_Screen.SkillName = "DomeQ (3E)";
-            Gameplay_Screen.SkillInfo = "Reverse curse technique \nDeals 200% of Str and Reserve DMG 25";
+            Gameplay_Screen.SkillName = "DomeQ (2E)";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
         }
         public override void UpdateAction()
         {
@@ -552,7 +655,9 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
-                    LEC.enemies[target].Hp -= (Str * 75 / 100) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    sound_attack.Play();
+                    LEC.enemies[target].Hp -= Hp/2 * 1.5f * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    Hp = Hp/ 2;
                     LEC.enemies[target].Anime = "Hurt";
                 }
             }
@@ -563,9 +668,9 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
-                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
-                    Hp -= 25;
-                    LEC.enemies[target].Anime = "Hurt";
+                    sound_up.Play();
+                    Hp += (MaxHp - Hp) / 2;
+                    IsHeal = true;
                 }
             }
             else if (Anime == "Hurt")
@@ -582,6 +687,22 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[1].Reset();
+                }
+            }
+            if (IsBuff)
+            {
+                if (Buffed.IsEnd)
+                {
+                    IsBuff = false;
+                    Buffed.Reset();
+                }
+            }
+            else if (IsHeal)
+            {
+                if (Healed.IsEnd)
+                {
+                    IsHeal = false;
+                    Healed.Reset();
                 }
             }
             if (Def < 0)
@@ -614,7 +735,11 @@ namespace Project_Manhattan
         {
             if (IsAlive)
             {
-                if (Anime == "S1")
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
+                }
+                else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
                 }
@@ -630,9 +755,14 @@ namespace Project_Manhattan
                 {
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
-                else
+
+                if (IsBuff)
                 {
-                    This_Ani[0].DrawFrame(batch, P, true, color);
+                    Buffed.DrawFrame(batch, P);
+                }
+                else if (IsHeal)
+                {
+                    Healed.DrawFrame(batch, P);
                 }
             }
         }
@@ -644,7 +774,7 @@ namespace Project_Manhattan
             Name = "JajaBing";
 
             Hp = 300;
-            Str = 200;
+            Str = 175;
             Def = 0;
 
             MaxHp = Hp;
@@ -653,6 +783,11 @@ namespace Project_Manhattan
 
             Skill1_Cost = 4;
             Skill2_Cost = 4;
+            SkillInfo1 = "Sawasdee Manud \nDeals 100% of Str \nDef up 10 but limits 50";
+            SkillInfo2 = "Attack all of plumbers \nDeals 75% of Str to all of sensei";
+
+            role = "Dps";
+            ability = "AoE Dmg";
 
             Target_1 = "Enemy";
             Target_2 = "AllEnemy";
@@ -693,12 +828,12 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "JaJaBingE (4E)";
-            Gameplay_Screen.SkillInfo = "Sawasdee Manud \nDeals 100% of Str \nDef up 10 but limits 50";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "JaJaBingQ (4E)";
-            Gameplay_Screen.SkillInfo = "Attack all of plumbers \nDeals 75% of Str to all of sensei";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
         }
         public override void UpdateAction() //for animated
         {
@@ -709,12 +844,15 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
+                    sound_attack.Play();
                     LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].Def);
                     if(Def < 50)
                     {
                         Def += 10;
                     }
                     LEC.enemies[target].Anime = "Hurt";
+                    IsBuff = true;
+                    sound_up.Play();
                 }
             }
             else if (IsAction && Anime == "S2")
@@ -724,6 +862,7 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
+                    sound_attack.Play();
                     LEC.enemies[0].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[1].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     LEC.enemies[2].Hp -= (Str * 3 / 4) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
@@ -746,6 +885,22 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[1].Reset();
+                }
+            }
+            if (IsBuff)
+            {
+                if (Buffed.IsEnd)
+                {
+                    IsBuff = false;
+                    Buffed.Reset();
+                }
+            }
+            else if (IsHeal)
+            {
+                if (Healed.IsEnd)
+                {
+                    IsHeal = false;
+                    Healed.Reset();
                 }
             }
             if (Def < 0)
@@ -778,7 +933,11 @@ namespace Project_Manhattan
         {
             if (IsAlive)
             {
-                if (Anime == "S1")
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, false, color);
+                }
+                else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, false);
                 }
@@ -792,11 +951,16 @@ namespace Project_Manhattan
                 }
                 else if (Anime == "Hurt")
                 {
-                    This_Ani[4].DrawFrame(batch, P, true);
+                    This_Ani[4].DrawFrame(batch, P, false);
                 }
-                else
+
+                if (IsBuff)
                 {
-                    This_Ani[0].DrawFrame(batch, P, false, color);
+                    Buffed.DrawFrame(batch, P + AbsPos);
+                }
+                else if (IsHeal)
+                {
+                    Healed.DrawFrame(batch, P - AbsPos);
                 }
             }
         }
@@ -817,6 +981,11 @@ namespace Project_Manhattan
 
             Skill1_Cost = 2;
             Skill2_Cost = 3;
+            SkillInfo1 = "Decrease a sensei's Def \nDef down 30";
+            SkillInfo2 = "Take a rest \nHeals 50% of a friend's MaxHp";
+
+            role = "Support";
+            ability = "Debuff, Heal";
 
             Target_1 = "Enemy";
             Target_2 = "Friend";
@@ -855,12 +1024,12 @@ namespace Project_Manhattan
         public override void skill1_Info()
         {
             Gameplay_Screen.SkillName = "TataE (2E)";
-            Gameplay_Screen.SkillInfo = "Decrease a sensei's Def \nDef down 30";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
         {
             Gameplay_Screen.SkillName = "TataQ (3E)";
-            Gameplay_Screen.SkillInfo = "Take a rest \nHeals 50% of a friend's MaxHp";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
         }
         public override void UpdateAction() //for animated
         {
@@ -882,6 +1051,8 @@ namespace Project_Manhattan
                     this.IsAction = false;
                     IsCharEnd = true;
                     LFC.friend[target].Hp += LFC.friend[target].MaxHp / 2;
+                    LFC.friend[target].IsBuff = true;
+                    sound_up.Play();
                 }
             }
             else if (Anime == "Hurt")
@@ -900,6 +1071,24 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
+
+            if (IsBuff)
+            {
+                if(Buffed.IsEnd)
+                {
+                    IsBuff = false;
+                    Buffed.Reset();
+                }
+            }
+            else if (IsHeal)
+            {
+                if(Healed.IsEnd)
+                {
+                    IsHeal = false;
+                    Healed.Reset();
+                }
+            }
+
             if (Def < 0)
             {
                 Def = 0;
@@ -930,7 +1119,11 @@ namespace Project_Manhattan
         {
             if (IsAlive)
             {
-                if (Anime == "S1")
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
+                }
+                else if (Anime == "S1")
                 {
                     This_Ani[2].DrawFrame(batch, P, true);
                 }
@@ -946,9 +1139,14 @@ namespace Project_Manhattan
                 {
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
-                else
+
+                if (IsBuff)
                 {
-                    This_Ani[0].DrawFrame(batch, P, true, color);
+                    Buffed.DrawFrame(batch, P);
+                }
+                else if (IsHeal)
+                {
+                    Healed.DrawFrame(batch, P);
                 }
             }
         }

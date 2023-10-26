@@ -21,7 +21,7 @@ namespace Project_Manhattan
 
         public Titile_Screen mTitile_Screen;
         public Gameplay_Screen mGameplay_Screen;
-        public Story_Hostipal_Screen mstory_Hostipal;
+        public Story_Screen mstory_Screen;
         public Team_Manager_Screen mTeam_Manage;
         public Screen mCurrentScreen;
 
@@ -49,7 +49,7 @@ namespace Project_Manhattan
             The_List_En = new LEC(this);
             mGameplay_Screen = new Gameplay_Screen(this, new EventHandler(GameplayScreenEvent));
             mTitile_Screen = new Titile_Screen(this, new EventHandler(GameplayScreenEvent));
-            mstory_Hostipal = new Story_Hostipal_Screen(this, new EventHandler(GameplayScreenEvent));
+            mstory_Screen = new Story_Screen(this, new EventHandler(GameplayScreenEvent));
             mTeam_Manage = new Team_Manager_Screen(this, new EventHandler(GameplayScreenEvent));
 
             mCurrentScreen = mTitile_Screen;

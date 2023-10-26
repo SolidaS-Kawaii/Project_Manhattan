@@ -25,7 +25,7 @@ namespace Project_Manhattan.Screen_Management
             if(Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 MediaPlayer.Play(song[1]);
-                ScreenEvent.Invoke(game.mstory_Hostipal, new EventArgs());
+                ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
             }
             base.Update(gameTime);
         }

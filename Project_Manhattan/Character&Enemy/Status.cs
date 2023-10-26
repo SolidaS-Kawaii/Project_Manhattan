@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Project_Manhattan.CoreCode;
 using System;
@@ -38,17 +39,31 @@ namespace Project_Manhattan.Content
 
         public bool IsCharEnd = false;
         public bool IsAlive = true;
-        public bool IsHurt = false;
         public bool IsAction = false;
+        public bool IsHeal = false;
+        public bool IsBuff = false;
+
+        public string SkillInfo1 = "";
+        public string SkillInfo2 = "";
+        public string role = "";
+        public string ability = "";
 
         public Vector2 AbsPos = new Vector2(0,0);
-        public Color color = new Color(); 
+        public Color color = new Color();
 
+        public SoundEffect sound_attack, sound_up;
+
+        public AnimatedTexture Buffed = new AnimatedTexture(Vector2.Zero, 0f, 1f, 0f);
+        public AnimatedTexture Healed = new AnimatedTexture(Vector2.Zero, 0f, 1f, 0f);
         public AnimatedTexture[] This_Ani = new AnimatedTexture[5];
 
         public Friend(MainGame game)
         {
-            color = Color.Gray;
+            Buffed.Load(game.Content, "2D/EFF/buff", 5, 1, 4);
+            Healed.Load(game.Content, "2D/EFF/heal", 5, 1, 4);
+            sound_attack = game.Content.Load<SoundEffect>("Oth/SFX/Attack2");
+            sound_up = game.Content.Load<SoundEffect>("Oth/SFX/Powerup");
+            color = Color.White;
         }
         public abstract void skill1(int enePos, int CastPos);
         public abstract void skill2(int enePos, int CastPos);
@@ -88,6 +103,7 @@ namespace Project_Manhattan.Content
         public int frameHr = 8;
         public int frameSp = 8;
         public int phase;
+        public int phase2;
         public int phaseBegin;
 
         public string Anime = "Idle";    //Idle, S1, S2
@@ -96,6 +112,8 @@ namespace Project_Manhattan.Content
         public bool IsHurt = false;
         public bool IsAction = false;
         public bool IsEnd = false;
+
+        public Vector2 AbsPos = new Vector2(0, 0);
 
         public AnimatedTexture[] This_Ani = new AnimatedTexture[6];
         public Enemy(MainGame game)
@@ -111,6 +129,7 @@ namespace Project_Manhattan.Content
             Def = MaxDef;
             Str = MaxStr;
             phase = phaseBegin;
+            phase2 = phaseBegin;
 
             Anime = "Spawn";
         }

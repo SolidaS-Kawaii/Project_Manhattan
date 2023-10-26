@@ -133,6 +133,30 @@
 /processorParam:TextureFormat=Color
 /build:2D/BG/Title.png
 
+#begin 2D/EFF/buff.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/EFF/buff.png
+
+#begin 2D/EFF/heal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/EFF/heal.png
+
 #begin 2D/Enemy/BJJ/BJJ_Hurt.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1030,11 +1054,101 @@
 /processorParam:TextureFormat=Compressed
 /build:Oth/Font/Arial48.spritefont
 
+#begin Oth/SFX/Attack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Attack.wav
+
+#begin Oth/SFX/Attack2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Attack2.wav
+
+#begin Oth/SFX/Back.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Back.wav
+
+#begin Oth/SFX/Back2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Back2.wav
+
+#begin Oth/SFX/Back3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Back3.wav
+
+#begin Oth/SFX/Fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Fire.wav
+
+#begin Oth/SFX/Loss.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Loss.wav
+
+#begin Oth/SFX/Powerup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Powerup.wav
+
+#begin Oth/SFX/Select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Select.wav
+
+#begin Oth/SFX/Select1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Select1.wav
+
+#begin Oth/SFX/Select2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Select2.wav
+
+#begin Oth/SFX/Unable.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Unable.wav
+
+#begin Oth/SFX/Unselect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Unselect.wav
+
+#begin Oth/SFX/Win.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Oth/SFX/Win.wav
+
 #begin Oth/Song/gameplay.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Oth/Song/gameplay.mp3
+
+#begin Oth/Song/gameplayV2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Oth/Song/gameplayV2.mp3
 
 #begin Oth/Song/menu.mp3
 /importer:Mp3Importer
