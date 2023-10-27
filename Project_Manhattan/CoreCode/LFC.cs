@@ -28,6 +28,7 @@ namespace Project_Manhattan.CoreCode
             Dome dome = new Dome(game);
             JaBing jaBing = new JaBing(game);
             Tata tata = new Tata(game);
+            JJ jj = new JJ(game);
 
             friendList.Add(heng);
             friendList.Add(mickey);
@@ -35,6 +36,7 @@ namespace Project_Manhattan.CoreCode
             friendList.Add(dome);
             friendList.Add(jaBing);
             friendList.Add(tata);
+            friendList.Add(jj);
 
             select[0] = 0;
             select[1] = 1;
@@ -71,13 +73,21 @@ namespace Project_Manhattan.CoreCode
                     friend[i].This_Ani[4].UpdateFrame(elapsed);
                 }
 
-                if (friend[i].IsBuff)
+                if (friend[i].Particle == "Buff")
                 {
-                    friend[i].Buffed.UpdateFrame(elapsed);
+                    friend[i].This_Part[0].UpdateFrame(elapsed);
                 }
-                else if (friend[i].IsHeal)
+                else if (friend[i].Particle == "Heal")
                 {
-                    friend[i].Healed.UpdateFrame(elapsed);
+                    friend[i].This_Part[1].UpdateFrame(elapsed);
+                }
+                else if (friend[i].Particle == "Debuff")
+                {
+                    friend[i].This_Part[2].UpdateFrame(elapsed);
+                }
+                else if (friend[i].Particle == "Def")
+                {
+                    friend[i].This_Part[3].UpdateFrame(elapsed);
                 }
             }
 

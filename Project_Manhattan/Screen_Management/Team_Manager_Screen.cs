@@ -27,8 +27,8 @@ namespace Project_Manhattan.Screen_Management
         Vector2[] Player_Pos = new Vector2[3];
 
         string[] Name = new string[3];
-        string info = "";
-        string trait = "";
+        string[] info = new string[3];
+        string[] trait = new string[3];
 
         SpriteFont font24, font16;
         
@@ -46,9 +46,13 @@ namespace Project_Manhattan.Screen_Management
             Player_Pos[1] = new Vector2(850, 375);
             Player_Pos[2] = new Vector2(1400, 375);
 
-            Name[0] = "";
-            Name[1] = "";
-            Name[2] = "";
+            for (int i = 0; i < 3; i++)
+            {
+                Name[i] = "";
+                info[i] = "";
+                trait[i] = "";
+            }
+
             this.game = game;
         }
         public override void Update(GameTime gameTime)
@@ -91,15 +95,6 @@ namespace Project_Manhattan.Screen_Management
                 sfx[1].Play();
             }
 
-            if(isEpressed)
-            {
-                info = LFC.friend[Pos].SkillInfo1;
-            }
-            else if(!isEpressed)
-            {
-                info = LFC.friend[Pos].SkillInfo2;
-            }
-
             if (LFC.select[0] == LFC.select[1] || LFC.select[0] == LFC.select[2])
             {
                 isDuplicate = true;
@@ -139,12 +134,12 @@ namespace Project_Manhattan.Screen_Management
                 isReady = true;
             }
 
-            Name[0] = LFC.friend[0].Name;
-            Name[1] = LFC.friend[1].Name;
-            Name[2] = LFC.friend[2].Name;
-
-            info = LFC.friend[Pos].role;
-            trait = LFC.friend[Pos].ability;
+            for (int i = 0;i < 3; i++)
+            {
+                Name[i] = LFC.friend[i].Name;
+                info[i] = LFC.friend[i].role;
+                trait[i] = LFC.friend[i].ability;
+            }
 
             OppKey = NigKey;
             ScreenFadeIn(gameTime);
@@ -159,6 +154,8 @@ namespace Project_Manhattan.Screen_Management
             {
                 LFC.friend[i].UpdateDraw(spriteBatch, Player_Pos[i] + LFC.friend[i].AbsPos);
                 spriteBatch.DrawString(font24, Name[i], Player_Pos[i] + new Vector2(60, 350), Color.White);
+                spriteBatch.DrawString(font16, "Role : " + info[i], Player_Pos[i] + new Vector2(30, 450), Color.White);
+                spriteBatch.DrawString(font16, "Ability : " + trait[i], Player_Pos[i] + new Vector2(30, 500), Color.White);
             }
             if(!isDuplicate)
             {
@@ -170,8 +167,7 @@ namespace Project_Manhattan.Screen_Management
             }
 
             spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(100, -50), Color.White);
-            spriteBatch.DrawString(font16, "Role : " + info, Player_Pos[Pos] + new Vector2(30, 450), Color.White);
-            spriteBatch.DrawString(font16, "Ability : " + trait, Player_Pos[Pos] + new Vector2(30, 500), Color.White);
+
             spriteBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
 
         }

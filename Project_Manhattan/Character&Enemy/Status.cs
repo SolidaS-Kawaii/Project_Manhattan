@@ -36,12 +36,11 @@ namespace Project_Manhattan.Content
         public string Target_2;   //Self, Friend, Enemy, AllEnemy, AllFriend
 
         public string Anime = "Idle";    //Idle, S1, S2
+        public string Particle = "Non";  //Non, Heal, Buff, Debuff, Def
 
         public bool IsCharEnd = false;
         public bool IsAlive = true;
         public bool IsAction = false;
-        public bool IsHeal = false;
-        public bool IsBuff = false;
 
         public string SkillInfo1 = "";
         public string SkillInfo2 = "";
@@ -53,14 +52,21 @@ namespace Project_Manhattan.Content
 
         public SoundEffect sound_attack, sound_up;
 
-        public AnimatedTexture Buffed = new AnimatedTexture(Vector2.Zero, 0f, 1f, 0f);
-        public AnimatedTexture Healed = new AnimatedTexture(Vector2.Zero, 0f, 1f, 0f);
+        public AnimatedTexture[] This_Part = new AnimatedTexture[4];
         public AnimatedTexture[] This_Ani = new AnimatedTexture[5];
 
         public Friend(MainGame game)
         {
-            Buffed.Load(game.Content, "2D/EFF/buff", 5, 1, 4);
-            Healed.Load(game.Content, "2D/EFF/heal", 5, 1, 4);
+            for(int i = 0; i < This_Part.Length; i++)
+            {
+                This_Part[i] = new AnimatedTexture(Vector2.Zero, 0f, 1f, 0f);
+            }
+
+            This_Part[0].Load(game.Content, "2D/EFF/buff", 5, 1, 4);
+            This_Part[1].Load(game.Content, "2D/EFF/heal", 5, 1, 4);
+            This_Part[3].Load(game.Content, "2D/EFF/def", 5, 1, 4);
+            This_Part[2].Load(game.Content, "2D/EFF/debuff", 5, 1, 4);
+
             sound_attack = game.Content.Load<SoundEffect>("Oth/SFX/Attack2");
             sound_up = game.Content.Load<SoundEffect>("Oth/SFX/Powerup");
             color = Color.White;
@@ -85,6 +91,87 @@ namespace Project_Manhattan.Content
             DefRe = 1 - (Def/(Def + 300));
             return DefRe;
         }
+        public void CheckAction()
+        {
+            if (Def < 0)
+            {
+                Def = 0;
+            }
+            if (Hp > MaxHp)
+            {
+                Hp = MaxHp;
+            }
+            if (Hp <= 0)
+            {
+                IsAlive = false;
+            }
+            else if (Hp > 0)
+            {
+                IsAlive = true;
+            }
+            if (IsCharEnd)
+            {
+                color = Color.Gray;
+            }
+            else if (!IsCharEnd)
+            {
+                color = Color.White;
+            }
+        }
+        public void ParticleEff()
+        {
+            if (Particle == "Buff")
+            {
+                if (This_Part[0].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[0].Reset();
+                }
+            }
+            else if (Particle == "Heal")
+            {
+                if (This_Part[1].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[1].Reset();
+                }
+            }
+            else if (Particle == "Debuff")
+            {
+                if (This_Part[2].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[2].Reset();
+                }
+            }
+            else if (Particle == "Def")
+            {
+                if (This_Part[3].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[3].Reset();
+                }
+            }
+        }
+        public void ParticleDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (Particle == "Buff")
+            {
+                This_Part[0].DrawFrame(batch, P);
+            }
+            else if (Particle == "Heal")
+            {
+                This_Part[1].DrawFrame(batch, P);
+            }
+            else if (Particle == "Debuff")
+            {
+                This_Part[2].DrawFrame(batch, P);
+            }
+            else if (Particle == "Def")
+            {
+                This_Part[3].DrawFrame(batch, P);
+            }
+        }
     }
 
     public abstract class Enemy
@@ -107,6 +194,7 @@ namespace Project_Manhattan.Content
         public int phaseBegin;
 
         public string Anime = "Idle";    //Idle, S1, S2
+        public string Particle = "Non";  //Non, Heal, Buff, Debuff, Def
 
         public bool IsAlive = true;
         public bool IsHurt = false;
@@ -115,10 +203,24 @@ namespace Project_Manhattan.Content
 
         public Vector2 AbsPos = new Vector2(0, 0);
 
+        public SoundEffect sound_attack, sound_up;
+
+        public AnimatedTexture[] This_Part = new AnimatedTexture[4];
         public AnimatedTexture[] This_Ani = new AnimatedTexture[6];
         public Enemy(MainGame game)
         {
+            for (int i = 0; i < This_Part.Length; i++)
+            {
+                This_Part[i] = new AnimatedTexture(Vector2.Zero, 0f, 1.5f, 0f);
+            }
 
+            This_Part[0].Load(game.Content, "2D/EFF/buff", 5, 1, 4);
+            This_Part[1].Load(game.Content, "2D/EFF/heal", 5, 1, 4);
+            This_Part[3].Load(game.Content, "2D/EFF/def", 5, 1, 4);
+            This_Part[2].Load(game.Content, "2D/EFF/debuff", 5, 1, 4);
+
+            sound_attack = game.Content.Load<SoundEffect>("Oth/SFX/Attack2");
+            sound_up = game.Content.Load<SoundEffect>("Oth/SFX/Powerup");
         }
         public abstract void skill(int RandPos);
         public abstract void UpdateAction();
@@ -133,12 +235,65 @@ namespace Project_Manhattan.Content
 
             Anime = "Spawn";
         }
-
         public float DefRuduce(float Def)
         {
             float DefRe;
             DefRe = 1 - (Def / (Def + 300));
             return DefRe;
+        }
+        public void ParticleEff()
+        {
+            if (Particle == "Buff")
+            {
+                if (This_Part[0].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[0].Reset();
+                }
+            }
+            else if (Particle == "Heal")
+            {
+                if (This_Part[1].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[1].Reset();
+                }
+            }
+            else if (Particle == "Debuff")
+            {
+                if (This_Part[2].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[2].Reset();
+                }
+            }
+            else if (Particle == "Def")
+            {
+                if (This_Part[3].IsEnd)
+                {
+                    Particle = "Non";
+                    This_Part[3].Reset();
+                }
+            }
+        }
+        public void ParticleDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (Particle == "Buff")
+            {
+                This_Part[0].DrawFrame(batch, P);
+            }
+            else if (Particle == "Heal")
+            {
+                This_Part[1].DrawFrame(batch, P);
+            }
+            else if (Particle == "Debuff")
+            {
+                This_Part[2].DrawFrame(batch, P);
+            }
+            else if (Particle == "Def")
+            {
+                This_Part[3].DrawFrame(batch, P);
+            }
         }
     }
 }

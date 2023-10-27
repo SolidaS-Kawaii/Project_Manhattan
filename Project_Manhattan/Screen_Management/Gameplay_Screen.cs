@@ -546,8 +546,8 @@ namespace Project_Manhattan.Screen_Management
                     theBatch.DrawString(font, (int)LFC.friend[i].Hp + " / " + (int)LFC.friend[i].MaxHp, HpShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
                     theBatch.DrawString(font, (int)LFC.friend[i].Str + "", StrShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
                     theBatch.DrawString(font, (int)LFC.friend[i].Def + "", DefShow + new Vector2(0, 25 + (50 * (i + 1))), Color.White);
-                    theBatch.Draw(Healthbar_Bk, PlayerPos[i] + new Vector2(50, 30) + LFC.friend[i].AbsPos, new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
-                    theBatch.Draw(Healthbar_Fr, PlayerPos[i] + new Vector2(50, 30) + LFC.friend[i].AbsPos, new Rectangle(0, 0, (int)((2 * (LFC.friend[i].Hp * 100 / LFC.friend[i].MaxHp))), 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
+                    theBatch.Draw(Healthbar_Bk, PlayerPos[i] + new Vector2(50, 30), new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
+                    theBatch.Draw(Healthbar_Fr, PlayerPos[i] + new Vector2(50, 30), new Rectangle(0, 0, (int)((2 * (LFC.friend[i].Hp * 100 / LFC.friend[i].MaxHp))), 50), Color.White, 0, Vector2.Zero, 0.75f, 0, 0);
                 }
                 else if (!LFC.friend[i].IsAlive)
                 {

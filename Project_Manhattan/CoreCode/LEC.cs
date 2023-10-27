@@ -45,6 +45,23 @@ namespace Project_Manhattan.CoreCode
                 {
                     enemies[i].This_Ani[4].UpdateFrame(elapsed);
                 }
+
+                if (enemies[i].Particle == "Buff")
+                {
+                    enemies[i].This_Part[0].UpdateFrame(elapsed);
+                }
+                else if(enemies[i].Particle == "Heal")
+                {
+                    enemies[i].This_Part[1].UpdateFrame(elapsed);
+                }
+                else if (enemies[i].Particle == "Debuff")
+                {
+                    enemies[i].This_Part[2].UpdateFrame(elapsed);
+                }
+                else if (enemies[i].Particle == "Def")
+                {
+                    enemies[i].This_Part[3].UpdateFrame(elapsed);
+                }
                 enemies[i].This_Ani[0].UpdateFrame(elapsed);
             }
         }

@@ -75,6 +75,7 @@ namespace Project_Manhattan
                     IsEnd = true;
                     LFC.friend[rand].Hp -= (this.Str * LFC.friend[rand].DefRuduce(LFC.friend[rand].Def));
                     LFC.friend[rand].Anime = "Hurt";
+                    sound_attack.Play();
                     This_Ani[2].Reset();
                 }
             }
@@ -86,7 +87,9 @@ namespace Project_Manhattan
                     this.IsAction = false;
                     IsEnd = true;
                     Hp += 300;
-                    This_Ani[2].Reset();
+                    Particle = "Heal";
+                    sound_up.Play();
+                    This_Ani[3].Reset();
                 }
             }
             else if (Anime == "Hurt")
@@ -105,6 +108,8 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
+
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -147,6 +152,8 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -192,6 +199,7 @@ namespace Project_Manhattan
                     This_Ani[4].Reset();
                 }
             }
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -229,6 +237,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+                ParticleDraw(batch, P - new Vector2(100,175));
             }
         }
     }
@@ -297,6 +306,7 @@ namespace Project_Manhattan
                     IsEnd = true;
                     LFC.friend[rand].Hp -= (this.StrReal * LFC.friend[rand].DefRuduce(LFC.friend[rand].Def));
                     LFC.friend[rand].Anime = "Hurt";
+                    sound_attack.Play();
                     This_Ani[2].Reset();
                 }
             }
@@ -311,12 +321,15 @@ namespace Project_Manhattan
                         {
                             LFC.friend[i].Hp -= (this.StrReal * 1.25f *  LFC.friend[rand].DefRuduce(LFC.friend[rand].Def));
                             LFC.friend[i].Def -= 25;
+                            LFC.friend[i].Particle = "Debuff";
                             LFC.friend[i].Anime = "Hurt";
                         }
                     }
                     Str += 25;
+                    Particle = "Buff";
                     this.IsAction = false;
                     IsEnd = true;
+                    sound_attack.Play();
                     This_Ani[3].Reset();
                 }
             }
@@ -336,7 +349,7 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -379,6 +392,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -459,6 +473,7 @@ namespace Project_Manhattan
                     IsEnd = true;
                     Def += 20;
                     Str += 20;
+                    sound_up.Play();
                     This_Ani[2].Reset();
                 }
             }
@@ -477,6 +492,7 @@ namespace Project_Manhattan
                     }
                     this.IsAction = false;
                     IsEnd = true;
+                    sound_attack.Play();
                     This_Ani[3].Reset();
                 }
             }
@@ -490,12 +506,16 @@ namespace Project_Manhattan
                         if (LFC.friend[i].IsAlive)
                         {
                             LFC.friend[i].Def -= LFC.friend[i].Def/10;
+                            LFC.friend[i].Particle = "Debuff";
                         }
                         LEC.enemies[0].Resetto();
                         LEC.enemies[2].Resetto();
+                        LEC.enemies[0].Particle = "Heal";
+                        LEC.enemies[2].Particle = "Heal";
                     }
                     this.IsAction = false;
                     IsEnd = true;
+                    sound_up.Play();
                     This_Ani[5].Reset();
                 }
             }
@@ -515,6 +535,7 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -561,6 +582,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -606,6 +628,7 @@ namespace Project_Manhattan
                     This_Ani[4].Reset();
                 }
             }
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -643,6 +666,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+                ParticleDraw(batch , P - new Vector2(100, 175));
             }
         }
     }
@@ -688,6 +712,7 @@ namespace Project_Manhattan
                     This_Ani[4].Reset();
                 }
             }
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -725,6 +750,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+                ParticleDraw(batch, P - new Vector2(100, 175));
             }
         }
     }
@@ -770,6 +796,7 @@ namespace Project_Manhattan
                     This_Ani[4].Reset();
                 }
             }
+            ParticleEff();
             if (Def < 0)
             {
                 Def = 0;
@@ -807,6 +834,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[0].DrawFrame(batch, P, false);
                 }
+                ParticleDraw(batch, P - new Vector2(100, 175));
             }
         }
     }

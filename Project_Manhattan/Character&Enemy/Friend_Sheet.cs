@@ -27,10 +27,10 @@ namespace Project_Manhattan
             MaxStr = Str;
             MaxDef = Def;
 
-            Skill1_Cost = 2;
+            Skill1_Cost = 1;
             Skill2_Cost = 3;
-            SkillInfo1 = "Kick a ball into our sensei \nDeals 100% of Str";
-            SkillInfo2 = "Kick a ball into our sensei harshly \nDeals 200% of Str";
+            SkillInfo1 = "Call of the void! \nDeals 75% of Str, ignore Def";
+            SkillInfo2 = "Suriyan kick! \nDeals 200% of Str, ignore Def";
 
             role = "Dps";
             ability = "Single target";
@@ -55,8 +55,6 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill1_Cost;
             Anime = "S1";
-            Console.WriteLine(Anime);
-            Console.WriteLine(This_Ani[2].IsEnd);
             This_Ani[2].Reset();
             target = enePos;
             cast = CastPos;
@@ -66,8 +64,6 @@ namespace Project_Manhattan
         {
             Gameplay_Screen.Energy -= Skill2_Cost;
             Anime = "S2";
-            Console.WriteLine(Anime);
-            Console.WriteLine(This_Ani[3].IsEnd);
             This_Ani[3].Reset();
             target = enePos;
             cast = CastPos;
@@ -75,7 +71,7 @@ namespace Project_Manhattan
         }
         public override void skill1_Info()
         {
-            Gameplay_Screen.SkillName = "MickeyE (2E)";
+            Gameplay_Screen.SkillName = "MickeyE (1E)";
             Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
@@ -93,7 +89,7 @@ namespace Project_Manhattan
                     this.IsAction = false;
                     IsCharEnd = true;
                     sound_attack.Play();
-                    LEC.enemies[target].Hp -= Str * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    LEC.enemies[target].Hp -= Str * 0.75f;
                     LEC.enemies[target].Anime = "Hurt";
                 }
             }
@@ -105,7 +101,7 @@ namespace Project_Manhattan
                     this.IsAction = false;
                     IsCharEnd = true;
                     sound_attack.Play();
-                    LEC.enemies[target].Hp -= (Str * 2) * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    LEC.enemies[target].Hp -= (Str * 2);
                     LEC.enemies[target].Anime = "Hurt";
                 }
             }
@@ -125,46 +121,10 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-            if (IsBuff)
-            {
-                if (Buffed.IsEnd)
-                {
-                    IsBuff = false;
-                    Buffed.Reset();
-                }
-            }
-            else if (IsHeal)
-            {
-                if (Healed.IsEnd)
-                {
-                    IsHeal = false;
-                    Healed.Reset();
-                }
-            }
-            if (Def < 0)
-            {
-                Def = 0;
-            }
-            if (Hp > MaxHp)
-            {
-                Hp = MaxHp;
-            }
-            if(Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if(Hp > 0)
-            {
-                IsAlive = true;
-            }
-            if (IsCharEnd)
-            {
-                color = Color.Gray;
-            }
-            else if (!IsCharEnd)
-            {
-                color = Color.White;
-            }
+
+            ParticleEff();
+            CheckAction();
+
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -191,14 +151,7 @@ namespace Project_Manhattan
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
 
-                if (IsBuff)
-                {
-                    Buffed.DrawFrame(batch, P);
-                }
-                else if (IsHeal)
-                {
-                    Healed.DrawFrame(batch, P);
-                }
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -218,7 +171,7 @@ namespace Project_Manhattan
 
             Skill1_Cost = 2;
             Skill2_Cost = 2;
-            SkillInfo1 = "Pick up a medicine form my lover bag \nHeals 125 Hp to all friend";
+            SkillInfo1 = "Pick up a medicine form my lover bag \nHeals 150 Hp to all friend";
             SkillInfo2 = "Shouttttttttttttt! \nBuffs 75 Str to a friend";
 
             role = "Support";
@@ -283,7 +236,7 @@ namespace Project_Manhattan
                         if (LFC.friend[i].IsAlive)
                         {
                             LFC.friend[i].Hp += 125;
-                            LFC.friend[i].IsHeal = true;
+                            LFC.friend[i].Particle = "Heal";
                             sound_up.Play();
                         }
                     }
@@ -297,7 +250,7 @@ namespace Project_Manhattan
                     IsAction = false;
                     IsCharEnd = true;
                     LFC.friend[target].Str += 75;
-                    LFC.friend[target].IsBuff = true;
+                    LFC.friend[target].Particle = "Buff";
                     sound_up.Play();
                 }
             }
@@ -317,47 +270,8 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-            if (IsBuff)
-            {
-                if (Buffed.IsEnd)
-                {
-                    IsBuff = false;
-                    Buffed.Reset();
-                }
-            }
-            else if (IsHeal)
-            {
-                if (Healed.IsEnd)
-                {
-                    IsHeal = false;
-                    Healed.Reset();
-                }
-            }
-            if (Def < 0)
-            {
-                Def = 0;
-            }
-            if (Hp > MaxHp)
-            {
-                Hp = MaxHp;
-            }
-
-            if (Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
-            }
-            if (IsCharEnd)
-            {
-                color = Color.Gray;
-            }
-            else if (!IsCharEnd)
-            {
-                color = Color.White;
-            }
+            ParticleEff();
+            CheckAction();
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -383,15 +297,7 @@ namespace Project_Manhattan
                 {
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
-
-                if (IsBuff)
-                {
-                    Buffed.DrawFrame(batch, P);
-                }
-                else if (IsHeal)
-                {
-                    Healed.DrawFrame(batch, P);
-                }
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -401,7 +307,7 @@ namespace Project_Manhattan
         {
             Name = "Ohmo";
 
-            Hp = 800;
+            Hp = 600;
             Str = 75;
             Def = 125;
 
@@ -411,7 +317,7 @@ namespace Project_Manhattan
 
             Skill1_Cost = 1;
             Skill2_Cost = 3;
-            SkillInfo1 = "I can lift a dumbbell all day \nDef up 50";
+            SkillInfo1 = "I can lift a dumbbell all day \nDef up 75";
             SkillInfo2 = "Want some larb, brother? \nDeal Dmg with 125%";
 
             role = "Flex";
@@ -470,8 +376,8 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
-                    Def += 50;
-                    IsBuff = true;
+                    Def += 75;
+                    Particle = "Def";
                     sound_up.Play();
                 }
             }
@@ -503,47 +409,8 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-            if (IsBuff)
-            {
-                if (Buffed.IsEnd)
-                {
-                    IsBuff = false;
-                    Buffed.Reset();
-                }
-            }
-            else if (IsHeal)
-            {
-                if (Healed.IsEnd)
-                {
-                    IsHeal = false;
-                    Healed.Reset();
-                }
-            }
-            if (Def < 0)
-            {
-                Def = 0;
-            }
-            if (Hp > MaxHp)
-            {
-                Hp = MaxHp;
-            }
-
-            if (Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
-            }
-            if (IsCharEnd)
-            {
-                color = Color.Gray;
-            }
-            else if (!IsCharEnd)
-            {
-                color = Color.White;
-            }
+            ParticleEff();
+            CheckAction();
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -570,14 +437,7 @@ namespace Project_Manhattan
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
 
-                if (IsBuff)
-                {
-                    Buffed.DrawFrame(batch, P);
-                }
-                else if (IsHeal)
-                {
-                    Healed.DrawFrame(batch, P);
-                }
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -586,7 +446,7 @@ namespace Project_Manhattan
         public Dome(MainGame game) : base(game)
         {
             Name = "Domino";
-            Hp = 600;
+            Hp = 800;
             Str = 50;
             Def = 25;
 
@@ -596,7 +456,7 @@ namespace Project_Manhattan
 
             Skill1_Cost = 0;
             Skill2_Cost = 2;
-            SkillInfo1 = "Follow on Bhuddha's path \nDrain 50% of current Hp \nand Deal DMG with 150% of lost Hp";
+            SkillInfo1 = "Follow on Bhuddha's path \nDrain 50% of current Hp \nand Deal DMG with 125% of lost Hp";
             SkillInfo2 = "Reverse curse technique \nHeal self 50% of Hp's lost";
 
             role = "Dps";
@@ -656,7 +516,7 @@ namespace Project_Manhattan
                     this.IsAction = false;
                     IsCharEnd = true;
                     sound_attack.Play();
-                    LEC.enemies[target].Hp -= Hp/2 * 1.5f * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
+                    LEC.enemies[target].Hp -= Hp/2 * 1.25f * LEC.enemies[target].DefRuduce(LEC.enemies[target].DefReal);
                     Hp = Hp/ 2;
                     LEC.enemies[target].Anime = "Hurt";
                 }
@@ -670,7 +530,7 @@ namespace Project_Manhattan
                     IsCharEnd = true;
                     sound_up.Play();
                     Hp += (MaxHp - Hp) / 2;
-                    IsHeal = true;
+                    Particle = "Heal";
                 }
             }
             else if (Anime == "Hurt")
@@ -689,47 +549,8 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-            if (IsBuff)
-            {
-                if (Buffed.IsEnd)
-                {
-                    IsBuff = false;
-                    Buffed.Reset();
-                }
-            }
-            else if (IsHeal)
-            {
-                if (Healed.IsEnd)
-                {
-                    IsHeal = false;
-                    Healed.Reset();
-                }
-            }
-            if (Def < 0)
-            {
-                Def = 0;
-            }
-            if (Hp > MaxHp)
-            {
-                Hp = MaxHp;
-            }
-
-            if (Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
-            }
-            if (IsCharEnd)
-            {
-                color = Color.Gray;
-            }
-            else if (!IsCharEnd)
-            {
-                color = Color.White;
-            }
+            ParticleEff();
+            CheckAction();
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -756,14 +577,7 @@ namespace Project_Manhattan
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
 
-                if (IsBuff)
-                {
-                    Buffed.DrawFrame(batch, P);
-                }
-                else if (IsHeal)
-                {
-                    Healed.DrawFrame(batch, P);
-                }
+                ParticleDraw(batch, P);
             }
         }
     }
@@ -774,14 +588,14 @@ namespace Project_Manhattan
             Name = "JajaBing";
 
             Hp = 300;
-            Str = 175;
+            Str = 200;
             Def = 0;
 
             MaxHp = Hp;
             MaxStr = Str;
             MaxDef = Def;
 
-            Skill1_Cost = 4;
+            Skill1_Cost = 2;
             Skill2_Cost = 4;
             SkillInfo1 = "Sawasdee Manud \nDeals 100% of Str \nDef up 10 but limits 50";
             SkillInfo2 = "Attack all of plumbers \nDeals 75% of Str to all of sensei";
@@ -827,7 +641,7 @@ namespace Project_Manhattan
         }
         public override void skill1_Info()
         {
-            Gameplay_Screen.SkillName = "JaJaBingE (4E)";
+            Gameplay_Screen.SkillName = "JaJaBingE (2E)";
             Gameplay_Screen.SkillInfo = SkillInfo1;
         }
         public override void skill2_Info()
@@ -851,7 +665,7 @@ namespace Project_Manhattan
                         Def += 10;
                     }
                     LEC.enemies[target].Anime = "Hurt";
-                    IsBuff = true;
+                    Particle = "Def";
                     sound_up.Play();
                 }
             }
@@ -887,47 +701,8 @@ namespace Project_Manhattan
                     This_Ani[1].Reset();
                 }
             }
-            if (IsBuff)
-            {
-                if (Buffed.IsEnd)
-                {
-                    IsBuff = false;
-                    Buffed.Reset();
-                }
-            }
-            else if (IsHeal)
-            {
-                if (Healed.IsEnd)
-                {
-                    IsHeal = false;
-                    Healed.Reset();
-                }
-            }
-            if (Def < 0)
-            {
-                Def = 0;
-            }
-            if (Hp > MaxHp)
-            {
-                Hp = MaxHp;
-            }
-
-            if (Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
-            }
-            if (IsCharEnd)
-            {
-                color = Color.Gray;
-            }
-            else if (!IsCharEnd)
-            {
-                color = Color.White;
-            }
+            ParticleEff();
+            CheckAction();
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -954,14 +729,7 @@ namespace Project_Manhattan
                     This_Ani[4].DrawFrame(batch, P, false);
                 }
 
-                if (IsBuff)
-                {
-                    Buffed.DrawFrame(batch, P + AbsPos);
-                }
-                else if (IsHeal)
-                {
-                    Healed.DrawFrame(batch, P - AbsPos);
-                }
+                ParticleDraw(batch, P - AbsPos);
             }
         }
     }
@@ -969,7 +737,7 @@ namespace Project_Manhattan
     {
         public Tata(MainGame game) : base(game)
         {
-            Name = "Tata";
+            Name = "Taata";
 
             Hp = 700;
             Str = 0;
@@ -982,7 +750,7 @@ namespace Project_Manhattan
             Skill1_Cost = 2;
             Skill2_Cost = 3;
             SkillInfo1 = "Decrease a sensei's Def \nDef down 30";
-            SkillInfo2 = "Take a rest \nHeals 50% of a friend's MaxHp";
+            SkillInfo2 = "Take a rest \nHeals 80% of a friend's lost Hp";
 
             role = "Support";
             ability = "Debuff, Heal";
@@ -1041,6 +809,7 @@ namespace Project_Manhattan
                     this.IsAction = false;
                     IsCharEnd = true;
                     LEC.enemies[target].Def -= 30;
+                    LEC.enemies[target].Particle = "Debuff";
                 }
             }
             else if (IsAction && Anime == "S2")
@@ -1050,8 +819,8 @@ namespace Project_Manhattan
                     Anime = "Idle";
                     this.IsAction = false;
                     IsCharEnd = true;
-                    LFC.friend[target].Hp += LFC.friend[target].MaxHp / 2;
-                    LFC.friend[target].IsBuff = true;
+                    LFC.friend[target].Hp += (LFC.friend[target].MaxHp - LFC.friend[target].Hp) * 0.8f;
+                    LFC.friend[target].Particle = "Heal";
                     sound_up.Play();
                 }
             }
@@ -1072,48 +841,8 @@ namespace Project_Manhattan
                 }
             }
 
-            if (IsBuff)
-            {
-                if(Buffed.IsEnd)
-                {
-                    IsBuff = false;
-                    Buffed.Reset();
-                }
-            }
-            else if (IsHeal)
-            {
-                if(Healed.IsEnd)
-                {
-                    IsHeal = false;
-                    Healed.Reset();
-                }
-            }
-
-            if (Def < 0)
-            {
-                Def = 0;
-            }
-            if (Hp > MaxHp)
-            {
-                Hp = MaxHp;
-            }
-
-            if (Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
-            }
-            if(IsCharEnd)
-            {
-                color = Color.Gray;
-            }
-            else if (!IsCharEnd)
-            {
-                color = Color.White;
-            }
+            ParticleEff();
+            CheckAction();
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -1140,14 +869,147 @@ namespace Project_Manhattan
                     This_Ani[4].DrawFrame(batch, P, true);
                 }
 
-                if (IsBuff)
+                ParticleDraw(batch, P);
+            }
+        }
+    }
+    public class JJ : Friend
+    {
+        public JJ(MainGame game) : base(game)
+        {
+            Name = "JeiJei";
+
+            Hp = 525;
+            Str = 25;
+            Def = 75;
+
+            MaxHp = Hp;
+            MaxStr = Str;
+            MaxDef = Def;
+
+            Skill1_Cost = 1;
+            Skill2_Cost = 2;
+            SkillInfo1 = "Unlimit Ramens! \nHeal 75 and Def Up 25";
+            SkillInfo2 = "My friend! I Choose you! \nGain extra action in same phase";
+
+            role = "Support";
+            ability = "Heal & Def, Act twice";
+
+            Target_1 = "Friend";
+            Target_2 = "Friend";
+
+            for (int i = 0; i < This_Ani.Length; i++)
+            {
+                This_Ani[i] = new AnimatedTexture(Vector2.Zero, 0, 1f, 0);
+            }
+
+            This_Ani[0].Load(game.Content, "2D/Friend/JJ/J_Idle", 4, 1, frameSk);
+            This_Ani[1].Load(game.Content, "2D/Friend/JJ/J_Spawn", 12, 1, frameSp);
+            This_Ani[2].Load(game.Content, "2D/Friend/JJ/J_Skill1", 9, 1, frameSk);
+            This_Ani[3].Load(game.Content, "2D/Friend/JJ/J_Skill2", 9, 1, frameSk);
+            This_Ani[4].Load(game.Content, "2D/Friend/JJ/J_Hurt", 4, 1, frameHr);
+        }
+        public override void skill1(int enePos, int CastPos)
+        {
+            Gameplay_Screen.Energy -= Skill1_Cost;
+            Anime = "S1";
+            This_Ani[2].Reset();
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+        }
+        public override void skill2(int enePos, int CastPos)
+        {
+            Gameplay_Screen.Energy -= Skill2_Cost;
+            Anime = "S2";
+            This_Ani[3].Reset();
+            target = enePos;
+            cast = CastPos;
+            this.IsAction = true;
+        }
+        public override void skill1_Info()
+        {
+            Gameplay_Screen.SkillName = "JeiJei (1E)";
+            Gameplay_Screen.SkillInfo = SkillInfo1;
+        }
+        public override void skill2_Info()
+        {
+            Gameplay_Screen.SkillName = "JeiJeiQ (2E)";
+            Gameplay_Screen.SkillInfo = SkillInfo2;
+        }
+        public override void UpdateAction() //for animated
+        {
+            if (IsAction && Anime == "S1")
+            {
+                if (This_Ani[2].IsEnd)
                 {
-                    Buffed.DrawFrame(batch, P);
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    IsCharEnd = true;
+                    LFC.friend[target].Def += 25;
+                    LFC.friend[target].Hp += 75;
+                    LFC.friend[target].Particle = "Heal";
+                    sound_up.Play();
                 }
-                else if (IsHeal)
+            }
+            else if (IsAction && Anime == "S2")
+            {
+                if (This_Ani[3].IsEnd)
                 {
-                    Healed.DrawFrame(batch, P);
+                    Anime = "Idle";
+                    this.IsAction = false;
+                    IsCharEnd = true;
+                    LFC.friend[target].IsCharEnd = false;
+                    LFC.friend[target].Particle = "Buff";
+                    sound_up.Play();
                 }
+            }
+            else if (Anime == "Hurt")
+            {
+                if (This_Ani[4].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[4].Reset();
+                }
+            }
+            else if (Anime == "Spawn")
+            {
+                if (This_Ani[1].IsEnd)
+                {
+                    Anime = "Idle";
+                    This_Ani[1].Reset();
+                }
+            }
+
+            ParticleEff();
+            CheckAction();
+        }
+        public override void UpdateDraw(SpriteBatch batch, Vector2 P)
+        {
+            if (IsAlive)
+            {
+                if (Anime == "Idle")
+                {
+                    This_Ani[0].DrawFrame(batch, P, true, color);
+                }
+                else if (Anime == "S1")
+                {
+                    This_Ani[2].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "S2")
+                {
+                    This_Ani[3].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Spawn")
+                {
+                    This_Ani[1].DrawFrame(batch, P, true);
+                }
+                else if (Anime == "Hurt")
+                {
+                    This_Ani[4].DrawFrame(batch, P, true);
+                }
+
+                ParticleDraw(batch, P);
             }
         }
     }

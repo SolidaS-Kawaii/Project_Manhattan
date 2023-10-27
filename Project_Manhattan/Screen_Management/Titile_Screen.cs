@@ -16,7 +16,7 @@ namespace Project_Manhattan.Screen_Management
         MainGame game;
         public Titile_Screen(MainGame game, EventHandler theScreenEvent) : base(game ,theScreenEvent)
         {
-            menuTexture = game.Content.Load<Texture2D>("2D/BG/Title");
+            menuTexture = game.Content.Load<Texture2D>("2D/BG/Menu");
             MediaPlayer.Play(song[0]);
             this.game = game;
         }
