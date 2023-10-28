@@ -83,6 +83,7 @@ namespace Project_Manhattan.Content
             Def = MaxDef;
             Str = MaxStr;
 
+            IsAlive = true;
             Anime = "Spawn";
         }
         public float DefRuduce(float Def)
@@ -101,13 +102,9 @@ namespace Project_Manhattan.Content
             {
                 Hp = MaxHp;
             }
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
             if (IsCharEnd)
             {
@@ -233,6 +230,7 @@ namespace Project_Manhattan.Content
             phase = phaseBegin;
             phase2 = phaseBegin;
 
+            IsAlive = true;
             Anime = "Spawn";
         }
         public float DefRuduce(float Def)

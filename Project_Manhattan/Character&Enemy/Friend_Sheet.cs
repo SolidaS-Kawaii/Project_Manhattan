@@ -111,6 +111,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -260,6 +268,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -399,6 +415,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -539,6 +563,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -691,6 +723,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -830,6 +870,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -970,6 +1018,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")

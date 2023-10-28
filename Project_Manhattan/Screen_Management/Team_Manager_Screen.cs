@@ -19,7 +19,6 @@ namespace Project_Manhattan.Screen_Management
 
         bool isDuplicate = false;
         bool isReady = false;
-        bool isEpressed = false;
 
         Texture2D Hotel;
         Texture2D select;
@@ -166,7 +165,7 @@ namespace Project_Manhattan.Screen_Management
                 spriteBatch.DrawString(font24, ">>Press Enter to Battle", new Vector2(1050, 1000), Color.Gray);
             }
 
-            spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(100, -50), Color.White);
+            spriteBatch.Draw(select, Player_Pos[Pos] + new Vector2(-200, -50), Color.White);
 
             spriteBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
 

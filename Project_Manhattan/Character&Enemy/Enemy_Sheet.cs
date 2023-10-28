@@ -98,6 +98,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -118,15 +126,11 @@ namespace Project_Manhattan
             {
                 Hp = MaxHp;
             }
+            if (Hp < 0)
+            {
+                Hp = 0;
+            }
 
-            if (Hp <= 0)
-            {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
-            }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
         {
@@ -197,6 +201,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             ParticleEff();
@@ -204,13 +216,9 @@ namespace Project_Manhattan
             {
                 Def = 0;
             }
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -339,6 +347,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -358,14 +374,9 @@ namespace Project_Manhattan
             {
                 Hp = MaxHp;
             }
-
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -525,6 +536,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             else if (Anime == "Spawn")
@@ -544,14 +563,9 @@ namespace Project_Manhattan
             {
                 Hp = MaxHp;
             }
-
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -626,6 +640,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             ParticleEff();
@@ -633,13 +655,9 @@ namespace Project_Manhattan
             {
                 Def = 0;
             }
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -710,6 +728,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             ParticleEff();
@@ -717,13 +743,9 @@ namespace Project_Manhattan
             {
                 Def = 0;
             }
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)
@@ -794,6 +816,14 @@ namespace Project_Manhattan
                 {
                     Anime = "Idle";
                     This_Ani[4].Reset();
+                    if (Hp <= 0)
+                    {
+                        IsAlive = false;
+                    }
+                    else if (Hp > 0)
+                    {
+                        IsAlive = true;
+                    }
                 }
             }
             ParticleEff();
@@ -801,13 +831,9 @@ namespace Project_Manhattan
             {
                 Def = 0;
             }
-            if (Hp <= 0)
+            if (Hp < 0)
             {
-                IsAlive = false;
-            }
-            else if (Hp > 0)
-            {
-                IsAlive = true;
+                Hp = 0;
             }
         }
         public override void UpdateDraw(SpriteBatch batch, Vector2 P)

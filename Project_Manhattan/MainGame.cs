@@ -14,6 +14,8 @@ namespace Project_Manhattan
         public static GraphicsDeviceManager _graphics;
         public static SpriteBatch _spriteBatch;
 
+        public static bool IsNightMare = false;
+
         public static KeyboardState keytak;                   //New Key
         public static KeyboardState keypiak;                  //Old key
         public static MouseState anutin;                      //Mouse click

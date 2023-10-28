@@ -73,6 +73,18 @@
 /processorParam:TextureFormat=Color
 /build:2D/BG/Menu.png
 
+#begin 2D/BG/MenuVer2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/BG/MenuVer2.png
+
 #begin 2D/BG/SelectA.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1045,6 +1057,18 @@
 /processorParam:TextureFormat=Color
 /build:2D/UI/SelectChar.png
 
+#begin 2D/UI/SelectChar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/UI/SelectChar.png
+
 #begin 2D/UI/Selecting.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1092,6 +1116,42 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/UI/Selecting4.png
+
+#begin 2D/UI/SelectMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/UI/SelectMenu.png
+
+#begin 2D/UI/Tutorial2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/UI/Tutorial2.png
+
+#begin 2D/UI/UI_menu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/UI/UI_menu.png
 
 #begin 2D/UI/UI1 (1).png
 /importer:TextureImporter

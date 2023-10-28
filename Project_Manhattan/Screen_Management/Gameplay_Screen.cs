@@ -23,6 +23,7 @@ namespace Project_Manhattan.Screen_Management
 
         private Random random = new Random();
         private int RandPos = 0;
+        private int RandPoss = 0;
 
         private float Cooldown = 0f;
         private float delay = 0f;
@@ -32,6 +33,7 @@ namespace Project_Manhattan.Screen_Management
 
         private bool IsWin = false;
         private bool IsLoss = false;
+        private bool IsGameEnd = false;
 
         public bool IsMyPhase = true;
         public bool StartPhase = true;
@@ -57,6 +59,7 @@ namespace Project_Manhattan.Screen_Management
         private Texture2D Healthbar_Bk;
         private Texture2D UI;
         private Texture2D Arrow1;
+        private Texture2D Tutorial;
         private SpriteFont font;
         private SpriteFont font48;
 
@@ -110,6 +113,7 @@ namespace Project_Manhattan.Screen_Management
             Healthbar_Bk = game.Content.Load<Texture2D>("2D/UI/Health_Back");
             Healthbar_Fr = game.Content.Load<Texture2D>("2D/UI/Health_Friend");
             Healthbar_En = game.Content.Load<Texture2D>("2D/UI/Health_Enemy");
+            Tutorial = game.Content.Load<Texture2D>("2D/UI/Tutorial2");
 
             font = game.Content.Load<SpriteFont>("File");
             font48 = game.Content.Load<SpriteFont>("Oth/Font/Arial48");
@@ -138,35 +142,117 @@ namespace Project_Manhattan.Screen_Management
             var anutin = Mouse.GetState();  //รับเมาส์
             gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            switch (elevel)
+            if(!MainGame.IsNightMare)
             {
-                case Level.Hospital:
-                    {
-                        if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                switch (elevel)
+                {
+                    case Level.Hospital:
                         {
-                            elevel = Level.Temple;
-                            ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
-                        }
+                            if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                            {
+                                elevel = Level.Temple;
+                                ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
+                            }
                             break;
-                    }
-                case Level.Temple:
-                    {
-                        if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
-                        {
-                            elevel = Level.Tapae;
-                            ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
                         }
-                        break;
-                    }
-                case Level.Tapae:
-                    {
-                        if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                    case Level.Temple:
                         {
-                            ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+                            if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                            {
+                                elevel = Level.Tapae;
+                                ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
+                            }
+                            break;
                         }
-                        break;
+                    case Level.Tapae:
+                        {
+                            if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                            {
+                                ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+                            }
+                            break;
+                        }
+                }
+
+                if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                {
+                    IsWin = false;
+                    IsLoss = false;
+                    IsGameEnd = false;
+                    StartPhase = true;
+                    MediaPlayer.Play(song[1]);
+                    Energy = 0;
+                    ResetFede();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        LFC.friend[i].Hp = 1;
+                        LFC.friend[i].IsAlive = true;
+                        LFC.friend[i].Anime = "Idle";
+                        LFC.friend[i].IsCharEnd = false;
                     }
+                }
+                else if (IsLoss && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                {
+                    IsLoss = false;
+                    IsWin = false;
+                    IsGameEnd = false;
+                    StartPhase = true;
+                    MediaPlayer.Play(song[2]);
+                    Energy = 0;
+                    ResetFede();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        LFC.friend[i].Hp = 1;
+                        LFC.friend[i].IsAlive = true;
+                        LFC.friend[i].Anime = "Idle";
+                        LFC.friend[i].IsCharEnd = false;
+                    }
+                    ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+                }
             }
+            else if (MainGame.IsNightMare)
+            {
+                if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                {
+                    IsLoss = false;
+                    IsWin = false;
+                    IsGameEnd = false;
+                    StartPhase = true;
+                    MediaPlayer.Play(song[0]);
+                    MainGame.IsNightMare = false;
+                    Energy = 0;
+                    ResetFede();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        LFC.friend[i].Hp = 1;
+                        LFC.friend[i].IsAlive = true;
+                        LFC.friend[i].Anime = "Idle";
+                        LFC.friend[i].IsCharEnd = false;
+                    }
+                    ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+                }
+                else if(IsLoss && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
+                {
+                    IsLoss = false;
+                    IsWin = false;
+                    IsGameEnd = false;
+                    StartPhase = true;
+                    MediaPlayer.Play(song[0]);
+                    MainGame.IsNightMare = false; 
+                    Energy = 0;
+                    ResetFede();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        LFC.friend[i].Hp = 1;
+                        LFC.friend[i].IsAlive = true;
+                        LFC.friend[i].Anime = "Idle";
+                        LFC.friend[i].IsCharEnd = false;
+                    }
+                    ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+                }
+
+            }
+            
 
             ///////////////////////////// Energy /////////////////
             if (Energy > EnergyMax)
@@ -367,34 +453,90 @@ namespace Project_Manhattan.Screen_Management
             }
 
             ///////////////// Phase ศัตรู ///////////////////
-            if (!IsMyPhase)
+            ///
+            if (!MainGame.IsNightMare)
             {
-                if (trigger)
+                if (!IsMyPhase)
                 {
-                    Delay(3);
-                    do
+                    if (trigger)
                     {
-                        RandPos = random.Next(0, 3);
-                    }
-                    while (!LFC.friend[RandPos].IsAlive);
-                    if (turn_e == 1)
-                    {
-                        if (LEC.enemies[1].IsAlive)
+                        Delay(3);
+                        do
                         {
-                            LEC.enemies[1].skill(RandPos);
+                            RandPos = random.Next(0, 3);
                         }
+                        while (!LFC.friend[RandPos].IsAlive);
+                        if (turn_e == 1)
+                        {
+                            if (LEC.enemies[1].IsAlive)
+                            {
+                                LEC.enemies[1].skill(RandPos);
+                            }
+                        }
+
+                        turn_e++;
                     }
-                    
-                    turn_e++;
+                    if (LEC.enemies[1].IsEnd)
+                    {
+                        IsMyPhase = true;
+                        StartPhase = true;
+                        LEC.enemies[1].IsEnd = false;
+                        turn_e = 0;
+                    }
                 }
-                if (LEC.enemies[1].IsEnd)
+
+                if (((!LEC.enemies[1].IsAlive && !LEC.enemies[0].IsAlive && !LEC.enemies[2].IsAlive) || (Keyboard.GetState().IsKeyDown(Keys.NumPad1))) && !IsWin && !IsGameEnd)
                 {
-                    IsMyPhase = true;
-                    StartPhase = true;
-                    LEC.enemies[1].IsEnd = false;
-                    turn_e = 0;
+                    IsWin = true;
+                    IsLoss = false;
+                    IsGameEnd = true;
+                    sfx[5].Play();
+                }
+                else if (LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2)) && !IsLoss && !IsGameEnd)
+                {
+                    IsLoss = true;
+                    IsWin = false;
+                    IsGameEnd = true;
+                    sfx[6].Play();
                 }
             }
+            else
+            {
+                if (!IsMyPhase)
+                {
+                    if (trigger)
+                    {
+                        Delay(3);
+                        do
+                        {
+                            RandPos = random.Next(0, 3);
+                        }
+                        while (!LEC.enemies[RandPos].IsAlive);
+                        if (turn_e == 1)
+                        {
+                            if (LEC.enemies[RandPos].IsAlive)
+                            {
+                                do
+                                {
+                                    RandPoss = random.Next(0, 3);
+                                }
+                                while (!LFC.friend[RandPoss].IsAlive);
+                                LEC.enemies[RandPos].skill(RandPoss);
+                            }
+                        }
+
+                        turn_e++;
+                    }
+                    if (LEC.enemies[RandPos].IsEnd)
+                    {
+                        IsMyPhase = true;
+                        StartPhase = true;
+                        LEC.enemies[RandPos].IsEnd = false;
+                        turn_e = 0;
+                    }
+                }
+            }
+            
 
             ///////////////           
             if (StartPhase == true)
@@ -418,49 +560,21 @@ namespace Project_Manhattan.Screen_Management
             }
 
             ////////////////////
-            if ((LEC.enemies[0].Hp <= 0 && LEC.enemies[1].Hp <= 0 && LEC.enemies[2].Hp <= 0) || (Keyboard.GetState().IsKeyDown(Keys.NumPad1)) && !IsWin)
+            if (!LEC.enemies[1].IsAlive || (Keyboard.GetState().IsKeyDown(Keys.NumPad1)) && !IsWin && !IsGameEnd)
             {
                 IsWin = true;
                 IsLoss = false;
+                IsGameEnd = true;
                 sfx[5].Play();
             }
-            else if (LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2)) && !IsLoss)
+            else if (LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2)) && !IsLoss && !IsGameEnd)
             {
                 IsLoss = true;
                 IsWin = false;
+                IsGameEnd = true;
                 sfx[6].Play();
             }
-
-            ///////////หลังจบเกม///////////
-            if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
-            {
-                IsWin = false;
-                IsLoss = false;
-                StartPhase = true;
-                MediaPlayer.Play(song[1]);
-                Energy = 0;
-                ResetFede();
-                for(int i = 0; i < 3; i++)
-                {
-                    LFC.friend[i].Anime = "Idle";
-                    LFC.friend[i].IsCharEnd = false;
-                }
-            }
-            else if (IsLoss && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
-            {
-                IsLoss = false;
-                IsWin = false;
-                StartPhase = true;
-                MediaPlayer.Play(song[2]);
-                Energy = 0;
-                ResetFede();
-                for (int i = 0; i < 3; i++)
-                {
-                    LFC.friend[i].Anime = "Idle";
-                    LFC.friend[i].IsCharEnd = false;
-                }
-                ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
-            }
+            
             ////////////
             
             for (int i = 0; i < LEC.enemies.Length; i++)
@@ -498,24 +612,32 @@ namespace Project_Manhattan.Screen_Management
         }
         public override void Draw(SpriteBatch theBatch)
         {
-            switch (elevel)
+            if(!MainGame.IsNightMare)
             {
-                case Level.Hospital:
-                    {
-                        theBatch.Draw(BG_hospital, Vector2.Zero, Color.White);
-                        break;
-                    }
-                case Level.Temple:
-                    {
-                        theBatch.Draw(BG_temple, Vector2.Zero, Color.White);
-                        break;
-                    }
-                case Level.Tapae:
-                    {
-                        theBatch.Draw(BG_tapae, Vector2.Zero, Color.White);
-                        break;
-                    }
+                switch (elevel)
+                {
+                    case Level.Hospital:
+                        {
+                            theBatch.Draw(BG_hospital, Vector2.Zero, Color.White);
+                            break;
+                        }
+                    case Level.Temple:
+                        {
+                            theBatch.Draw(BG_temple, Vector2.Zero, Color.White);
+                            break;
+                        }
+                    case Level.Tapae:
+                        {
+                            theBatch.Draw(BG_tapae, Vector2.Zero, Color.White);
+                            break;
+                        }
+                }
             }
+            else
+            {
+                theBatch.Draw(BG_tapae, Vector2.Zero, Color.White);
+            }
+
             ////////////// วาด UI //////////
             if(IsMyPhase)
             {
@@ -559,26 +681,48 @@ namespace Project_Manhattan.Screen_Management
             }
 
             /////////////วาด จารย์////////////////
-            for(int i = 0; i < LEC.enemies.Length; i++)
-            {
-                LEC.enemies[i].UpdateDraw(theBatch, EnemyPos[i]);
-                if (LEC.enemies[i].IsAlive)
-                {
-                    theBatch.Draw(Healthbar_Bk, EnemyPos[i] + new Vector2(-10, -80) + LEC.enemies[i].AbsPos, new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
-                    theBatch.Draw(Healthbar_En, EnemyPos[i] + new Vector2(-10, -80) + LEC.enemies[i].AbsPos, new Rectangle(0, 0, (200 * (int)(LEC.enemies[i].Hp * 100 / LEC.enemies[i].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
 
-                    theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[i].Hp + " / DEF : " + LEC.enemies[i].DefReal, new Vector2(EnemyPos[i].X + 25, EnemyPos[i].Y - 60) + LEC.enemies[i].AbsPos, Color.White);
-                }          
+            if (!MainGame.IsNightMare)
+            {
+                for (int i = 0; i < LEC.enemies.Length; i++)
+                {
+                    LEC.enemies[i].UpdateDraw(theBatch, EnemyPos[i]);
+                    if (LEC.enemies[i].IsAlive)
+                    {
+                        theBatch.Draw(Healthbar_Bk, EnemyPos[i] + new Vector2(-10, -80) + LEC.enemies[i].AbsPos, new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                        theBatch.Draw(Healthbar_En, EnemyPos[i] + new Vector2(-10, -80) + LEC.enemies[i].AbsPos, new Rectangle(0, 0, (200 * (int)(LEC.enemies[i].Hp * 100 / LEC.enemies[i].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+
+                        theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[i].Hp + " / DEF : " + LEC.enemies[i].DefReal, new Vector2(EnemyPos[i].X + 25, EnemyPos[i].Y - 60) + LEC.enemies[i].AbsPos, Color.White);
+                    }
+                }
+            }
+            else
+            {
+                LEC.enemies[0].UpdateDraw(theBatch, EnemyPos[0] + new Vector2(-100,-225));
+                LEC.enemies[1].UpdateDraw(theBatch, EnemyPos[1]);
+                LEC.enemies[2].UpdateDraw(theBatch, EnemyPos[2] + new Vector2(-100, -225));
+
+                theBatch.Draw(Healthbar_Bk, EnemyPos[0] + new Vector2(-100, -225) + new Vector2(-10, -80) + LEC.enemies[0].AbsPos, new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                theBatch.Draw(Healthbar_En, EnemyPos[0] + new Vector2(-100, -225) + new Vector2(-10, -80) + LEC.enemies[0].AbsPos, new Rectangle(0, 0, (200 * (int)(LEC.enemies[0].Hp * 100 / LEC.enemies[0].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[0].Hp + " / DEF : " + LEC.enemies[0].DefReal, new Vector2(EnemyPos[0].X + 25, EnemyPos[0].Y - 60) + new Vector2(-100, -225) + LEC.enemies[0].AbsPos, Color.White);
+
+                theBatch.Draw(Healthbar_Bk, EnemyPos[1] + new Vector2(-10, -80) + LEC.enemies[1].AbsPos, new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                theBatch.Draw(Healthbar_En, EnemyPos[1] + new Vector2(-10, -80) + LEC.enemies[1].AbsPos, new Rectangle(0, 0, (200 * (int)(LEC.enemies[1].Hp * 100 / LEC.enemies[1].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[1].Hp + " / DEF : " + LEC.enemies[1].DefReal, new Vector2(EnemyPos[1].X + 25, EnemyPos[1].Y - 60) + LEC.enemies[1].AbsPos, Color.White);
+
+                theBatch.Draw(Healthbar_Bk, EnemyPos[2] + new Vector2(-100, -225) + new Vector2(-10, -80) + LEC.enemies[2].AbsPos, new Rectangle(0, 0, 200, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                theBatch.Draw(Healthbar_En, EnemyPos[2] + new Vector2(-100, -225) + new Vector2(-10, -80) + LEC.enemies[2].AbsPos, new Rectangle(0, 0, (200 * (int)(LEC.enemies[2].Hp * 100 / LEC.enemies[2].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
+                theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[2].Hp + " / DEF : " + LEC.enemies[2].DefReal, new Vector2(EnemyPos[2].X + 25, EnemyPos[2].Y - 60) + new Vector2(-100, -225) + LEC.enemies[2].AbsPos, Color.White);
             }
 
             //////////จบเกม/////////
-            if(IsWin)
+            if (IsWin)
             {
-                theBatch.DrawString(font48, "You Win!!", new Vector2(900, 500), Color.CornflowerBlue);
+                theBatch.DrawString(font48, "You Win!!", new Vector2(800, 100), Color.CornflowerBlue);
             }
             else if(IsLoss)
             {
-                theBatch.DrawString(font48, "DEFEATED!", new Vector2(900, 500), Color.Red);
+                theBatch.DrawString(font48, "DEFEATED!", new Vector2(800, 100), Color.Red);
             }
            
             //////////////วาด ลูกศร//////////
@@ -620,8 +764,8 @@ namespace Project_Manhattan.Screen_Management
             theBatch.Draw(Select_Pos, new Vector2(PlayerPos[SelPos].X + 100, PlayerPos[SelPos].Y - 25), Color.Yellow);
 
             theBatch.Draw(Arrow1, new Vector2(NameShow.X - 150, NameShow.Y - 25 + (50 * (SelPos))), Color.White);
+            theBatch.Draw(Tutorial, Vector2.Zero, Color.White);
             theBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
-
         }
         void Delay(float amountoftime)
         {

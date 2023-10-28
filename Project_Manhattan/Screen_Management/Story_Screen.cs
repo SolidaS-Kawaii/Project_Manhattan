@@ -24,6 +24,7 @@ namespace Project_Manhattan.Screen_Management
 
         List<string>[] txt_Hospital = new List<string>[2];
         List<string>[] txt_Temple = new List<string>[2];
+        List<string>[] txt_Tapae = new List<string>[2];
 
         string filepath;
         FileStream fileStream;
@@ -39,6 +40,7 @@ namespace Project_Manhattan.Screen_Management
         Texture2D BG_temple;
         Texture2D BG_hotel;
         Texture2D BG_tapae;
+        Texture2D BG_tapae_End;
         Texture2D UI_story;
         Texture2D UI_name;
         AnimatedTexture Mickarey;
@@ -81,6 +83,8 @@ namespace Project_Manhattan.Screen_Management
             txt_Hospital[1] = new List<string>();
             txt_Temple[0] = new List<string>();
             txt_Temple[1] = new List<string>();
+            txt_Tapae[0] = new List<string>();
+            txt_Tapae[1] = new List<string>();
 
             Mickarey = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
             Mickaidle = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
@@ -89,6 +93,7 @@ namespace Project_Manhattan.Screen_Management
             BG_temple = game.Content.Load<Texture2D>("2D/BG/TemplePara");
             BG_hotel = game.Content.Load<Texture2D>("2D/BG/Hotel (1)");
             BG_tapae = game.Content.Load<Texture2D>("2D/BG/TapaePara");
+            BG_tapae_End = game.Content.Load<Texture2D>("2D/BG/Tapae");
 
             UI_name = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             UI_story = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
@@ -122,26 +127,12 @@ namespace Project_Manhattan.Screen_Management
                     }
                 case Level.Hotel:
                     {
-                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)))
-                        {
-                            ResetCam();
-                            ResetFede();
-                            elevel = Level.Tapae;
-                            ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
-                        }
+                        HotelAct();
                         break;
                     }
                 case Level.Tapae:
                     {
-                        if ((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)))
-                        {
-                            ResetCam();
-                            ResetFede();
-                            elevel = Level.Hospital;
-                            TapaeAct();
-                            MediaPlayer.Play(song[2]);
-                            ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
-                        }
+                        TapaeAct();
                         break;
                     }
             }
@@ -247,8 +238,8 @@ namespace Project_Manhattan.Screen_Management
                         {
                             spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
                             spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
-                            //spriteBatch.DrawString(_font, txt_Hospital[1][click_count], UI_Pos + new Vector2(25, 25), Color.White);
-                            //spriteBatch.DrawString(_font, txt_Hospital[0][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            spriteBatch.DrawString(_font, txt_Hospital[1][click_count], UI_Pos + new Vector2(25, 25), Color.White);
+                            spriteBatch.DrawString(_font, txt_Hospital[0][click_count], UI_Pos + new Vector2(100, -100), Color.White);
                         }
                         break;
                         
@@ -267,21 +258,61 @@ namespace Project_Manhattan.Screen_Management
                         {
                             spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
                             spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
-                            //spriteBatch.DrawString(_font, txt_Temple[1][click_count], UI_Pos + new Vector2(25, 25), Color.White);
-                            //spriteBatch.DrawString(_font, txt_Temple[0][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            spriteBatch.DrawString(_font, txt_Temple[1][click_count], UI_Pos + new Vector2(25, 25), Color.White);
+                            spriteBatch.DrawString(_font, txt_Temple[0][click_count], UI_Pos + new Vector2(100, -100), Color.White);
                         }
                         break;
                     }
                 case Level.Hotel:
                     {
-                        spriteBatch.Draw(BG_hotel, Vector2.Zero, Color.White);                     
+                        if(click_count < 10)
+                        {
+                            spriteBatch.Draw(BG_hotel, Vector2.Zero, Color.White);
+                            heng.This_Ani[0].DrawFrame(spriteBatch, new Vector2(1300, 400), true);
+                            dome.This_Ani[0].DrawFrame(spriteBatch, new Vector2(1100, 400), false);
+                        }
+
+                        if (isTitle)
+                        {
+                            spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
+                            spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
+                            spriteBatch.DrawString(_font, txt_Tapae[0][click_count], UI_Pos + new Vector2(25, 25), Color.White);
+                            spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                        }
                         break;
                     }
                 case Level.Tapae:
                     {
-                        for (int i = 0; i < 3; i++)
+                        if (!AfterBattle)
                         {
-                            spriteBatch.Draw(BG_tapae, (BGPos - CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width, 0) * i, Color.White);
+                            for (int i = 0; i < 3; i++)
+                            {
+                                spriteBatch.Draw(BG_tapae, (BGPos - CameraPos) + new Vector2(MainGame._graphics.GraphicsDevice.Viewport.Width, 0) * i, Color.White);
+                            }
+                            heng.This_Ani[0].DrawFrame(spriteBatch, new Vector2(5400, 400) - CameraPos, true);
+                            
+                            Sensei.DrawFrame(spriteBatch, new Vector2(1200, 100) - CameraPos);
+                            if (isTitle)
+                            {
+                                spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
+                                spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
+                                spriteBatch.DrawString(_font, txt_Tapae[0][click_count], UI_Pos + new Vector2(25, 25), Color.White);
+                                spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            }
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(BG_tapae_End, Vector2.Zero, Color.White);
+                            heng.This_Ani[0].DrawFrame(spriteBatch, new Vector2(1200, 400), false);
+                            ohm.This_Ani[0].DrawFrame(spriteBatch, new Vector2(900, 400), false);
+                            dome.This_Ani[0].DrawFrame(spriteBatch, new Vector2(600, 400), false);
+                            if (isTitle)
+                            {
+                                spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
+                                spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
+                                spriteBatch.DrawString(_font, txt_Tapae[0][click_count], UI_Pos + new Vector2(25, 25), Color.White);
+                                spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            }
                         }
                         break;
                     }
@@ -303,45 +334,65 @@ namespace Project_Manhattan.Screen_Management
 
         private void LoadText()
         {
-            /////Hospital
-            //filepath = Path.Combine(@"Content\Hospital_Speak.txt");
-            //fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            //streamReader = new StreamReader(fileStream);
-            //while (!streamReader.EndOfStream)
-            //{
-            //    string tmpStr = streamReader.ReadLine();
-            //    txt_Hospital[0].Add(tmpStr);
-            //}
-            //streamReader.Close();
-            //filepath = Path.Combine(@"Content\Hospital_Story.txt");
-            //fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            //streamReader = new StreamReader(fileStream);
-            //while (!streamReader.EndOfStream)
-            //{
-            //    string tmpStr = streamReader.ReadLine();
-            //    txt_Hospital[1].Add(tmpStr);
-            //}
-            //streamReader.Close();
+            ///Hospital
+            filepath = Path.Combine(@"Content\Hospital_Speak.txt");
+            fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            streamReader = new StreamReader(fileStream);
+            while (!streamReader.EndOfStream)
+            {
+                string tmpStr = streamReader.ReadLine();
+                txt_Hospital[0].Add(tmpStr);
+            }
+            streamReader.Close();
+            filepath = Path.Combine(@"Content\Hospital_Story.txt");
+            fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            streamReader = new StreamReader(fileStream);
+            while (!streamReader.EndOfStream)
+            {
+                string tmpStr = streamReader.ReadLine();
+                txt_Hospital[1].Add(tmpStr);
+            }
+            streamReader.Close();
 
-            /////Temple
-            //filepath = Path.Combine(@"Content\Temple_Speak.txt");
-            //fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            //streamReader = new StreamReader(fileStream);
-            //while (!streamReader.EndOfStream)
-            //{
-            //    string tmpStr = streamReader.ReadLine();
-            //    txt_Temple[1].Add(tmpStr);
-            //}
-            //streamReader.Close();
-            //filepath = Path.Combine(@"Content\Temple_Story.txt");
-            //fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            //streamReader = new StreamReader(fileStream);
-            //while (!streamReader.EndOfStream)
-            //{
-            //    string tmpStr = streamReader.ReadLine();
-            //    txt_Temple[0].Add(tmpStr);
-            //}
-            //streamReader.Close();
+            ///Temple
+            filepath = Path.Combine(@"Content\Temple_Speak.txt");
+            fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            streamReader = new StreamReader(fileStream);
+            while (!streamReader.EndOfStream)
+            {
+                string tmpStr = streamReader.ReadLine();
+                txt_Temple[1].Add(tmpStr);
+            }
+            streamReader.Close();
+            filepath = Path.Combine(@"Content\Temple_Story.txt");
+            fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            streamReader = new StreamReader(fileStream);
+            while (!streamReader.EndOfStream)
+            {
+                string tmpStr = streamReader.ReadLine();
+                txt_Temple[0].Add(tmpStr);
+            }
+            streamReader.Close();
+            ///Hotel+Tapae
+            filepath = Path.Combine(@"Content\Final_Speak.txt");
+            fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            streamReader = new StreamReader(fileStream);
+            while (!streamReader.EndOfStream)
+            {
+                string tmpStr = streamReader.ReadLine();
+                txt_Tapae[1].Add(tmpStr);
+            }
+            streamReader.Close();
+            filepath = Path.Combine(@"Content\Final_Story.txt");
+            fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            streamReader = new StreamReader(fileStream);
+            while (!streamReader.EndOfStream)
+            {
+                string tmpStr = streamReader.ReadLine();
+                txt_Tapae[0].Add(tmpStr);
+            }
+            streamReader.Close();
+
         }
         private void ResetCam()
         {
@@ -422,8 +473,10 @@ namespace Project_Manhattan.Screen_Management
 
             if (((NewKey.IsKeyDown(Keys.Up) && OldKey.IsKeyUp(Keys.Up)) || click_count > 15) && !AfterBattle)
             {
-                ResetCam();
+                PlayerPos = new Vector2(1460, 500);
+                CameraPos = Vector2.Zero;
                 ResetFede();
+                MediaPlayer.Play(song[2]);
                 isTitle = false;
                 elevel = Level.Hotel;
                 AfterBattle = false;
@@ -436,10 +489,72 @@ namespace Project_Manhattan.Screen_Management
         }
         private void HotelAct()
         {
+            if (FadingIsDone)
+            {
+                isTitle = true;
+            }
 
+            if (NewKey.IsKeyDown(Keys.Space) && OldKey.IsKeyUp(Keys.Space) && isTitle)
+            {
+                if (click_count < txt_Tapae[1].Count)
+                {
+                    click_count++;
+                }
+                sfx[0].Play();
+            }
+            if(click_count > 16)
+            {
+                ResetCam();
+                ResetFede();
+                isTitle = false;
+                elevel = Level.Tapae;
+                AfterBattle = false;
+                ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
+            }
         }
         private void TapaeAct()
         {
+            if (FadingIsDone)
+            {
+                isTitle = true;
+            }
+            if (click_count == 22)
+            {
+                isTitle = false;
+            }
+            if (PlayerPos.X <= 1920)
+            {
+                isTitle = true;
+            }
+
+            if (NewKey.IsKeyDown(Keys.Space) && OldKey.IsKeyUp(Keys.Space) && isTitle)
+            {
+                if (click_count < txt_Tapae[1].Count)
+                {
+                    click_count++;
+                }
+                sfx[0].Play();
+            }
+            if (click_count > 23 && !AfterBattle)
+            {
+                PlayerPos = new Vector2(1200, 500);
+                CameraPos = Vector2.Zero;
+                ResetFede();
+                MediaPlayer.Play(song[2]);
+                isTitle = false;
+                AfterBattle = true;
+                ScreenEvent.Invoke(game.mTeam_Manage, new EventArgs());
+            }
+            if (click_count > 29 && AfterBattle)
+            {
+                ResetCam();
+                ResetFede();
+                isTitle = false;
+                AfterBattle = false;
+                click_count = 0;
+                MediaPlayer.Play(song[0]);
+                ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+            }
             LEC.enemies[0] = new Bocchi(game);
             LEC.enemies[1] = new Sensei(game);
             LEC.enemies[2] = new Nijika(game);
