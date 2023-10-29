@@ -254,7 +254,7 @@ namespace Project_Manhattan
         public Shakya(MainGame game) : base(game)
         {
             Hp = 2250;
-            Str = 175;
+            Str = 125;
             Def = 105;
 
             MaxHp = Hp;
@@ -327,8 +327,8 @@ namespace Project_Manhattan
                     {
                         if (LFC.friend[i].IsAlive)
                         {
-                            LFC.friend[i].Hp -= (this.StrReal * 1.25f *  LFC.friend[rand].DefRuduce(LFC.friend[rand].Def));
-                            LFC.friend[i].Def -= 25;
+                            LFC.friend[i].Hp -= (this.StrReal * 1.25f *  LFC.friend[rand].DefRuduce(LFC.friend[rand].Def)); //1.25f
+                            LFC.friend[i].Def -= 15;
                             LFC.friend[i].Particle = "Debuff";
                             LFC.friend[i].Anime = "Hurt";
                         }

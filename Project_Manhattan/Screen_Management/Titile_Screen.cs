@@ -62,6 +62,7 @@ namespace Project_Manhattan.Screen_Management
             keypiak = keytak;
             float Elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             SelectUI.UpdateFrame(Elapsed);
+            ScreenFadeIn(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch) 
@@ -70,6 +71,7 @@ namespace Project_Manhattan.Screen_Management
             spriteBatch.Draw(UI_menu, new Vector2(900, 600), new Rectangle(0, 0, 456, 92), Color.White);
             spriteBatch.Draw(UI_menu, new Vector2(900, 750), new Rectangle(0, 256, 456, 92), Color.White);
             SelectUI.DrawFrame(spriteBatch, SelectPos + new Vector2(0, 150 * check));
+            spriteBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);
         }
     }
 }

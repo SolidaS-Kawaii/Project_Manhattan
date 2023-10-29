@@ -50,6 +50,7 @@ namespace Project_Manhattan.Screen_Management
         Texture2D BG_temple;
         Texture2D BG_tapae;
 
+        private Texture2D WinLoss;
         private Texture2D Select_Enemy;
         private Texture2D Select_Friend;
         private Texture2D Select_Me;
@@ -62,6 +63,8 @@ namespace Project_Manhattan.Screen_Management
         private Texture2D Tutorial;
         private SpriteFont font;
         private SpriteFont font48;
+
+        AnimatedTexture EnterK = new AnimatedTexture(Vector2.Zero, 0, 0.5f, 0);
 
         private bool IsSkillEReady = false;
         private bool IsSkillQReady = false;
@@ -104,6 +107,7 @@ namespace Project_Manhattan.Screen_Management
             BG_temple = game.Content.Load<Texture2D>("2D/BG/Temple");
             BG_tapae = game.Content.Load<Texture2D>("2D/BG/Tapae");
 
+            WinLoss = game.Content.Load<Texture2D>("2D/UI/Vic_De");
             UI = game.Content.Load<Texture2D>("2D/UI/UI1 (1)");
             Select_Enemy = game.Content.Load<Texture2D>("2D/UI/Selecting");
             Select_Friend = game.Content.Load<Texture2D>("2D/UI/Selecting2");
@@ -114,6 +118,8 @@ namespace Project_Manhattan.Screen_Management
             Healthbar_Fr = game.Content.Load<Texture2D>("2D/UI/Health_Friend");
             Healthbar_En = game.Content.Load<Texture2D>("2D/UI/Health_Enemy");
             Tutorial = game.Content.Load<Texture2D>("2D/UI/Tutorial2");
+
+            EnterK.Load(game.Content, "2D/UI/EnterKey", 2, 1, 2);
 
             font = game.Content.Load<SpriteFont>("File");
             font48 = game.Content.Load<SpriteFont>("Oth/Font/Arial48");
@@ -168,7 +174,7 @@ namespace Project_Manhattan.Screen_Management
                         {
                             if (IsWin && (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter)))
                             {
-                                ScreenEvent.Invoke(game.mTitile_Screen, new EventArgs());
+                                ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
                             }
                             break;
                         }
@@ -180,6 +186,7 @@ namespace Project_Manhattan.Screen_Management
                     IsLoss = false;
                     IsGameEnd = false;
                     StartPhase = true;
+                    LEC.enemies[1].Resetto();
                     MediaPlayer.Play(song[1]);
                     Energy = 0;
                     ResetFede();
@@ -197,6 +204,7 @@ namespace Project_Manhattan.Screen_Management
                     IsWin = false;
                     IsGameEnd = false;
                     StartPhase = true;
+                    LEC.enemies[1].Resetto();
                     MediaPlayer.Play(song[2]);
                     Energy = 0;
                     ResetFede();
@@ -492,7 +500,7 @@ namespace Project_Manhattan.Screen_Management
                     IsGameEnd = true;
                     sfx[5].Play();
                 }
-                else if (LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2)) && !IsLoss && !IsGameEnd)
+                else if ((LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2))) && !IsLoss && !IsGameEnd)
                 {
                     IsLoss = true;
                     IsWin = false;
@@ -535,6 +543,20 @@ namespace Project_Manhattan.Screen_Management
                         turn_e = 0;
                     }
                 }
+                if ((!LEC.enemies[1].IsAlive || (Keyboard.GetState().IsKeyDown(Keys.NumPad1))) && !IsWin && !IsGameEnd)
+                {
+                    IsWin = true;
+                    IsLoss = false;
+                    IsGameEnd = true;
+                    sfx[5].Play();
+                }
+                else if ((LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2))) && !IsLoss && !IsGameEnd)
+                {
+                    IsLoss = true;
+                    IsWin = false;
+                    IsGameEnd = true;
+                    sfx[6].Play();
+                }
             }
             
 
@@ -557,22 +579,6 @@ namespace Project_Manhattan.Screen_Management
             else if(!IsMyPhase)
             {
                 Phase_Status = "Sensei Phase";
-            }
-
-            ////////////////////
-            if (!LEC.enemies[1].IsAlive || (Keyboard.GetState().IsKeyDown(Keys.NumPad1)) && !IsWin && !IsGameEnd)
-            {
-                IsWin = true;
-                IsLoss = false;
-                IsGameEnd = true;
-                sfx[5].Play();
-            }
-            else if (LFC.friend[0].Hp <= 0 && LFC.friend[1].Hp <= 0 && LFC.friend[2].Hp <= 0 || (Keyboard.GetState().IsKeyDown(Keys.NumPad2)) && !IsLoss && !IsGameEnd)
-            {
-                IsLoss = true;
-                IsWin = false;
-                IsGameEnd = true;
-                sfx[6].Play();
             }
             
             ////////////
@@ -605,6 +611,7 @@ namespace Project_Manhattan.Screen_Management
             ///////////////////////////
 
             keypiak = keytak;
+            EnterK.UpdateFrame(Elapsed);
             //Console.WriteLine(LFC.friend[Caster].This_Ani[2].Frame);
             //Console.WriteLine(LFC.friend[Caster].Anime);
             ScreenFadeIn(gameTime);
@@ -714,17 +721,7 @@ namespace Project_Manhattan.Screen_Management
                 theBatch.Draw(Healthbar_En, EnemyPos[2] + new Vector2(-100, -225) + new Vector2(-10, -80) + LEC.enemies[2].AbsPos, new Rectangle(0, 0, (200 * (int)(LEC.enemies[2].Hp * 100 / LEC.enemies[2].MaxHp)) / 100, 50), Color.White, 0, Vector2.Zero, 1.5f, 0, 0);
                 theBatch.DrawString(font, Hpcheck + (int)LEC.enemies[2].Hp + " / DEF : " + LEC.enemies[2].DefReal, new Vector2(EnemyPos[2].X + 25, EnemyPos[2].Y - 60) + new Vector2(-100, -225) + LEC.enemies[2].AbsPos, Color.White);
             }
-
-            //////////จบเกม/////////
-            if (IsWin)
-            {
-                theBatch.DrawString(font48, "You Win!!", new Vector2(800, 100), Color.CornflowerBlue);
-            }
-            else if(IsLoss)
-            {
-                theBatch.DrawString(font48, "DEFEATED!", new Vector2(800, 100), Color.Red);
-            }
-           
+     
             //////////////วาด ลูกศร//////////
             if(IsSkillQReady || IsSkillEReady)
             {
@@ -760,9 +757,21 @@ namespace Project_Manhattan.Screen_Management
                         }
                     }
                 }
-            }          
+            }
+
             theBatch.Draw(Select_Pos, new Vector2(PlayerPos[SelPos].X + 100, PlayerPos[SelPos].Y - 25), Color.Yellow);
 
+            //////////จบเกม/////////
+            if (IsWin)
+            {
+                theBatch.Draw(WinLoss, new Vector2(450, 200), new Rectangle(0, 0, 1080, 256), Color.White);
+                EnterK.DrawFrame(theBatch, new Vector2(1150,425));
+            }
+            else if (IsLoss)
+            {
+                theBatch.Draw(WinLoss, new Vector2(600, 200), new Rectangle(0, 256, 1080, 256), Color.White);
+                EnterK.DrawFrame(theBatch, new Vector2(1150, 425));
+            }
             theBatch.Draw(Arrow1, new Vector2(NameShow.X - 150, NameShow.Y - 25 + (50 * (SelPos))), Color.White);
             theBatch.Draw(Tutorial, Vector2.Zero, Color.White);
             theBatch.Draw(ScreenHider, Vector2.Zero, Color.White * ScreenOpa);

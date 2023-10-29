@@ -170,7 +170,7 @@ namespace Project_Manhattan
             Name = "Hengoku";
 
             Hp = 450;
-            Str = 75;
+            Str = 0;
             Def = 50;
 
             MaxHp = Hp;
@@ -324,7 +324,7 @@ namespace Project_Manhattan
             Name = "Ohmo";
 
             Hp = 600;
-            Str = 75;
+            Str = 0;
             Def = 125;
 
             MaxHp = Hp;
@@ -471,7 +471,7 @@ namespace Project_Manhattan
         {
             Name = "Domino";
             Hp = 800;
-            Str = 50;
+            Str = 0;
             Def = 25;
 
             MaxHp = Hp;
@@ -619,7 +619,7 @@ namespace Project_Manhattan
         {
             Name = "JajaBing";
 
-            Hp = 300;
+            Hp = 425;
             Str = 200;
             Def = 0;
 
@@ -927,8 +927,8 @@ namespace Project_Manhattan
         {
             Name = "JeiJei";
 
-            Hp = 525;
-            Str = 25;
+            Hp = 550;
+            Str = 0;
             Def = 75;
 
             MaxHp = Hp;

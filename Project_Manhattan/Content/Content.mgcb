@@ -1009,6 +1009,18 @@
 /processorParam:TextureFormat=Color
 /build:2D/UI/arrow-1.png
 
+#begin 2D/UI/EnterKey.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/UI/EnterKey.png
+
 #begin 2D/UI/Health_Back.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1044,18 +1056,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/UI/Health_Friend.png
-
-#begin 2D/UI/SelectChar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:2D/UI/SelectChar.png
 
 #begin 2D/UI/SelectChar.png
 /importer:TextureImporter
@@ -1164,6 +1164,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2D/UI/UI1 (1).png
+
+#begin 2D/UI/Vic_De.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:2D/UI/Vic_De.png
 
 #begin Arial24.spritefont
 /importer:FontDescriptionImporter

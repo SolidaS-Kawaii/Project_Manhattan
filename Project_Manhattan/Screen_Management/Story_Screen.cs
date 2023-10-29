@@ -16,6 +16,7 @@ namespace Project_Manhattan.Screen_Management
     public class Story_Screen : Screen
     {
         SpriteFont _font;
+        SpriteFont _pixfont;
 
         int click_count = 0;
         const int speed = 10;
@@ -107,6 +108,7 @@ namespace Project_Manhattan.Screen_Management
             LoadText();
 
             _font = game.Content.Load<SpriteFont>("Oth/Font/Arial24Real");
+            _pixfont = game.Content.Load<SpriteFont>("Arial24");
             this.game = game;
         }
         public override void Update(GameTime gameTime)
@@ -240,6 +242,7 @@ namespace Project_Manhattan.Screen_Management
                             spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
                             spriteBatch.DrawString(_font, txt_Hospital[1][click_count], UI_Pos + new Vector2(25, 25), Color.White);
                             spriteBatch.DrawString(_font, txt_Hospital[0][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            spriteBatch.DrawString(_pixfont, ">>press space bar to continue", UI_Pos + new Vector2(900, 200), Color.LightGray);
                         }
                         break;
                         
@@ -260,6 +263,7 @@ namespace Project_Manhattan.Screen_Management
                             spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
                             spriteBatch.DrawString(_font, txt_Temple[1][click_count], UI_Pos + new Vector2(25, 25), Color.White);
                             spriteBatch.DrawString(_font, txt_Temple[0][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            spriteBatch.DrawString(_pixfont, ">>press space bar to continue", UI_Pos + new Vector2(900, 200), Color.LightGray);
                         }
                         break;
                     }
@@ -277,7 +281,8 @@ namespace Project_Manhattan.Screen_Management
                             spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
                             spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
                             spriteBatch.DrawString(_font, txt_Tapae[0][click_count], UI_Pos + new Vector2(25, 25), Color.White);
-                            spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                            spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);                            spriteBatch.DrawString(_pixfont, ">>press space bar to continue", UI_Pos + new Vector2(900, 200), Color.LightGray);
+                            spriteBatch.DrawString(_pixfont, ">>press space bar to continue", UI_Pos + new Vector2(900, 200), Color.LightGray);
                         }
                         break;
                     }
@@ -298,20 +303,22 @@ namespace Project_Manhattan.Screen_Management
                                 spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
                                 spriteBatch.DrawString(_font, txt_Tapae[0][click_count], UI_Pos + new Vector2(25, 25), Color.White);
                                 spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                                spriteBatch.DrawString(_pixfont, ">>press space bar to continue", UI_Pos + new Vector2(900, 200), Color.LightGray);
                             }
                         }
                         else
                         {
                             spriteBatch.Draw(BG_tapae_End, Vector2.Zero, Color.White);
                             heng.This_Ani[0].DrawFrame(spriteBatch, new Vector2(1200, 400), false);
-                            ohm.This_Ani[0].DrawFrame(spriteBatch, new Vector2(900, 400), false);
-                            dome.This_Ani[0].DrawFrame(spriteBatch, new Vector2(600, 400), false);
+                            ohm.This_Ani[0].DrawFrame(spriteBatch, new Vector2(1000, 400), false);
+                            dome.This_Ani[0].DrawFrame(spriteBatch, new Vector2(800, 400), false);
                             if (isTitle)
                             {
                                 spriteBatch.Draw(UI_story, UI_Pos, new Rectangle(0, 0, 1696, 288), Color.White);
                                 spriteBatch.Draw(UI_name, UI_Pos + new Vector2(50, -135), new Rectangle(640, 768, 384, 128), Color.White);
                                 spriteBatch.DrawString(_font, txt_Tapae[0][click_count], UI_Pos + new Vector2(25, 25), Color.White);
                                 spriteBatch.DrawString(_font, txt_Tapae[1][click_count], UI_Pos + new Vector2(100, -100), Color.White);
+                                spriteBatch.DrawString(_pixfont, ">>press space bar to continue", UI_Pos + new Vector2(900, 200), Color.LightGray);
                             }
                         }
                         break;
@@ -537,7 +544,7 @@ namespace Project_Manhattan.Screen_Management
             }
             if (click_count > 23 && !AfterBattle)
             {
-                PlayerPos = new Vector2(1200, 500);
+                PlayerPos = new Vector2(1400, 500);
                 CameraPos = Vector2.Zero;
                 ResetFede();
                 MediaPlayer.Play(song[2]);

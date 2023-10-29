@@ -47,7 +47,7 @@ namespace Project_Manhattan.Screen_Management
             sfx.Add(game.Content.Load<SoundEffect>("Oth/SFX/Unselect")); //4
             sfx.Add(game.Content.Load<SoundEffect>("Oth/SFX/Win"));    //5
             sfx.Add(game.Content.Load<SoundEffect>("Oth/SFX/Loss"));   //6
-            SoundEffect.MasterVolume = 0.4f; //0.5
+            SoundEffect.MasterVolume = 0.5f; //0.5
 
         }
         public virtual void Update(GameTime gameTime)
