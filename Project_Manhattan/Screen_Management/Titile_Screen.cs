@@ -36,6 +36,7 @@ namespace Project_Manhattan.Screen_Management
 
             if (keytak.IsKeyDown(Keys.Enter) && keypiak.IsKeyUp(Keys.Enter) && check == 0)
             {
+                MainGame.IsNightMare = false;
                 MediaPlayer.Play(song[1]);
                 ScreenEvent.Invoke(game.mstory_Screen, new EventArgs());
             }
